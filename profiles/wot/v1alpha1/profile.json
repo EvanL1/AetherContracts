@@ -1,0 +1,18 @@
+{
+  "schema": "aether.wot.thing-model-profile.v1alpha1",
+  "status": "experimental",
+  "reference": "https://www.w3.org/TR/wot-thing-description11/",
+  "relationship": "semantic-alignment-and-future-import-export-profile",
+  "mapping": {
+    "Aether.properties": "WoT properties used as versioned model definitions",
+    "Aether.points": "read-only WoT properties and events with edge authority",
+    "Aether.capabilities": "WoT actions as declarations only"
+  },
+  "aether_constraints": [
+    "an action declaration never authorizes or directly executes physical control",
+    "capability invocation uses a governed job and remains subject to edge policy",
+    "live point values are edge-authoritative and are not part of the shared model artifact",
+    "Desired, Reported, and Applied revision facts remain distinct",
+    "JSON-LD processing is not required by the v1 alpha core"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "aether.thing-model.v1alpha1",
+  "model_id": "example.unknown.field",
+  "revision": "1",
+  "title": "Unknown field example",
+  "profiles": ["aether.wot.thing-model.v1alpha1"],
+  "properties": [],
+  "points": [],
+  "capabilities": [],
+  "entity_relations": []
+}

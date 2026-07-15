@@ -1,0 +1,25 @@
+{
+  "schema": "aether.thing-model.v1alpha1",
+  "model_id": "example.unsafe.actuator",
+  "revision": "1",
+  "title": "Unsafe actuator example",
+  "profiles": ["aether.wot.thing-model.v1alpha1"],
+  "properties": [],
+  "points": [],
+  "capabilities": [
+    {
+      "key": "start",
+      "title": "Start",
+      "parameters": [],
+      "execution": "direct",
+      "default_authorization": "deny",
+      "permission": "gateway.capability.invoke",
+      "risk": "high",
+      "confirmation": "required",
+      "idempotency": "required",
+      "expiry": "required",
+      "audit": "required",
+      "edge_final_decision": true
+    }
+  ]
+}

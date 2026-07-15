@@ -1,0 +1,12 @@
+{
+  "schema": "aether.thing-model.publication-profile.v1alpha1",
+  "status": "experimental",
+  "artifact": "the complete Thing Model object accepted by thing-model.schema.json",
+  "canonicalization": "RFC 8785 JCS",
+  "digest": {
+    "algorithm": "SHA-256",
+    "encoding": "sha256:<64 lowercase hexadecimal characters>"
+  },
+  "identity": ["model_id", "revision", "digest"],
+  "revision_reuse_with_different_digest": "forbidden"
+}

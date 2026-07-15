@@ -1,0 +1,29 @@
+{
+  "schema": "aether.cloudlink.joint-core-provenance.v1alpha1",
+  "status": "historical-import-evidence",
+  "imported_at_contract_version": "0.1.0-alpha.1",
+  "sources": [
+    {
+      "product": "AetherCloud",
+      "repository": "https://github.com/EvanL1/AetherCloud",
+      "git_head_at_import": "d731ecbdd4093c8034d680e023f2ce106afbabde",
+      "contract_directory": "contracts/cloudlink/v1",
+      "worktree_state_at_import": "modified-uncommitted"
+    },
+    {
+      "product": "AetherIot",
+      "repository": "https://github.com/EvanL1/AetherIot",
+      "git_head_at_import": "26937ac57c8c5cb6c0865ab27efaca71a0a22acc",
+      "contract_directory": "contracts/cloudlink/v1",
+      "worktree_state_at_import": "modified-uncommitted"
+    }
+  ],
+  "import_rule": "Every imported schema and fixture had to be byte-identical in both source worktrees before it was copied.",
+  "byte_evidence": {
+    "schemas": "contract-manifest.json",
+    "fixtures": "fixtures/cloudlink/v1alpha1/fixture-manifest.json",
+    "importer": "scripts/import-cloudlink-joint-core.mjs"
+  },
+  "reproducible_from_source_heads": false,
+  "authority_after_import": "The tagged AetherContracts release and its checksums are authoritative; the dirty source worktrees are historical provenance only."
+}

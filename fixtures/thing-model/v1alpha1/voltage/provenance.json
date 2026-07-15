@@ -1,0 +1,46 @@
+{
+  "source": {
+    "repository": "https://github.com/EvanL1/voltage-product-lib",
+    "commit": "7c4eec680f8b5e9a76a57c08078a41b9d5b4550c",
+    "license_evidence": "README-only-MIT-claim",
+    "license_file_present_at_import": false
+  },
+  "catalog_copied": false,
+  "fixture_scope": "minimal-structural-example",
+  "mapping": {
+    "P": "properties",
+    "M": "points",
+    "A": "capabilities"
+  },
+  "manual_resolutions": [
+    {
+      "source": "P/1.type",
+      "diagnostic": "AMBIGUOUS_NUMERIC_TYPE",
+      "source_value": "number",
+      "resolved_value": "float64",
+      "reason": "A human-reviewed fixture choice; an automated importer must request a target numeric type."
+    },
+    {
+      "source": "M/7.type",
+      "diagnostic": "AMBIGUOUS_NUMERIC_TYPE",
+      "source_value": "number",
+      "resolved_value": "float64",
+      "reason": "A human-reviewed fixture choice; an automated importer must request a target numeric type."
+    },
+    {
+      "source": "A/1.type",
+      "diagnostic": "LEGACY_ACTION_TYPE_NOT_PARAMETER_SCHEMA",
+      "source_value": "string",
+      "resolved_value": "no parameters",
+      "reason": "The legacy field does not define an action request schema and is not silently converted into one."
+    },
+    {
+      "source": "P/1.unit",
+      "diagnostic": "UNIT_NORMALIZED",
+      "source_value": "kw",
+      "resolved_value": "kW",
+      "reason": "The legacy spelling remains in legacy_symbol while the normalized unit is human-reviewed."
+    }
+  ],
+  "warning": "This fixture is not a normative energy product catalog. Confirm an explicit source LICENSE before importing additional catalog content."
+}

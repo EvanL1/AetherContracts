@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "release_version": "0.1.0-alpha.1",
+  "documents": [
+    { "path": "README.md", "status": "implemented", "authority": "overview" },
+    { "path": "spec/foundation.md", "status": "experimental", "authority": "normative" },
+    { "path": "spec/thing-model-v1alpha1.md", "status": "experimental", "authority": "normative" },
+    { "path": "spec/cloudlink-v1alpha1.md", "status": "experimental-auth-unresolved", "authority": "normative" },
+    { "path": "spec/tck-v1alpha1.md", "status": "experimental", "authority": "normative" },
+    { "path": "ai/invariants.md", "status": "implemented", "authority": "agent-safety" },
+    { "path": "GOVERNANCE.md", "status": "implemented", "authority": "governance" },
+    { "path": "SECURITY.md", "status": "implemented", "authority": "security" }
+  ]
+}

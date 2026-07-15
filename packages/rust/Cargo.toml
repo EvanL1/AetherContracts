@@ -1,0 +1,19 @@
+[package]
+name = "aether-contracts"
+version.workspace = true
+edition.workspace = true
+license-file = "../../LICENSE"
+repository.workspace = true
+rust-version.workspace = true
+description = "Rust reference binding for Aether interoperability contracts"
+readme = "README.md"
+
+[lib]
+path = "src/lib.rs"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = "deny"
+pedantic = "deny"

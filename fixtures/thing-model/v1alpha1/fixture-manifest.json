@@ -1,0 +1,56 @@
+{
+  "schema": "aether.fixture-manifest.v1alpha1",
+  "contract": "aether.thing-model",
+  "status": "experimental",
+  "hash_algorithm": "sha256",
+  "fixtures": [
+    {
+      "file": "voltage/battery-minimal.legacy.json",
+      "expectation": "legacy-source",
+      "sha256": "ff44ace510b5863d880ec7963f52f039e5e16cc2df49f6a5420e0243d64d03d8"
+    },
+    {
+      "file": "voltage/provenance.json",
+      "expectation": "provenance",
+      "sha256": "9fadbb70b5cfa99ecf9a8395af2ba7f5a3e37afb9bd4217b71ea2f03f6a78452"
+    },
+    {
+      "file": "valid/voltage-battery.golden.json",
+      "expectation": "valid",
+      "schema_id": "https://contracts.aether.dev/schemas/thing-model/v1alpha1/thing-model.schema.json",
+      "sha256": "34323feb2dea16416fe2208ca805b078981e33d8417406b72617e7aa40fed58e"
+    },
+    {
+      "file": "invalid/direct-action-execution.json",
+      "expectation": "wire-invalid",
+      "failure_code": "CAPABILITY_EXECUTION_FORBIDDEN",
+      "sha256": "b6edfaf43e332acb775d81feb3968062044e7f13139aac5c51dc90d7cf602394"
+    },
+    {
+      "file": "invalid/duplicate-capability-parameter.json",
+      "expectation": "context-invalid",
+      "schema_id": "https://contracts.aether.dev/schemas/thing-model/v1alpha1/thing-model.schema.json",
+      "failure_code": "KEY_CONFLICT",
+      "sha256": "c6bd88792e028eaddbcd6a5f96dbdb356fa30425b061b9316a576f2cdc3b98f8"
+    },
+    {
+      "file": "invalid/duplicate-cross-namespace-key.json",
+      "expectation": "context-invalid",
+      "schema_id": "https://contracts.aether.dev/schemas/thing-model/v1alpha1/thing-model.schema.json",
+      "failure_code": "KEY_CONFLICT",
+      "sha256": "9d7d4a18bcabff03b5dc8c5958e1aeb50220167e6d59e9ef76c24dca083cd90e"
+    },
+    {
+      "file": "invalid/noncanonical-revision.json",
+      "expectation": "wire-invalid",
+      "failure_code": "INTEGER_NON_CANONICAL",
+      "sha256": "1c9db6a93ca8dec4bd9e682f4eae68d5d5444cc45297c674525d0fbf1252de08"
+    },
+    {
+      "file": "invalid/unknown-core-field.json",
+      "expectation": "wire-invalid",
+      "failure_code": "UNKNOWN_FIELD",
+      "sha256": "dc1c921796c71165143767550a1e2a6e0de20f5d7a7f870a04d070017230e209"
+    }
+  ]
+}

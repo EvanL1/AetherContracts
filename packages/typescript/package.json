@@ -1,0 +1,31 @@
+{
+  "name": "@aether-contracts/typescript",
+  "version": "0.1.0-alpha.1",
+  "description": "TypeScript reference binding for Aether interoperability contracts",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EvanL1/AetherContracts.git",
+    "directory": "packages/typescript"
+  },
+  "sideEffects": false,
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "dist/src"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "pnpm build && node --test dist/test/*.test.js",
+    "test:coverage": "pnpm build && node --experimental-test-coverage --test-coverage-branches=80 --test-coverage-functions=80 --test-coverage-lines=80 --test --test-coverage-include='dist/src/**/*.js' dist/test/*.test.js"
+  }
+}

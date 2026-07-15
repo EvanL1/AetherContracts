@@ -1,0 +1,31 @@
+{
+  "name": "aether-contracts-workspace",
+  "version": "0.1.0-alpha.1",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.11.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "build": "pnpm --filter @aether-contracts/typescript build",
+    "test": "pnpm test:tck && pnpm --filter @aether-contracts/typescript test",
+    "test:tck": "node --test tck/test/*.test.mjs",
+    "test:typescript": "pnpm --filter @aether-contracts/typescript test",
+    "test:coverage": "pnpm test:tck && pnpm --filter @aether-contracts/typescript test:coverage",
+    "check:c": "cmake -S . -B build/cmake -DCMAKE_BUILD_TYPE=Debug && cmake --build build/cmake && ctest --test-dir build/cmake --output-on-failure",
+    "check:c:sanitize": "cmake -S . -B build/cmake-sanitize -DCMAKE_BUILD_TYPE=Debug -DAETHER_ENABLE_SANITIZERS=ON && cmake --build build/cmake-sanitize && ctest --test-dir build/cmake-sanitize --output-on-failure",
+    "check:rust": "cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace",
+    "check:pack": "pnpm --filter @aether-contracts/typescript build && node scripts/check-typescript-pack.mjs && cargo package --package aether-contracts --allow-dirty --locked && cargo package --package aether-contracts --allow-dirty --locked --no-verify --list && node scripts/check-cmake-install.mjs",
+    "hashes:check": "node scripts/update-hashes.mjs --check",
+    "hashes:update": "node scripts/update-hashes.mjs",
+    "check": "pnpm test && pnpm check:pack && pnpm check:c && pnpm check:rust && pnpm hashes:check",
+    "clean": "rm -rf build packages/typescript/dist target"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "typescript": "^5.9.0"
+  }
+}

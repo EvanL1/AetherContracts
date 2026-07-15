@@ -1,0 +1,177 @@
+{
+  "schema": "aether.failure-taxonomy.v1alpha1",
+  "status": "experimental",
+  "stability": "string-codes-are-contractual-numeric-abi-is-binding-specific",
+  "failures": [
+    {
+      "code": "INVALID_ARGUMENT",
+      "scope": "binding-api-misuse-only",
+      "retryable": false,
+      "description": "The caller violated a language binding API precondition, such as passing a null required pointer. It is not a wire failure."
+    },
+    {
+      "code": "INTEGER_NON_CANONICAL",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "examples": ["", "-1", "+1", "01", "1.0", "abc"],
+      "description": "A decimal integer string is empty, signed, padded, fractional, or contains non-digits."
+    },
+    {
+      "code": "INTEGER_OUT_OF_RANGE",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "maximum": "18446744073709551615",
+      "description": "A uint64 representation exceeds 20 UTF-8 bytes or its canonical decimal value exceeds 18446744073709551615; the byte-length check precedes lexical validation."
+    },
+    {
+      "code": "JSON_CYCLIC_VALUE",
+      "scope": "binding-input",
+      "retryable": false,
+      "description": "A binding received a cyclic in-memory value that cannot be represented as JSON."
+    },
+    {
+      "code": "JSON_INVALID_UNICODE",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "A string contains invalid Unicode, including an unpaired surrogate."
+    },
+    {
+      "code": "JSON_NON_FINITE_NUMBER",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "A number is NaN or infinite and therefore is not a JSON number."
+    },
+    {
+      "code": "JSON_UNSAFE_NUMBER",
+      "scope": "wire-artifact-and-binding-input",
+      "retryable": false,
+      "description": "A finite binary64 value is integer-valued outside the safe-integer range and its RFC 8785 serialization does not retain a decimal point; use a contract-declared string representation."
+    },
+    {
+      "code": "JSON_UNSUPPORTED_VALUE",
+      "scope": "binding-input",
+      "retryable": false,
+      "description": "A binding received a language-specific value that has no JSON representation."
+    },
+    {
+      "code": "JSON_SYNTAX_ERROR",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "Raw JSON is malformed; a binding should report an offset or path when available."
+    },
+    {
+      "code": "UNKNOWN_FIELD",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "A closed core object contains an undeclared field."
+    },
+    {
+      "code": "FIELD_BOUND",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "Input exceeds a declared byte, depth, string, member, array, or token bound."
+    },
+    {
+      "code": "DUPLICATE_JSON_KEY",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "Raw JSON contains the same object member name more than once."
+    },
+    {
+      "code": "DIGEST_CONFLICT",
+      "scope": "cloudlink-context",
+      "retryable": false,
+      "description": "A previously observed durable position identity is reused with a different stable batch_id or business digest binding."
+    },
+    {
+      "code": "INVALID_DIGEST",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "A digest does not use the required sha256 lowercase hexadecimal representation."
+    },
+    {
+      "code": "DIGEST_MISMATCH",
+      "scope": "cloudlink-context",
+      "retryable": false,
+      "description": "A declared business digest differs from the digest computed over the frozen canonical projection."
+    },
+    {
+      "code": "STALE_SESSION",
+      "scope": "cloudlink-context",
+      "retryable": false,
+      "description": "A message is bound to a gateway, session, epoch, or credential generation that is no longer current."
+    },
+    {
+      "code": "INVALID_EXPIRY_WINDOW",
+      "scope": "cloudlink-context",
+      "retryable": false,
+      "description": "A message declares expires_at_ms earlier than sent_at_ms."
+    },
+    {
+      "code": "MESSAGE_EXPIRED",
+      "scope": "cloudlink-context",
+      "retryable": false,
+      "description": "The explicit evaluation_time_ms is equal to or later than expires_at_ms."
+    },
+    {
+      "code": "DATA_LOSS_RANGE_INVALID",
+      "scope": "cloudlink-context",
+      "retryable": false,
+      "description": "Data-loss evidence violates first_lost_position <= last_lost_position < earliest_retained_position."
+    },
+    {
+      "code": "CURSOR_CONFLICT",
+      "scope": "cloudlink-context",
+      "retryable": false,
+      "description": "One message repeats the same stream_id and stream_epoch cursor identity."
+    },
+    {
+      "code": "UNSUPPORTED_VERSION",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "The declared protocol or contract version is not supported by the selected profile."
+    },
+    {
+      "code": "AUTH_PROFILE_UNRESOLVED",
+      "scope": "cloudlink-profile",
+      "retryable": false,
+      "description": "The alpha contract deliberately has no production shared-Broker authentication transcript."
+    },
+    {
+      "code": "CAPABILITY_DENIED",
+      "scope": "application-policy",
+      "retryable": false,
+      "description": "A capability declaration does not grant execution; the governed job or edge policy denied it."
+    },
+    {
+      "code": "CAPABILITY_EXECUTION_FORBIDDEN",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "A Thing Model attempted to declare direct execution instead of a governed job."
+    },
+    {
+      "code": "KEY_CONFLICT",
+      "scope": "artifact-context",
+      "retryable": false,
+      "description": "A key is reused within or across the property, point, or capability namespaces of one Thing Model, or a parameter key is repeated within one capability."
+    },
+    {
+      "code": "PROPERTY_NOT_FOUND",
+      "scope": "binding-lookup",
+      "retryable": false,
+      "description": "The requested property key is absent from the supplied Thing Model."
+    },
+    {
+      "code": "POINT_NOT_FOUND",
+      "scope": "binding-lookup",
+      "retryable": false,
+      "description": "The requested point key is absent from the supplied Thing Model."
+    },
+    {
+      "code": "CAPABILITY_NOT_FOUND",
+      "scope": "binding-lookup",
+      "retryable": false,
+      "description": "The requested capability key is absent from the supplied Thing Model."
+    }
+  ]
+}

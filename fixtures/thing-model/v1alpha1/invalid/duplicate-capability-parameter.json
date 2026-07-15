@@ -1,0 +1,38 @@
+{
+  "schema": "aether.thing-model.v1alpha1",
+  "model_id": "aether.test.duplicate-parameter",
+  "revision": "1",
+  "title": "Duplicate capability parameter fixture",
+  "profiles": ["aether.test.v1alpha1"],
+  "properties": [],
+  "points": [],
+  "capabilities": [
+    {
+      "key": "set_mode",
+      "title": "Set mode",
+      "parameters": [
+        {
+          "key": "mode",
+          "title": "Mode",
+          "value_type": "string",
+          "required": true
+        },
+        {
+          "key": "mode",
+          "title": "Fallback mode",
+          "value_type": "string",
+          "required": false
+        }
+      ],
+      "execution": "governed-job",
+      "default_authorization": "deny",
+      "permission": "gateway.capability.invoke",
+      "risk": "medium",
+      "confirmation": "required",
+      "idempotency": "required",
+      "expiry": "required",
+      "audit": "required",
+      "edge_final_decision": true
+    }
+  ]
+}

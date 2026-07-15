@@ -1,0 +1,267 @@
+{
+  "contract": "aether.contracts",
+  "release_version": "0.1.0-alpha.1",
+  "source_authority": "spec-schema-fixtures-tck",
+  "production_release": false,
+  "legacy_default": true,
+  "physical_control": false,
+  "formats": {
+    "logical_model": "JSON",
+    "wire_encoding": "UTF-8 JSON",
+    "schema": "JSON Schema Draft 2020-12",
+    "canonicalization": "RFC 8785 when an exact signing projection is frozen",
+    "tck": "JSON scenarios and black-box runner contract"
+  },
+  "modules": {
+    "thing_model": {
+      "version": "v1alpha1",
+      "status": "experimental"
+    },
+    "cloudlink": {
+      "version": "v1alpha1",
+      "status": "experimental-auth-unresolved"
+    },
+    "tck": {
+      "version": "v1alpha1",
+      "status": "experimental"
+    }
+  },
+  "bindings": {
+    "typescript": {
+      "status": "experimental"
+    },
+    "rust": {
+      "status": "experimental"
+    },
+    "c": {
+      "status": "experimental"
+    },
+    "cpp": {
+      "status": "experimental",
+      "implementation": "c-core-wrapper"
+    },
+    "go": {
+      "status": "planned"
+    },
+    "java": {
+      "status": "planned"
+    },
+    "python": {
+      "status": "planned"
+    }
+  },
+  "unresolved": [
+    "AetherCloud and AetherIot consumer migration to this tagged authority",
+    "shared-Broker publisher proof and attestation transcript",
+    "post-session message authentication projection",
+    "Cloud signature projection for durable ACK",
+    "production crash-durable ACK evidence",
+    "real-Broker dual harness and fault injection"
+  ],
+  "artifacts": [
+    {
+      "path": ".node-version",
+      "sha256": "55075b5ec4e8b31936cbbc282b8829116d1fd48f2f2f1856dee592a6650700ce"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "b511c2035e9fa1a5d4ea12489fc531844d32fce1f71fadd0a2dafc51bcce3ab3"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "d04cb4e57430b71d88fbea1e8f6efb80bc372290bb57b9c13438be65a9156824"
+    },
+    {
+      "path": "GOVERNANCE.md",
+      "sha256": "43ec5461cde5d0e50113320f70be591663b6397a591d1cbc31ce7ce165d9aaac"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "5022d9302e36a722ded81da7dfbfc5b703ec3e6340d9b52be5d12e9a966b8996"
+    },
+    {
+      "path": "README.md",
+      "sha256": "156e0b8746cf2c4d18a73ce3e0ef06aa5e5609991b574fcebe5086612bfb9965"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "42dd7fde423c9f80b57d2c2f1fe523e79cc6dfe1aab4091207570e73b7db4b2b"
+    },
+    {
+      "path": "ai/docs-manifest.json",
+      "sha256": "d5cdc0c95b22bfe1e98c51758f214ed548dc13219096096ae611a407a870c0f0"
+    },
+    {
+      "path": "ai/invariants.md",
+      "sha256": "b051a1df0847786e6f3d54e87ed454b5147cb65ba93976352b70727d456d521c"
+    },
+    {
+      "path": "compatibility/cloudlink-joint-core-provenance.json",
+      "sha256": "f1d5f768e02c2bf27f834389d1f0ee693eceefb5761db4d2aae1082c5fd94832"
+    },
+    {
+      "path": "compatibility/cloudlink-v1alpha1-gates.json",
+      "sha256": "c591826f9d794ceedecf9f389b714821fd4cf32a75d0d7a176619594af29bca8"
+    },
+    {
+      "path": "compatibility/failure-codes.json",
+      "sha256": "e7ddb58054869745df97a22c313cab76048c88192a497a7c3140cd831083f04b"
+    },
+    {
+      "path": "compatibility/thing-model-v1alpha1.json",
+      "sha256": "002297347e3742bffa0aa67f284ff55d94603c2243329b57ec61f34e511f0945"
+    },
+    {
+      "path": "fixtures/cloudlink/v1alpha1/fixture-manifest.json",
+      "sha256": "8d6f028ec04a6397a913215e87edf7827b9bb5f3918ec5478366fd1d9bcf4c11"
+    },
+    {
+      "path": "fixtures/thing-model/v1alpha1/fixture-manifest.json",
+      "sha256": "baaac8955239ba008794530c4ce0441d3902b1c1de0aa6b483900eaa5ae91a2a"
+    },
+    {
+      "path": "llms.txt",
+      "sha256": "7eb889e1da878c18d10daeccaaa6da58216ebd5277c54d9b1d8b43f98b8e5df9"
+    },
+    {
+      "path": "profiles/cloudlink/v1alpha1/core.json",
+      "sha256": "c75f895c23699bd2b0bb533c688bcfb19ebdc267deee61953f56d5188f330598"
+    },
+    {
+      "path": "profiles/mqtt/v1alpha1/profile.json",
+      "sha256": "9324ca5403eb4376bf6f25e36ed98cac791da521f1d1868afbf48dceaf9a72a2"
+    },
+    {
+      "path": "profiles/thing-model/v1alpha1/publication.json",
+      "sha256": "b35b5ac1799f5f11e568a2d32df82e7d331b714eeaddfa2d9e45198ef4aa6234"
+    },
+    {
+      "path": "profiles/wot/v1alpha1/profile.json",
+      "sha256": "040b90e928f6a39cf6c585a02da7d8331b4d7e7896233045575df7f1478f04ba"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/data-loss.schema.json",
+      "sha256": "2a2f53f1932d53d46785571d0d1353e737748b9ee5c216e3f6468fde820f6829"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/durable-ack.schema.json",
+      "sha256": "9c75e350004f45ab7cec79e2270cfdc4391975a08444ec11ae1d97802f383baa"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/envelope.schema.json",
+      "sha256": "ae35e1c5ec052b6407d34a245515bfde74daa7948dfec7c3ae0a948cf8a4bb4f"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/heartbeat.schema.json",
+      "sha256": "243e080d907d9b3d6e24cfd880c766c54fae81c05daef86cf6484bb8b3fa924a"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/replay-request.schema.json",
+      "sha256": "a02aba3c8adcafd259549aa869d6d605df739ab58b3b071b987c1b214732e7ab"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/runtime-manifest-report.schema.json",
+      "sha256": "0d97fff9ab55eff0042e31d531408b42bb7b93bfa868d0e06851a0a34c67efc0"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/runtime-manifest.v1.schema.json",
+      "sha256": "631a62d0568d2d51fe09ea73b398f4a2974c324cc3bbc31f2a5a89675831191b"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/session-accepted.schema.json",
+      "sha256": "92561df5d2ebe73e82a6641774cdd0cdc1b2edbcb08527e22262816bb090dd73"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/session-hello.schema.json",
+      "sha256": "e6a14ed8f7ea9e4947b4084aa669e8b68bd9ad118e97e1b1d5e523de7d7a10b0"
+    },
+    {
+      "path": "schemas/cloudlink/v1alpha1/telemetry-batch.schema.json",
+      "sha256": "3c80349f4f3ef60a17fcc0ed27cf2dd7a1dea36df909f96b488c0cc6b58a2bc0"
+    },
+    {
+      "path": "schemas/tck/v1alpha1/fixture-manifest.schema.json",
+      "sha256": "f6cc1c3bacdc0d7fa698cd7bcd16ec27e911a407cd89b9f302a4b49f8b37acb7"
+    },
+    {
+      "path": "schemas/tck/v1alpha1/scenario.schema.json",
+      "sha256": "04d5ea8d57a6aa549ec4cc52acdbf22a0bfc8f1467417c40a89be7d2f58ab99a"
+    },
+    {
+      "path": "schemas/thing-model/v1alpha1/deployment-observation.schema.json",
+      "sha256": "d5f567346f0a63fd9a19b47df90ead401a9b96cdd0d2cbdce8195a1b40eb40c2"
+    },
+    {
+      "path": "schemas/thing-model/v1alpha1/thing-model.schema.json",
+      "sha256": "e60d9b50bf2ef37ce530b55979b7e5b9c0ff5c30fe1f69ef608ef4e70a2772d3"
+    },
+    {
+      "path": "spec/cloudlink-v1alpha1.md",
+      "sha256": "8656ecc7dcdfeb2e0aa9be8b86485644a046fb17cf69cf8705041b1e34bd6acd"
+    },
+    {
+      "path": "spec/foundation.md",
+      "sha256": "fb26131d774ca685264600f525d51e2e7e38a5b4e81ac9a7319f9e738b3de6ec"
+    },
+    {
+      "path": "spec/tck-v1alpha1.md",
+      "sha256": "890f23f298c6569ed09b84a5f06a3aaf1936d3e44bf8a1657ffbbc7cb6158578"
+    },
+    {
+      "path": "spec/thing-model-v1alpha1.md",
+      "sha256": "132003cdd50ec29d9f33989e43b9e5c560aefae37c5148fb587dccf9448fa611"
+    },
+    {
+      "path": "tck/lib/scenario-runner.mjs",
+      "sha256": "b1eeef77af302c76f35b826861d8a9fc3f4f035b370ed1dbc1e099237f34554f"
+    },
+    {
+      "path": "tck/lib/strict-json.mjs",
+      "sha256": "003394acc331121856b448c61a0c0f925063f9c863b350be898568c6cf2d9241"
+    },
+    {
+      "path": "tck/scenarios/core.json",
+      "sha256": "6e5c8bf3f0f76864405c500053ccb72094c00bbdb105a522fb2a4a21c7a1ad50"
+    },
+    {
+      "path": "tck/test/contract-manifest.test.mjs",
+      "sha256": "b65c3384555da9624fe590ed4646b32805dc3dcc470c0f36a7315e35284aa40c"
+    },
+    {
+      "path": "tck/test/core-scenarios.test.mjs",
+      "sha256": "00e9a5f22f233a66deacb4f959931c6ebb0de8e31c894b0e0dccac3de14c9a15"
+    },
+    {
+      "path": "tck/test/fixture-integrity.test.mjs",
+      "sha256": "55978c28715bfa1f030e9aa2a25605295fe23eeff0ab8ff20185f522da640f26"
+    },
+    {
+      "path": "tck/test/fixture-manifest-exactness.test.mjs",
+      "sha256": "0e7341576dc19c8dc1aec792bc6f1920fe78abaa74a2e1b4b42a973d85540fb5"
+    },
+    {
+      "path": "tck/test/portable-contract-gaps.test.mjs",
+      "sha256": "2e4e6f7c83d989f6c42d8bb7a7068abcfa3e92f3ffbced5067c6eeaa1c6593c3"
+    },
+    {
+      "path": "tck/test/release-version.test.mjs",
+      "sha256": "d5ed3359d6ee4910906f8407169c8ffd7598e81db2d66b56dd2bc095722fb163"
+    },
+    {
+      "path": "tck/test/safety-contract.test.mjs",
+      "sha256": "ed4cda4f5d67e4814b982a12b4fdaf3180a0d2b34c3e024c6f60e1ee5c13326f"
+    },
+    {
+      "path": "tck/test/schema-conformance.test.mjs",
+      "sha256": "90182878fee82e2bc1ff3804bd0b80e54c9f6a322fd72d745cdb7469af1cd586"
+    },
+    {
+      "path": "tck/test/strict-json.test.mjs",
+      "sha256": "6b2a6bfa0ebe0dc53a0236b9e52f812e9fe059b7819d3a0d6efa6f431c52b4fa"
+    },
+    {
+      "path": "tck/test/strict-repository-json.test.mjs",
+      "sha256": "75e4d457c69d03a2e14ada707b32aecaeee5636cf4aacf38f9b1a084e45370fe"
+    }
+  ]
+}

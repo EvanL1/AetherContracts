@@ -1,0 +1,10 @@
+{
+  "schema": "aether.thing-model.v1alpha1",
+  "model_id": "example.invalid.revision",
+  "revision": "01",
+  "title": "Non-canonical revision example",
+  "profiles": ["aether.wot.thing-model.v1alpha1"],
+  "properties": [],
+  "points": [],
+  "capabilities": []
+}

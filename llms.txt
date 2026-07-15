@@ -1,0 +1,15 @@
+# AetherContracts 0.1.0-alpha.1
+
+Public language-neutral contracts for AetherCloud, AetherIot, and independent implementations.
+
+- README.md: scope, safety boundary, and honest implementation status.
+- spec/foundation.md: normative JSON, integer, canonicalization, and failure rules.
+- spec/thing-model-v1alpha1.md: normative Thing Model, P/M/A migration, authority, and WoT alignment.
+- profiles/thing-model/v1alpha1/publication.json: immutable revision identity and whole-model JCS digest.
+- spec/cloudlink-v1alpha1.md: experimental joint core; authentication and signed durable ACK unresolved.
+- profiles/cloudlink/v1alpha1/core.json: exact digest projection, durable position identity, entry Schemas, and current telemetry limits.
+- spec/tck-v1alpha1.md: executable conformance model and planned black-box runner.
+- ai/invariants.md: rules that must survive refactors.
+- contract-manifest.json: release identity, module/binding status, and artifact hashes.
+
+Never describe planned authentication, signed ACK, real-Broker testing, or a language binding as conformant.

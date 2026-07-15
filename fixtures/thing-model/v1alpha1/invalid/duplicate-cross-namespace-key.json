@@ -1,0 +1,27 @@
+{
+  "schema": "aether.thing-model.v1alpha1",
+  "model_id": "aether.test.duplicate-key",
+  "revision": "1",
+  "title": "Duplicate key context fixture",
+  "profiles": ["aether.test.v1alpha1"],
+  "properties": [
+    {
+      "key": "state",
+      "title": "Configured state",
+      "value_type": "string",
+      "authority": "artifact-revision",
+      "change_path": "artifact-deployment"
+    }
+  ],
+  "points": [
+    {
+      "key": "state",
+      "title": "Observed state",
+      "kind": "status",
+      "value_type": "string",
+      "authority": "edge",
+      "access": "read-only"
+    }
+  ],
+  "capabilities": []
+}

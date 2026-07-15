@@ -1,0 +1,80 @@
+{
+  "schema": "aether.thing-model.v1alpha1",
+  "model_id": "aether.energy.battery",
+  "revision": "1",
+  "title": "Battery",
+  "description": "Minimal normalized migration example; not a normative energy catalog.",
+  "profiles": ["aether.wot.thing-model.v1alpha1"],
+  "legacy_aliases": [
+    {
+      "namespace": "voltage-product-lib",
+      "kind": "product",
+      "id": "Battery"
+    }
+  ],
+  "properties": [
+    {
+      "key": "max_power",
+      "title": "Max Power",
+      "value_type": "float64",
+      "unit": {
+        "symbol": "kW",
+        "ucum_code": "kW",
+        "legacy_symbol": "kw"
+      },
+      "authority": "artifact-revision",
+      "change_path": "artifact-deployment",
+      "legacy_aliases": [
+        {
+          "namespace": "voltage-product-lib",
+          "kind": "P",
+          "id": "1"
+        }
+      ]
+    }
+  ],
+  "points": [
+    {
+      "key": "soc",
+      "title": "SOC",
+      "kind": "telemetry",
+      "value_type": "float64",
+      "unit": {
+        "symbol": "%",
+        "ucum_code": "%"
+      },
+      "authority": "edge",
+      "access": "read-only",
+      "legacy_aliases": [
+        {
+          "namespace": "voltage-product-lib",
+          "kind": "M",
+          "id": "7"
+        }
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "key": "start",
+      "title": "Start",
+      "parameters": [],
+      "execution": "governed-job",
+      "default_authorization": "deny",
+      "permission": "gateway.capability.invoke",
+      "risk": "high",
+      "confirmation": "required",
+      "idempotency": "required",
+      "expiry": "required",
+      "audit": "required",
+      "edge_final_decision": true,
+      "legacy_aliases": [
+        {
+          "namespace": "voltage-product-lib",
+          "kind": "A",
+          "id": "1"
+        }
+      ]
+    }
+  ]
+}

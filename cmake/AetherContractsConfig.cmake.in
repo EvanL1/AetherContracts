@@ -1,0 +1,7 @@
+@PACKAGE_INIT@
+
+set(AetherContracts_VERSION "@AETHER_CONTRACTS_CONTRACT_VERSION@")
+
+include("${CMAKE_CURRENT_LIST_DIR}/AetherContractsTargets.cmake")
+
+check_required_components(AetherContracts)

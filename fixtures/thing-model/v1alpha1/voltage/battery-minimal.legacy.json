@@ -1,0 +1,13 @@
+{
+  "name": "Battery",
+  "pName": "ESS",
+  "P": [
+    { "id": 1, "name": "Max Power", "unit": "kw", "type": "number" }
+  ],
+  "M": [
+    { "id": 7, "name": "SOC", "unit": "%", "type": "number" }
+  ],
+  "A": [
+    { "id": 1, "name": "Start", "unit": "", "type": "string" }
+  ]
+}

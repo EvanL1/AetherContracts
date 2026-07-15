@@ -1,0 +1,26 @@
+{
+  "schema": "aether.thing-model.compatibility.v1alpha1",
+  "status": "experimental",
+  "comparison_scope": "two immutable revisions with the same model_id",
+  "compatible_changes": [
+    "add an optional property, point, or capability under a new key",
+    "add a description or legacy alias",
+    "add a non-required capability parameter",
+    "strengthen capability governance without granting new authority"
+  ],
+  "breaking_changes": [
+    "remove or reuse an existing key",
+    "change a value_type, point kind, authority, or unit semantics",
+    "make a capability parameter required",
+    "weaken confirmation, expiry, idempotency, audit, or edge-final-decision requirements",
+    "change a capability from governed-job execution",
+    "change a model_id"
+  ],
+  "semantic_checks_not_expressible_by_json_schema": [
+    "keys are unique within and across the property, point, and capability namespaces",
+    "parameter keys are unique within each capability",
+    "legacy aliases are not mapped to conflicting definitions",
+    "UCUM normalization preserves source meaning",
+    "a revision number never identifies different canonical bytes"
+  ]
+}

@@ -1,0 +1,9 @@
+.DS_Store
+build/
+node_modules/
+target/
+packages/*/dist/
+
+# The workspace lockfile is a release input even when a user-level ignore file
+# ignores pnpm lockfiles.
+!pnpm-lock.yaml
