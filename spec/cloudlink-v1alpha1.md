@@ -1,7 +1,7 @@
 ---
 id: cloudlink-v1alpha1
 status: experimental-auth-unresolved
-version: 0.1.0-alpha.1
+version: 0.1.0-alpha.2
 normative: true
 ---
 

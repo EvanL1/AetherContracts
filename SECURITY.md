@@ -5,7 +5,7 @@ advisory workflow. Do not open a public issue containing credentials, private
 keys, replayable proofs, customer artifacts, or exploit transcripts against a
 deployed system.
 
-This `0.1.0-alpha.1` release is experimental. It deliberately does not define a
+This `0.1.0-alpha.2` release is experimental. It deliberately does not define a
 production shared-Broker authentication transcript or signed durable ACK. Do
 not deploy those incomplete profiles as a trust boundary.
 

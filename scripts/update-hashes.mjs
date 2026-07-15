@@ -13,9 +13,11 @@ const topLevelArtifacts = [
   "LICENSE",
   "README.md",
   "SECURITY.md",
+  ".github/actions/verify-consumer/action.yml",
   "ai/docs-manifest.json",
   "ai/invariants.md",
   "llms.txt",
+  "scripts/verify-consumer-lock.mjs",
 ];
 
 async function filesBelow(relativeDirectory) {
@@ -50,7 +52,7 @@ async function releaseArtifactPaths() {
   return [
     ...topLevelArtifacts,
     ...compatibility.filter((path) => path.endsWith(".json")),
-    ...fixtures.filter((path) => path.endsWith("/fixture-manifest.json")),
+    ...fixtures.filter((path) => path.endsWith(".json")),
     ...profiles.filter((path) => path.endsWith(".json")),
     ...schemas.filter((path) => path.endsWith(".schema.json")),
     ...specifications.filter((path) => path.endsWith(".md")),

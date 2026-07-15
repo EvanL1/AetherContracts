@@ -1,6 +1,6 @@
 {
   "schema": "aether.cloudlink.interoperability-gates.v1alpha1",
-  "contract_version": "0.1.0-alpha.1",
+  "contract_version": "0.1.0-alpha.2",
   "status": "experimental-auth-unresolved",
   "default_mode": "legacy",
   "physical_control": "forbidden",

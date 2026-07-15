@@ -13,3 +13,8 @@
   `int64` wire semantics remain planned until their profile and TCK exist.
 - Unknown core fields, duplicate JSON keys, and conflicting digests fail closed.
 - Generated bindings may not add MQTT, HTTP, database, or runtime authority.
+- Consumer locks use exact release URLs and digests; they never follow `main`,
+  `latest`, or a version range and never fall back to a sibling checkout.
+- Distribution conformance proves byte identity only. Codec, state-machine,
+  authentication, durable-ACK, and real-Broker conformance require separate
+  evidence.

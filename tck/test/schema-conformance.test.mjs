@@ -26,6 +26,7 @@ test("all normative JSON Schemas compile under Draft 2020-12", async () => {
   const schemas = [
     ...(await loadSchemas("schemas/thing-model/v1alpha1/")),
     ...(await loadSchemas("schemas/cloudlink/v1alpha1/")),
+    ...(await loadSchemas("schemas/distribution/v1alpha1/")),
     ...(await loadSchemas("schemas/tck/v1alpha1/")),
   ];
 

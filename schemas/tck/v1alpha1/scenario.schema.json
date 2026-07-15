@@ -7,7 +7,7 @@
   "required": ["schema", "contract_version", "scenarios"],
   "properties": {
     "schema": { "const": "aether.tck.scenarios.v1alpha1" },
-    "contract_version": { "const": "0.1.0-alpha.1" },
+    "contract_version": { "const": "0.1.0-alpha.2" },
     "scenarios": {
       "type": "array",
       "minItems": 1,

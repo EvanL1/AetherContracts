@@ -49,11 +49,13 @@ async function expectedArtifactPaths() {
     "LICENSE",
     "README.md",
     "SECURITY.md",
+    ".github/actions/verify-consumer/action.yml",
     "ai/docs-manifest.json",
     "ai/invariants.md",
     "llms.txt",
+    "scripts/verify-consumer-lock.mjs",
     ...compatibility.filter((path) => path.endsWith(".json")),
-    ...fixtures.filter((path) => path.endsWith("/fixture-manifest.json")),
+    ...fixtures.filter((path) => path.endsWith(".json")),
     ...profiles.filter((path) => path.endsWith(".json")),
     ...schemas.filter((path) => path.endsWith(".schema.json")),
     ...specifications.filter((path) => path.endsWith(".md")),
@@ -67,7 +69,7 @@ test("contract manifest declares language-neutral authority", async () => {
   const manifest = await readManifest();
 
   assert.equal(manifest.contract, "aether.contracts");
-  assert.equal(manifest.release_version, "0.1.0-alpha.1");
+  assert.equal(manifest.release_version, "0.1.0-alpha.2");
   assert.equal(manifest.source_authority, "spec-schema-fixtures-tck");
   assert.equal(manifest.bindings.c.status, "experimental");
   assert.equal(manifest.bindings.cpp.status, "experimental");

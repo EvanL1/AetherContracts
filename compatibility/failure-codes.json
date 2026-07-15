@@ -172,6 +172,132 @@
       "scope": "binding-lookup",
       "retryable": false,
       "description": "The requested capability key is absent from the supplied Thing Model."
+    },
+    {
+      "code": "ARGUMENT_INVALID",
+      "scope": "distribution-tool",
+      "retryable": false,
+      "description": "The consumer verifier command line is malformed or selects mutually exclusive modes."
+    },
+    {
+      "code": "ARCHIVE_LAYOUT_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The authenticated release archive does not have the single locked root or bounded entry layout."
+    },
+    {
+      "code": "ARCHIVE_UNSAFE",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The authenticated archive cannot be inspected or contains an escaping path, link, device, or another unsupported entry type."
+    },
+    {
+      "code": "BUNDLE_DIGEST_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The downloaded release bundle SHA-256 differs from the consumer-reviewed lock."
+    },
+    {
+      "code": "BUNDLE_SIZE_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The downloaded release bundle size differs from the consumer-reviewed lock."
+    },
+    {
+      "code": "BUNDLE_UNAVAILABLE",
+      "scope": "distribution",
+      "retryable": true,
+      "description": "The one exact release URL in the lock could not be fetched; no alternate source is selected automatically."
+    },
+    {
+      "code": "CONSUMER_ARTIFACT_DIGEST_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "An imported consumer artifact no longer has the release digest recorded by the lock."
+    },
+    {
+      "code": "CONSUMER_ARTIFACT_INVALID",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "An imported consumer path is not a regular file contained by the consumer root."
+    },
+    {
+      "code": "CONSUMER_ARTIFACT_MISSING",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "An imported consumer artifact required by the lock is absent."
+    },
+    {
+      "code": "LOCK_MISSING",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The selected AetherContracts consumer lock is absent."
+    },
+    {
+      "code": "LOCK_PATH_CONFLICT",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "A consumer lock repeats an import path or declares one source as both imported and pending."
+    },
+    {
+      "code": "LOCK_SCHEMA_INVALID",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The consumer lock is not strict JSON or violates the closed v1 alpha 1 lock contract."
+    },
+    {
+      "code": "MANIFEST_ARTIFACT_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "An import or pending import is absent from the release manifest or declares a different digest."
+    },
+    {
+      "code": "MANIFEST_DIGEST_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The release manifest bytes differ from the SHA-256 fixed by the consumer lock."
+    },
+    {
+      "code": "MANIFEST_IDENTITY_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The manifest contract name or release version differs from the consumer lock."
+    },
+    {
+      "code": "MANIFEST_INVALID",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The release manifest is not strict JSON or has an invalid closed artifact declaration."
+    },
+    {
+      "code": "MANIFEST_MISSING",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The digest-pinned release manifest is absent from the consumer or authenticated release root."
+    },
+    {
+      "code": "RELEASE_ARTIFACT_DIGEST_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "An imported or pending source in the authenticated release archive differs from its locked digest."
+    },
+    {
+      "code": "RELEASE_ARTIFACT_INVALID",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "A locked source path in the authenticated release is not a contained regular file."
+    },
+    {
+      "code": "RELEASE_ARTIFACT_MISSING",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "An imported or pending source declared by the lock is absent from the authenticated release."
+    },
+    {
+      "code": "SAFETY_REQUIREMENT_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The release manifest disagrees with the lock about production status, legacy default, or physical-control exclusion."
     }
   ]
 }

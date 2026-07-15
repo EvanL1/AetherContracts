@@ -20,7 +20,7 @@
   },
   "authentication": {
     "status": "proposal",
-    "shared_broker": "no production profile is defined in 0.1.0-alpha.1",
+    "shared_broker": "no production profile is defined in 0.1.0-alpha.2",
     "topic_identity_is_authentication": false,
     "payload_identity_is_authentication": false,
     "mqtt_credentials_are_gateway_attestation": false

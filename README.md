@@ -6,7 +6,7 @@ semantics, JSON Schema Draft 2020-12 defines structure, fixtures pin examples,
 and the TCK supplies executable evidence. A language binding never becomes a
 second source of truth.
 
-The current release is `0.1.0-alpha.1`. It is experimental and is not a
+The current release is `0.1.0-alpha.2`. It is experimental and is not a
 production CloudLink cutover release.
 
 ## Current status
@@ -17,6 +17,7 @@ production CloudLink cutover release.
 | P/M/A migration vocabulary | Implemented, experimental | `P -> properties`, `M -> points`, `A -> capabilities` |
 | CloudLink joint core schemas and fixtures | Imported, experimental | Byte-identical files from both product worktrees; provenance records that the source changes were uncommitted |
 | Fixture and release hash checks | Implemented | `pnpm test:tck` |
+| Digest-pinned consumer distribution | Implemented, experimental | Closed lock Schema, offline verifier, exact-release CI Action |
 | Wire structural rejection | Implemented | JSON Schema TCK; exact failure-code/path mapping is planned |
 | Minimal context reducer | Implemented, experimental | Replay/session/digest/data-loss/cursor scenarios; not a production state machine |
 | TypeScript, Rust, C, C++ bindings | Experimental | Binding packages; conformance is not yet claimed |
@@ -47,11 +48,12 @@ Cloud business fact is durably committed.
 ## Repository map
 
 - `spec/`: normative English semantics and lifecycle rules.
-- `schemas/`: closed JSON Schemas for Thing Model, CloudLink, and TCK data.
+- `schemas/`: closed JSON Schemas for Thing Model, CloudLink, distribution, and TCK data.
 - `profiles/`: transport and standards-alignment profiles.
 - `fixtures/`: valid, invalid, contextual, migration, and golden examples.
 - `compatibility/`: failure taxonomy and compatibility gates.
 - `tck/`: language-neutral scenarios and repository contract tests.
+- `scripts/verify-consumer-lock.mjs`: offline-by-default consumer release verifier.
 - `packages/`: experimental language bindings; not normative.
 - `contract-manifest.json`: release identity and artifact hashes.
 
@@ -71,8 +73,10 @@ GitHub tags, release bundles, and published SHA-256 checksums are the source
 distribution path.
 Language package registries may mirror generated bindings after conformance;
 Cloudflare may cache release bytes but is never contract authority. Consumers
-should pin a release digest or package lock. Git submodules are optional for
-firmware vendors that require vendoring, not the default integration model.
+should commit a closed consumer lock plus the exact release manifest; the
+default path verifies imported bytes offline. Git submodules are optional for
+firmware vendors that require a complete source checkout, not the default
+integration model.
 
 The initial joint-core import came from modified, uncommitted AetherCloud and
 AetherIot worktrees. The importer rejected every non-identical source pair, and

@@ -1,4 +1,4 @@
-# AetherContracts 0.1.0-alpha.1
+# AetherContracts 0.1.0-alpha.2
 
 Public language-neutral contracts for AetherCloud, AetherIot, and independent implementations.
 
@@ -9,6 +9,9 @@ Public language-neutral contracts for AetherCloud, AetherIot, and independent im
 - spec/cloudlink-v1alpha1.md: experimental joint core; authentication and signed durable ACK unresolved.
 - profiles/cloudlink/v1alpha1/core.json: exact digest projection, durable position identity, entry Schemas, and current telemetry limits.
 - spec/tck-v1alpha1.md: executable conformance model and planned black-box runner.
+- spec/distribution-v1alpha1.md: digest-pinned offline and online consumer verification; not codec conformance.
+- schemas/distribution/v1alpha1/consumer-lock.schema.json: closed consumer release lock and safety policy.
+- scripts/verify-consumer-lock.mjs: dependency-free reference verifier with stable failure codes.
 - ai/invariants.md: rules that must survive refactors.
 - contract-manifest.json: release identity, module/binding status, and artifact hashes.
 
