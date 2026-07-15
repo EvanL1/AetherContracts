@@ -63,29 +63,29 @@ static void test_canonical_uint64(void) {
 static void test_static_thing_model_lookup(void) {
     static const aether_property_definition_t battery_properties[] = {
         {
-            AETHER_STRING_VIEW_LITERAL("max_power"),
+            AETHER_STRING_VIEW_STATIC_LITERAL("max_power"),
             AETHER_VALUE_TYPE_FLOAT64,
-            AETHER_STRING_VIEW_LITERAL("kW"),
+            AETHER_STRING_VIEW_STATIC_LITERAL("kW"),
             AETHER_PROPERTY_AUTHORITY_ARTIFACT_REVISION,
             AETHER_PROPERTY_CHANGE_ARTIFACT_DEPLOYMENT,
         },
     };
     static const aether_point_definition_t battery_points[] = {
         {
-            AETHER_STRING_VIEW_LITERAL("soc"),
+            AETHER_STRING_VIEW_STATIC_LITERAL("soc"),
             AETHER_POINT_KIND_TELEMETRY,
             AETHER_VALUE_TYPE_FLOAT64,
-            AETHER_STRING_VIEW_LITERAL("%"),
+            AETHER_STRING_VIEW_STATIC_LITERAL("%"),
             AETHER_POINT_AUTHORITY_EDGE,
             AETHER_POINT_ACCESS_READ_ONLY,
         },
     };
     static const aether_capability_definition_t battery_capabilities[] = {
         {
-            AETHER_STRING_VIEW_LITERAL("start"),
+            AETHER_STRING_VIEW_STATIC_LITERAL("start"),
             AETHER_CAPABILITY_EXECUTION_GOVERNED_JOB,
             1U,
-            AETHER_STRING_VIEW_LITERAL("gateway.capability.invoke"),
+            AETHER_STRING_VIEW_STATIC_LITERAL("gateway.capability.invoke"),
             AETHER_CAPABILITY_RISK_HIGH,
             AETHER_CAPABILITY_CONFIRMATION_REQUIRED,
             1U,
@@ -95,8 +95,8 @@ static void test_static_thing_model_lookup(void) {
         },
     };
     static const aether_thing_model_t battery = {
-        AETHER_STRING_VIEW_LITERAL("aether.energy.battery"),
-        AETHER_STRING_VIEW_LITERAL("1"),
+        AETHER_STRING_VIEW_STATIC_LITERAL("aether.energy.battery"),
+        AETHER_STRING_VIEW_STATIC_LITERAL("1"),
         battery_properties,
         sizeof(battery_properties) / sizeof(battery_properties[0]),
         battery_points,

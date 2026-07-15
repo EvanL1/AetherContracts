@@ -35,13 +35,17 @@ typedef struct aether_string_view {
     size_t size;
 } aether_string_view_t;
 
-/* This macro accepts a string literal, not a char pointer. */
+/* These macros accept a string literal, not a char pointer. */
 #ifdef __cplusplus
 #define AETHER_STRING_VIEW_LITERAL(value) \
+    aether_string_view_t{(value), sizeof(value) - 1U}
+#define AETHER_STRING_VIEW_STATIC_LITERAL(value) \
     aether_string_view_t{(value), sizeof(value) - 1U}
 #else
 #define AETHER_STRING_VIEW_LITERAL(value) \
     (aether_string_view_t) { (value), sizeof(value) - 1U }
+#define AETHER_STRING_VIEW_STATIC_LITERAL(value) \
+    { (value), sizeof(value) - 1U }
 #endif
 
 typedef enum aether_point_kind {
