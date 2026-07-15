@@ -1,6 +1,6 @@
 {
   "contract": "aether.contracts",
-  "release_version": "0.1.0-alpha.2",
+  "release_version": "0.1.0-alpha.3",
   "source_authority": "spec-schema-fixtures-tck",
   "production_release": false,
   "legacy_default": true,
@@ -19,29 +19,29 @@
     },
     "cloudlink": {
       "version": "v1alpha1",
-      "status": "experimental-auth-unresolved"
+      "status": "experimental-auth-proposal"
     },
     "tck": {
       "version": "v1alpha1",
-      "status": "experimental"
+      "status": "experimental-fixture-manifest"
     },
     "distribution": {
       "version": "v1alpha1",
-      "status": "experimental"
+      "status": "experimental-fixture-manifest"
     }
   },
   "bindings": {
     "typescript": {
-      "status": "experimental"
+      "status": "experimental-fixture-manifest"
     },
     "rust": {
-      "status": "experimental"
+      "status": "experimental-fixture-manifest"
     },
     "c": {
-      "status": "experimental"
+      "status": "experimental-fixture-manifest"
     },
     "cpp": {
-      "status": "experimental",
+      "status": "experimental-fixture-manifest",
       "implementation": "c-core-wrapper"
     },
     "go": {
@@ -55,17 +55,15 @@
     }
   },
   "unresolved": [
-    "complete AetherCloud and AetherIot codec migration with no pending imports",
-    "shared-Broker publisher proof and attestation transcript",
-    "post-session message authentication projection",
-    "Cloud signature projection for durable ACK",
+    "production key provisioning, rotation, revocation, and verifier ownership for the experimental authentication transcript",
+    "Cloud signature projection and key lifecycle for durable ACK",
     "production crash-durable ACK evidence",
-    "real-Broker dual harness and fault injection"
+    "consumer-owned real-Broker dual-harness and fault-matrix evidence"
   ],
   "artifacts": [
     {
       "path": ".github/actions/verify-consumer/action.yml",
-      "sha256": "3e051504eaa557c65d87b3e254e4609ba03cb28b313657c1fb16650d78713314"
+      "sha256": "e14f5f538f6aa95ba32ec9e336eb07b5bb64ca6a46cc2f2468655004afabe6ec"
     },
     {
       "path": ".node-version",
@@ -89,19 +87,19 @@
     },
     {
       "path": "README.md",
-      "sha256": "d711be18428091ed1c1698801d18a06d26e2d2c6b37b71d36119e63fc6764f47"
+      "sha256": "b38fb41caf2bebd6ad32f13acc6ea6a65374e0a2eaeae5dbe2c61d058ecf9e47"
     },
     {
       "path": "SECURITY.md",
-      "sha256": "8259b9f775b0923327bc159c7b10b8abff469ef64d4c2614735543ecf36505e7"
+      "sha256": "87f737e1f7e9177fa332e726eccc075f4068b0fe63ce1c5b0357fa14cbfeed79"
     },
     {
       "path": "ai/docs-manifest.json",
-      "sha256": "377acae26ea6b0ba9b4bc5ef1fc41fde94ca1d15ff34c4d303248b317f64e254"
+      "sha256": "37db317a4d3d074e51e1b92bcc8587f5b9910f4e79eecd1d71abcf39f8ac0e49"
     },
     {
       "path": "ai/invariants.md",
-      "sha256": "8a875ea6f1395151811e1f970bc7dc1a9d50a3a1320dfa59ba3d633cb1c171d2"
+      "sha256": "8a378f5d6cceb84b1cfc610daf60506bd819f6c93529a2f41fa9062c2b937445"
     },
     {
       "path": "compatibility/cloudlink-joint-core-provenance.json",
@@ -109,11 +107,11 @@
     },
     {
       "path": "compatibility/cloudlink-v1alpha1-gates.json",
-      "sha256": "619dc1f68a42bf6918b04eb3aa4976f4d9aa9cb0202892a47f44fd96f20596e4"
+      "sha256": "725380e0fd53029cc9e8865b98a6fab2f328393c65b4fc32de8e9dbfdf74f8de"
     },
     {
       "path": "compatibility/failure-codes.json",
-      "sha256": "00cd07a49946674024c59ab9efa32886e9bf04b79a497aef14abd14f738c70d5"
+      "sha256": "93acc147da6cf0da80b376e63b9f134e66adced26641f416151d9af66eb4f636"
     },
     {
       "path": "compatibility/thing-model-v1alpha1.json",
@@ -137,7 +135,7 @@
     },
     {
       "path": "fixtures/cloudlink/v1alpha1/fixture-manifest.json",
-      "sha256": "8d6f028ec04a6397a913215e87edf7827b9bb5f3918ec5478366fd1d9bcf4c11"
+      "sha256": "5070c3e3e53024437ba6a0ab0a677d5352037fa252749e2dbe25b036893b1d72"
     },
     {
       "path": "fixtures/cloudlink/v1alpha1/heartbeat-ack.valid.json",
@@ -157,11 +155,19 @@
     },
     {
       "path": "fixtures/cloudlink/v1alpha1/oversized-payload.json",
-      "sha256": "1030943ca12fc0214050ba20d730d93cbbf7cd5f5de32ab97e7a4b6812c61e31"
+      "sha256": "475d3f6afa5aa1532f025a75f04566aa4ae8af0da64e18baeae204abaaba7061"
+    },
+    {
+      "path": "fixtures/cloudlink/v1alpha1/payload-broker-attestation.json",
+      "sha256": "367ec35d7129c189615a43785ce8490229391510847fb476720a305dd1d29be9"
     },
     {
       "path": "fixtures/cloudlink/v1alpha1/replay-request.valid.json",
       "sha256": "7b2493328a3b7afec9a75b54736eb2610ce5d668bfb59185ce117db4f2f7880f"
+    },
+    {
+      "path": "fixtures/cloudlink/v1alpha1/runtime-manifest-invalid-semver.json",
+      "sha256": "92444aa861e10e1aebbba839824bd8619338b28b7cb08405f82e9c133486f8fc"
     },
     {
       "path": "fixtures/cloudlink/v1alpha1/runtime-manifest-report.valid.json",
@@ -176,8 +182,20 @@
       "sha256": "580113f3a7a0bacaa4d83f6f20a13144dcf41db15baba997fd8a9a3dc4f19a26"
     },
     {
+      "path": "fixtures/cloudlink/v1alpha1/session-challenge.valid.json",
+      "sha256": "9adf970a7a0f25f8c03bd14b3b95f180e143dc1c2ab6ff3cf1a51e6de8b2335e"
+    },
+    {
+      "path": "fixtures/cloudlink/v1alpha1/session-hello-auth-invalid.json",
+      "sha256": "1010b57b8f3b335256b88a8375d3b3bcc34e8bb622225de8dcd910b319edbad4"
+    },
+    {
+      "path": "fixtures/cloudlink/v1alpha1/session-hello-auth-required.json",
+      "sha256": "b6694adeaf56dc71742104dd7e36a8a3a155e0c66c25daf064a42c06d2aeec51"
+    },
+    {
       "path": "fixtures/cloudlink/v1alpha1/session-hello.valid.json",
-      "sha256": "022dd976eb8a74ccd1913de89594519a295fc97760ad2e570e766662e417c1b2"
+      "sha256": "122cb9340405ace75c090ea284564ca584324b7a7d380b4c7c630e6e97d2918d"
     },
     {
       "path": "fixtures/cloudlink/v1alpha1/stale-ack.json",
@@ -189,7 +207,7 @@
     },
     {
       "path": "fixtures/cloudlink/v1alpha1/unknown-field.json",
-      "sha256": "f7d0a45f422dcd2aa295a17176c2f3e0ad95d534894bf34120cb244e360e0b10"
+      "sha256": "b2e295229acb43fed82fdae590aa2782e27e65c5123df40f522728294d4ac35e"
     },
     {
       "path": "fixtures/cloudlink/v1alpha1/unsafe-uint64.json",
@@ -241,15 +259,19 @@
     },
     {
       "path": "llms.txt",
-      "sha256": "452aa14f87eeff597283888e482bf1af66df26383b7269958d5293ec892482d2"
+      "sha256": "519a28e9d5ac45b70cbc67d839435613203ab9179ebf23af8d2d2e5c075ab54e"
+    },
+    {
+      "path": "profiles/cloudlink/v1alpha1/authentication.json",
+      "sha256": "17b23382c7fe7c84a95e6b58dd3ee3d0f1c67faf4c4f6ceeed7957c0c09f44cf"
     },
     {
       "path": "profiles/cloudlink/v1alpha1/core.json",
-      "sha256": "c75f895c23699bd2b0bb533c688bcfb19ebdc267deee61953f56d5188f330598"
+      "sha256": "d8c62035acdcac4e5786dbce350dd3af9af45f58329daf8a8110de411947f720"
     },
     {
       "path": "profiles/mqtt/v1alpha1/profile.json",
-      "sha256": "cfe7cd490e9676fefcc3e8f69b9c00ca240d7a70be1cb7ceff6d876efb0b3f91"
+      "sha256": "e2256add779a8a2002276049cd83042c3e0002b826431460b1a616f7f68d33ff"
     },
     {
       "path": "profiles/thing-model/v1alpha1/publication.json",
@@ -269,11 +291,11 @@
     },
     {
       "path": "schemas/cloudlink/v1alpha1/envelope.schema.json",
-      "sha256": "ae35e1c5ec052b6407d34a245515bfde74daa7948dfec7c3ae0a948cf8a4bb4f"
+      "sha256": "c22c32293bdd2aaaec10cd4fd311cd5947ac3ac435d39caacb55ca390ffda5f1"
     },
     {
       "path": "schemas/cloudlink/v1alpha1/heartbeat.schema.json",
-      "sha256": "243e080d907d9b3d6e24cfd880c766c54fae81c05daef86cf6484bb8b3fa924a"
+      "sha256": "ecdc567ca1064eb43fae2674737f0d39b0f6b651f0fac8e8b231fbcd6917b309"
     },
     {
       "path": "schemas/cloudlink/v1alpha1/replay-request.schema.json",
@@ -292,8 +314,12 @@
       "sha256": "92561df5d2ebe73e82a6641774cdd0cdc1b2edbcb08527e22262816bb090dd73"
     },
     {
+      "path": "schemas/cloudlink/v1alpha1/session-challenge.schema.json",
+      "sha256": "e9b408a65efa64c53a3789aef7650c283c4aaede546b7c4e1ed97db734fa1d74"
+    },
+    {
       "path": "schemas/cloudlink/v1alpha1/session-hello.schema.json",
-      "sha256": "e6a14ed8f7ea9e4947b4084aa669e8b68bd9ad118e97e1b1d5e523de7d7a10b0"
+      "sha256": "bf6808a6ecfb5c7d77cda7731c0fff5bc3df1c3b909a2f99e28fd37e4664366b"
     },
     {
       "path": "schemas/cloudlink/v1alpha1/telemetry-batch.schema.json",
@@ -301,7 +327,7 @@
     },
     {
       "path": "schemas/distribution/v1alpha1/consumer-lock.schema.json",
-      "sha256": "20264397d115ef811964638da42b3f1b3e1f4bb4cb5c90476d73ffc077da5fcd"
+      "sha256": "39bfc21d6d6908b2e3091b4b84fbfcd0769f545cf27bb0a0fe3b60186d04c8d3"
     },
     {
       "path": "schemas/tck/v1alpha1/fixture-manifest.schema.json",
@@ -309,7 +335,7 @@
     },
     {
       "path": "schemas/tck/v1alpha1/scenario.schema.json",
-      "sha256": "4dc59ce360505be9e84ce0b228c5171f38f9a253938e4fd93b4e7a9338cb647a"
+      "sha256": "24e4670ab8b62b1e3348ad09040ca94c658ee0eb60a542324b800a8fab71ddf9"
     },
     {
       "path": "schemas/thing-model/v1alpha1/deployment-observation.schema.json",
@@ -321,27 +347,27 @@
     },
     {
       "path": "scripts/verify-consumer-lock.mjs",
-      "sha256": "b6d6b8ae3b4c47d2337d2e25b4fd21347369d93480f106c04c97002b258552ee"
+      "sha256": "1b818dd7befd86d68a1ad96c2e07f4cc912efbe8a7d738ba2c98a960142a8669"
     },
     {
       "path": "spec/cloudlink-v1alpha1.md",
-      "sha256": "85334189164259e9161e4c3425eb7101f03a55a01c29159b8a3f7510a32e1b93"
+      "sha256": "c12f94277c7aefcce27b4dd40bbe9e8ab1fcfc936d2ecd6c74c7de5994e5d0d1"
     },
     {
       "path": "spec/distribution-v1alpha1.md",
-      "sha256": "31da901af6f957db98909327723930b43c0dcf4efbb5293653705112e0caaeb6"
+      "sha256": "42a3fb4f292b5dc95d9a6548b48b0656a5555a7cecb21c0beb5a2fdae6826f28"
     },
     {
       "path": "spec/foundation.md",
-      "sha256": "197b76bd892fa2c0b577337352f5f7f4f98ed747ceaf169da81d4d67f0bfdd13"
+      "sha256": "de5219c9ef559a5db996d688751a473c5395bc39fa8ec0fd994c0e451373812c"
     },
     {
       "path": "spec/tck-v1alpha1.md",
-      "sha256": "6b17180cc17a26b730005d5db4e5ddfdb3293e2275129b449323b2de84169d78"
+      "sha256": "45d831e3e69dc14e20e6e77eae7e372a6fbfc8aa34b312ce4d75d34c3980b8a0"
     },
     {
       "path": "spec/thing-model-v1alpha1.md",
-      "sha256": "8bf0b5d664b2e74325770ba7e0fa330d4fe6f051f9ea9cbc1804c038c8f1893d"
+      "sha256": "601b46808f1eebc627855769ed78f60797998d7b940bdd06aef360ec320b4788"
     },
     {
       "path": "tck/lib/scenario-runner.mjs",
@@ -353,19 +379,19 @@
     },
     {
       "path": "tck/scenarios/core.json",
-      "sha256": "645077f90b49d1c8f804ca10ea8e4b22d4b8007d1fc553d51d36a6f92887e108"
+      "sha256": "b8aacdc5e4762da235a13af371b5fe0d7af3278fa208387fb97b5d9c57e3c912"
     },
     {
       "path": "tck/test/consumer-lock.test.mjs",
-      "sha256": "3ff8d9595f17bc7b40febf225080334009567d586f7df8596e070cea17698aac"
+      "sha256": "8a25f2d0dfc74ab36bd9b0265c4ced7e532f42a9f9f7c3300f7e8bb90898b210"
     },
     {
       "path": "tck/test/contract-manifest.test.mjs",
-      "sha256": "b5e851b14f8f9757b3bfabb9a8633598d2abf2430859e35508f2956b83d80095"
+      "sha256": "bb98d7d00cb2709ba4aad29416f7f3c352efad8daeee074e7359fb72e9e9a15e"
     },
     {
       "path": "tck/test/core-scenarios.test.mjs",
-      "sha256": "ad50a3a7b9f9615e3f520cb656a76b396611f6424f12a41cb35cb7985f0ab5f2"
+      "sha256": "b53bf756726844268e94e81f69bc69856119a9b7bede308c476e6594a87f6113"
     },
     {
       "path": "tck/test/fixture-integrity.test.mjs",
@@ -385,11 +411,11 @@
     },
     {
       "path": "tck/test/safety-contract.test.mjs",
-      "sha256": "ed4cda4f5d67e4814b982a12b4fdaf3180a0d2b34c3e024c6f60e1ee5c13326f"
+      "sha256": "49bded14e84a9eb0bde1e493a66ae2a5fdf37347b596955a5ae0e70c35f21398"
     },
     {
       "path": "tck/test/schema-conformance.test.mjs",
-      "sha256": "c27ce03f5c4c2543d55c6703709ec1eaf6857ead320abdcad5174a17411c92c2"
+      "sha256": "fb70702d44b2447cafd5b26f79689162a16cce92683489a6d6e707ce3b44faa3"
     },
     {
       "path": "tck/test/strict-json.test.mjs",

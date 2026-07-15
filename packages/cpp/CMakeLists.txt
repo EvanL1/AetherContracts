@@ -17,6 +17,20 @@ if(BUILD_TESTING)
     target_compile_options(aether_contracts_cpp_foundation_test PRIVATE -Wall -Wextra -Wpedantic -Werror)
   endif()
   add_test(NAME aether_contracts_cpp_foundation COMMAND aether_contracts_cpp_foundation_test)
+  add_executable(aether_contracts_cpp_cloudlink_fixture_test tests/cloudlink_fixture_test.cpp)
+  target_link_libraries(aether_contracts_cpp_cloudlink_fixture_test PRIVATE aether_contracts_cpp)
+  target_include_directories(
+    aether_contracts_cpp_cloudlink_fixture_test
+    PRIVATE ${PROJECT_SOURCE_DIR}/packages/c/tests
+  )
+  target_compile_definitions(
+    aether_contracts_cpp_cloudlink_fixture_test
+    PRIVATE AETHER_CLOUDLINK_FIXTURE_DIR="${PROJECT_SOURCE_DIR}/fixtures/cloudlink/v1alpha1"
+  )
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+    target_compile_options(aether_contracts_cpp_cloudlink_fixture_test PRIVATE -Wall -Wextra -Wpedantic -Werror)
+  endif()
+  add_test(NAME aether_contracts_cpp_cloudlink_fixtures COMMAND aether_contracts_cpp_cloudlink_fixture_test)
 endif()
 
 install(TARGETS aether_contracts_cpp EXPORT AetherContractsTargets)

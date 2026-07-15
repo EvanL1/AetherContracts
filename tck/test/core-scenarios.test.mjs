@@ -30,7 +30,7 @@ test("core scenario document is loaded through its declared JSON Schema", async 
   const scenarioSet = await loadCoreScenarioSet();
 
   assert.equal(scenarioSet.schema, "aether.tck.scenarios.v1alpha1");
-  assert.equal(scenarioSet.contract_version, "0.1.0-alpha.2");
+  assert.equal(scenarioSet.contract_version, "0.1.0-alpha.3");
   assert.ok(scenarioSet.scenarios.length > 0);
 
   await assert.rejects(

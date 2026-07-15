@@ -135,7 +135,25 @@
       "code": "AUTH_PROFILE_UNRESOLVED",
       "scope": "cloudlink-profile",
       "retryable": false,
-      "description": "The alpha contract deliberately has no production shared-Broker authentication transcript."
+      "description": "The experimental transcript is selected where production key lifecycle, verifier ownership, or trusted-adapter configuration is unavailable."
+    },
+    {
+      "code": "AUTHENTICATION_REQUIRED",
+      "scope": "cloudlink-wire-and-context",
+      "retryable": false,
+      "description": "The selected origin model requires authentication material that is absent."
+    },
+    {
+      "code": "AUTHENTICATION_INVALID",
+      "scope": "cloudlink-wire-and-context",
+      "retryable": false,
+      "description": "Authentication material is malformed or does not satisfy the selected experimental origin profile."
+    },
+    {
+      "code": "SEMVER_INVALID",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "A runtime version is not a strict Semantic Versioning 2.0.0 string."
     },
     {
       "code": "CAPABILITY_DENIED",
@@ -178,6 +196,18 @@
       "scope": "distribution-tool",
       "retryable": false,
       "description": "The consumer verifier command line is malformed or selects mutually exclusive modes."
+    },
+    {
+      "code": "ACTION_COMMIT_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The composite consumer Action was not invoked at the exact peeled release commit recorded by the consumer lock."
+    },
+    {
+      "code": "ADOPTION_CLOSURE_MISMATCH",
+      "scope": "distribution",
+      "retryable": false,
+      "description": "The imported and pending source set is not the exact required-artifact closure declared by the lock, or complete-consumer is claimed before that closure is imported."
     },
     {
       "code": "ARCHIVE_LAYOUT_MISMATCH",

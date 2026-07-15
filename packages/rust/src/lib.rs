@@ -6,6 +6,13 @@
 
 use core::fmt;
 
+mod cloudlink;
+
+pub use cloudlink::{
+    CloudLinkContextInput, CloudLinkFixtureContext, CloudLinkSessionContext,
+    CloudLinkValidationResult, is_strict_semver, validate_cloudlink_fixture,
+};
+
 const UINT64_MAX_DECIMAL: &str = "18446744073709551615";
 
 /// Stable failure identifiers shared by every conforming language binding.
@@ -16,6 +23,32 @@ pub enum ContractFailureCode {
     IntegerNonCanonical,
     /// The canonical decimal value exceeded the `uint64` range.
     IntegerOutOfRange,
+    /// A closed core object contains an undeclared field.
+    UnknownField,
+    /// Input exceeds a portable field bound.
+    FieldBound,
+    /// The selected protocol version is unsupported.
+    UnsupportedVersion,
+    /// A digest has an invalid representation.
+    InvalidDigest,
+    /// A digest does not match its canonical business projection.
+    DigestMismatch,
+    /// A replay position changed a stable binding.
+    DigestConflict,
+    /// A message does not match the current session.
+    StaleSession,
+    /// A cursor identity is repeated.
+    CursorConflict,
+    /// Raw JSON syntax is invalid.
+    JsonSyntaxError,
+    /// Authentication is required for the selected origin mode.
+    AuthenticationRequired,
+    /// Authentication material violates the selected profile.
+    AuthenticationInvalid,
+    /// A version is not strict `SemVer` 2.0.0.
+    SemverInvalid,
+    /// A data-loss range is not ordered.
+    DataLossRangeInvalid,
 }
 
 impl ContractFailureCode {
@@ -25,6 +58,19 @@ impl ContractFailureCode {
         match self {
             Self::IntegerNonCanonical => "INTEGER_NON_CANONICAL",
             Self::IntegerOutOfRange => "INTEGER_OUT_OF_RANGE",
+            Self::UnknownField => "UNKNOWN_FIELD",
+            Self::FieldBound => "FIELD_BOUND",
+            Self::UnsupportedVersion => "UNSUPPORTED_VERSION",
+            Self::InvalidDigest => "INVALID_DIGEST",
+            Self::DigestMismatch => "DIGEST_MISMATCH",
+            Self::DigestConflict => "DIGEST_CONFLICT",
+            Self::StaleSession => "STALE_SESSION",
+            Self::CursorConflict => "CURSOR_CONFLICT",
+            Self::JsonSyntaxError => "JSON_SYNTAX_ERROR",
+            Self::AuthenticationRequired => "AUTHENTICATION_REQUIRED",
+            Self::AuthenticationInvalid => "AUTHENTICATION_INVALID",
+            Self::SemverInvalid => "SEMVER_INVALID",
+            Self::DataLossRangeInvalid => "DATA_LOSS_RANGE_INVALID",
         }
     }
 }
@@ -42,7 +88,7 @@ pub struct ContractFailure {
 }
 
 impl ContractFailure {
-    const fn new(code: ContractFailureCode) -> Self {
+    pub(crate) const fn new(code: ContractFailureCode) -> Self {
         Self { code }
     }
 

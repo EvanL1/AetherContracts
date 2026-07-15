@@ -69,12 +69,12 @@ test("contract manifest declares language-neutral authority", async () => {
   const manifest = await readManifest();
 
   assert.equal(manifest.contract, "aether.contracts");
-  assert.equal(manifest.release_version, "0.1.0-alpha.2");
+  assert.equal(manifest.release_version, "0.1.0-alpha.3");
   assert.equal(manifest.source_authority, "spec-schema-fixtures-tck");
-  assert.equal(manifest.bindings.c.status, "experimental");
-  assert.equal(manifest.bindings.cpp.status, "experimental");
+  assert.equal(manifest.bindings.c.status, "experimental-fixture-manifest");
+  assert.equal(manifest.bindings.cpp.status, "experimental-fixture-manifest");
   assert.equal(manifest.production_release, false);
-  assert.equal(manifest.modules.cloudlink.status, "experimental-auth-unresolved");
+  assert.equal(manifest.modules.cloudlink.status, "experimental-auth-proposal");
   assert.equal(manifest.modules.thing_model.status, "experimental");
   assert.equal(manifest.legacy_default, true);
   assert.equal(manifest.physical_control, false);

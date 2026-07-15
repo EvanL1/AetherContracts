@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { createHash } from "node:crypto";
-import { execFile as execFileCallback } from "node:child_process";
+import { gunzipSync } from "node:zlib";
 import {
   lstat,
   mkdtemp,
@@ -12,17 +12,18 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { isAbsolute, join, relative, resolve, sep } from "node:path";
-import { promisify } from "node:util";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { decodeJson } from "../tck/lib/strict-json.mjs";
 
-const execFile = promisify(execFileCallback);
 const REPOSITORY = "https://github.com/EvanL1/AetherContracts";
 const LOCK_SCHEMA = "aether.contracts.consumer-lock.v1alpha1";
 const MAX_BUNDLE_BYTES = 52_428_800;
-const MAX_ARCHIVE_ENTRIES = 10_000;
+const MAX_ARCHIVE_PATH_BYTES = 512;
+const MAX_ARCHIVE_FILE_BYTES = 8_388_608;
+const MAX_ARCHIVE_TOTAL_FILE_BYTES = 67_108_864;
+const MAX_ARCHIVE_ENTRIES = 4096;
 const SHA256_PATTERN = /^[0-9a-f]{64}$/u;
 const GIT_OBJECT_PATTERN = /^[0-9a-f]{40}$/u;
 const SEMVER_PATTERN =
@@ -30,6 +31,8 @@ const SEMVER_PATTERN =
 const PATH_PATTERN = /^[A-Za-z0-9._/-]+$/u;
 
 export const CONSUMER_LOCK_FAILURE_CODES = Object.freeze([
+  "ACTION_COMMIT_MISMATCH",
+  "ADOPTION_CLOSURE_MISMATCH",
   "ARGUMENT_INVALID",
   "ARCHIVE_LAYOUT_MISMATCH",
   "ARCHIVE_UNSAFE",
@@ -112,6 +115,13 @@ function assertConstant(value, expected, path) {
   }
 }
 
+function assertBoundedInteger(value, path, maximum) {
+  if (!Number.isSafeInteger(value) || value < 1 || value > maximum) {
+    fail("LOCK_SCHEMA_INVALID", `${path} is outside its supported bound`, path);
+  }
+  return value;
+}
+
 function assertSafeRelativePath(value, path) {
   const candidate = assertString(value, path);
   if (
@@ -160,6 +170,7 @@ function validateLock(value) {
     "release",
     "manifest",
     "policy",
+    "adoption",
     "imports",
     "pending_imports",
   ]);
@@ -194,6 +205,7 @@ function validateLock(value) {
     "root",
     "size",
     "sha256",
+    "limits",
   ]);
   const bundleName = `AetherContracts-${version}.tar.gz`;
   const bundleRoot = `AetherContracts-${version}`;
@@ -216,6 +228,34 @@ function validateLock(value) {
     "lock.release.bundle.sha256",
     SHA256_PATTERN,
   );
+  const limits = assertClosedObject(bundle.limits, "lock.release.bundle.limits", [
+    "maximum_path_bytes",
+    "maximum_file_bytes",
+    "maximum_total_file_bytes",
+    "maximum_entries",
+  ]);
+  const archiveLimits = {
+    maximumPathBytes: assertBoundedInteger(
+      limits.maximum_path_bytes,
+      "lock.release.bundle.limits.maximum_path_bytes",
+      MAX_ARCHIVE_PATH_BYTES,
+    ),
+    maximumFileBytes: assertBoundedInteger(
+      limits.maximum_file_bytes,
+      "lock.release.bundle.limits.maximum_file_bytes",
+      MAX_ARCHIVE_FILE_BYTES,
+    ),
+    maximumTotalFileBytes: assertBoundedInteger(
+      limits.maximum_total_file_bytes,
+      "lock.release.bundle.limits.maximum_total_file_bytes",
+      MAX_ARCHIVE_TOTAL_FILE_BYTES,
+    ),
+    maximumEntries: assertBoundedInteger(
+      limits.maximum_entries,
+      "lock.release.bundle.limits.maximum_entries",
+      MAX_ARCHIVE_ENTRIES,
+    ),
+  };
 
   const manifest = assertClosedObject(lock.manifest, "lock.manifest", [
     "release_path",
@@ -244,6 +284,49 @@ function validateLock(value) {
   assertConstant(policy.legacy_default, true, "lock.policy.legacy_default");
   assertConstant(policy.physical_control, false, "lock.policy.physical_control");
 
+  const adoption = assertClosedObject(lock.adoption, "lock.adoption", [
+    "scope",
+    "modules",
+    "closure",
+    "required_artifacts",
+  ]);
+  const scope = assertString(
+    adoption.scope,
+    "lock.adoption.scope",
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/u,
+  );
+  if (scope.length > 128) {
+    fail("LOCK_SCHEMA_INVALID", "lock.adoption.scope exceeds 128 characters", "lock.adoption.scope");
+  }
+  assertConstant(adoption.closure, "required-artifacts", "lock.adoption.closure");
+  if (!Array.isArray(adoption.modules) || adoption.modules.length === 0) {
+    fail("LOCK_SCHEMA_INVALID", "lock.adoption.modules must be a non-empty array", "lock.adoption.modules");
+  }
+  const allowedModules = new Set(["cloudlink", "distribution", "tck", "thing-model"]);
+  const modules = adoption.modules.map((module, index) => {
+    const name = assertString(module, `lock.adoption.modules[${String(index)}]`);
+    if (!allowedModules.has(name)) {
+      fail("LOCK_SCHEMA_INVALID", `unsupported adoption module: ${name}`, `lock.adoption.modules[${String(index)}]`);
+    }
+    return name;
+  });
+  if (new Set(modules).size !== modules.length) {
+    fail("ADOPTION_CLOSURE_MISMATCH", "lock.adoption.modules must be unique");
+  }
+  if (!Array.isArray(adoption.required_artifacts) || adoption.required_artifacts.length === 0) {
+    fail(
+      "LOCK_SCHEMA_INVALID",
+      "lock.adoption.required_artifacts must be a non-empty array",
+      "lock.adoption.required_artifacts",
+    );
+  }
+  const requiredArtifacts = adoption.required_artifacts.map((source, index) =>
+    assertSafeRelativePath(source, `lock.adoption.required_artifacts[${String(index)}]`),
+  );
+  if (new Set(requiredArtifacts).size !== requiredArtifacts.length) {
+    fail("ADOPTION_CLOSURE_MISMATCH", "required adoption artifacts must be unique");
+  }
+
   if (!Array.isArray(lock.imports) || lock.imports.length === 0) {
     fail("LOCK_SCHEMA_INVALID", "lock.imports must be a non-empty array", "lock.imports");
   }
@@ -252,13 +335,6 @@ function validateLock(value) {
   }
   const imports = lock.imports.map(validateImport);
   const pendingImports = lock.pending_imports.map(validatePendingImport);
-  if (
-    (status === "partial-consumer" && pendingImports.length === 0) ||
-    (status === "complete-consumer" && pendingImports.length !== 0)
-  ) {
-    fail("LOCK_SCHEMA_INVALID", "lock.status does not match pending_imports", "lock.status");
-  }
-
   const sources = new Set();
   const destinations = new Set();
   for (const entry of imports) {
@@ -273,6 +349,26 @@ function validateLock(value) {
       fail("LOCK_PATH_CONFLICT", "an artifact cannot be both imported and pending", entry.source);
     }
     sources.add(entry.source);
+  }
+  const requiredSet = new Set(requiredArtifacts);
+  if (
+    sources.size !== requiredSet.size ||
+    [...sources].some((source) => !requiredSet.has(source))
+  ) {
+    fail(
+      "ADOPTION_CLOSURE_MISMATCH",
+      "imported and pending sources must exactly equal the required adoption closure",
+    );
+  }
+  if (
+    (status === "partial-consumer" && pendingImports.length === 0) ||
+    (status === "complete-consumer" && pendingImports.length !== 0)
+  ) {
+    fail(
+      "ADOPTION_CLOSURE_MISMATCH",
+      "complete-consumer requires every adopted artifact to be imported",
+      "lock.status",
+    );
   }
 
   return {
@@ -289,6 +385,7 @@ function validateLock(value) {
         root: bundleRoot,
         size: bundle.size,
         sha256: bundleDigest,
+        limits: archiveLimits,
       },
     },
     manifest: {
@@ -301,6 +398,12 @@ function validateLock(value) {
       productionRelease: false,
       legacyDefault: true,
       physicalControl: false,
+    },
+    adoption: {
+      scope,
+      modules,
+      closure: "required-artifacts",
+      requiredArtifacts,
     },
     imports,
     pendingImports,
@@ -418,10 +521,49 @@ function decodeDocument(bytes, code, description) {
   }
 }
 
-async function loadConsumerLock(lockPath) {
-  const bytes = await readFile(lockPath).catch(() => {
-    fail("LOCK_MISSING", `consumer lock is missing: ${lockPath}`);
-  });
+export function resolveConsumerLockPath(consumerRoot, lockRelativePath) {
+  const root = resolve(consumerRoot);
+  const portablePath = assertSafeRelativePath(lockRelativePath, "lock-path");
+  const absolutePath = resolve(root, portablePath);
+  if (!isWithin(root, absolutePath)) {
+    fail("LOCK_SCHEMA_INVALID", "lock-path escapes the consumer root", "lock-path");
+  }
+  return absolutePath;
+}
+
+function lockRelativePathFromApi(consumerRoot, lockPath) {
+  if (lockPath === undefined) {
+    return "aether-contracts.lock.json";
+  }
+  if (!isAbsolute(lockPath)) {
+    return lockPath;
+  }
+  const candidate = relative(resolve(consumerRoot), resolve(lockPath));
+  return assertSafeRelativePath(candidate, "lock-path");
+}
+
+export function verifyActionCommit(actionCommit, releaseCommit) {
+  if (
+    typeof actionCommit !== "string" ||
+    !GIT_OBJECT_PATTERN.test(actionCommit) ||
+    actionCommit !== releaseCommit
+  ) {
+    fail(
+      "ACTION_COMMIT_MISMATCH",
+      "the composite Action commit must exactly match lock.release.commit",
+      "lock.release.commit",
+    );
+  }
+}
+
+async function loadConsumerLock(consumerRoot, lockPath) {
+  const lockRelativePath = lockRelativePathFromApi(consumerRoot, lockPath);
+  const bytes = await readRegularFile(
+    consumerRoot,
+    lockRelativePath,
+    "LOCK_MISSING",
+    "LOCK_SCHEMA_INVALID",
+  );
   return validateLock(decodeDocument(bytes, "LOCK_SCHEMA_INVALID", "consumer lock"));
 }
 
@@ -452,8 +594,11 @@ export function verifyBundleBytes(bytes, expected) {
   assertDigest(view, expected.sha256, "BUNDLE_DIGEST_MISMATCH", "release bundle");
 }
 
-export async function verifyConsumerLock({ consumerRoot, lockPath, releaseRoot }) {
-  const lock = await loadConsumerLock(lockPath);
+export async function verifyConsumerLock({ actionCommit, consumerRoot, lockPath, releaseRoot }) {
+  const lock = await loadConsumerLock(consumerRoot, lockPath);
+  if (actionCommit !== undefined) {
+    verifyActionCommit(actionCommit, lock.release.commit);
+  }
   const manifestBytes = await readRegularFile(
     consumerRoot,
     lock.manifest.localPath,
@@ -528,7 +673,9 @@ export async function verifyConsumerLock({ consumerRoot, lockPath, releaseRoot }
   return {
     imported: lock.imports.length,
     pending: lock.pendingImports.length,
+    releaseCommit: lock.release.commit,
     releaseVersion: lock.release.version,
+    scope: lock.adoption.scope,
     status: lock.status,
   };
 }
@@ -554,8 +701,11 @@ async function readBoundedResponse(response, expectedSize) {
   return Buffer.concat(chunks, total);
 }
 
-function assertArchivePath(path, root) {
+function assertArchivePath(path, root, maximumPathBytes) {
   const normalized = path.endsWith("/") ? path.slice(0, -1) : path;
+  if (Buffer.byteLength(path, "utf8") > maximumPathBytes) {
+    fail("ARCHIVE_LAYOUT_MISMATCH", `release archive path exceeds its byte limit: ${path}`, path);
+  }
   if (
     normalized.length === 0 ||
     isAbsolute(normalized) ||
@@ -566,56 +716,187 @@ function assertArchivePath(path, root) {
   ) {
     fail("ARCHIVE_UNSAFE", `release archive contains an unsafe path: ${path}`, path);
   }
+  return normalized;
 }
 
-async function extractVerifiedBundle(bundleBytes, lock, temporaryRoot) {
-  const archivePath = join(temporaryRoot, lock.release.bundle.name);
-  const extractionRoot = join(temporaryRoot, "extracted");
-  await writeFile(archivePath, bundleBytes);
-  await mkdir(extractionRoot);
-  let names;
-  let verbose;
+function tarString(header, offset, length, field) {
+  const bytes = header.subarray(offset, offset + length);
+  const nul = bytes.indexOf(0);
+  const slice = nul === -1 ? bytes : bytes.subarray(0, nul);
   try {
-    ({ stdout: names } = await execFile("tar", ["-tzf", archivePath], {
-      encoding: "utf8",
-      maxBuffer: 4 * 1024 * 1024,
-    }));
-    ({ stdout: verbose } = await execFile("tar", ["-tvzf", archivePath], {
-      encoding: "utf8",
-      maxBuffer: 8 * 1024 * 1024,
-    }));
-  } catch (error) {
-    fail("ARCHIVE_UNSAFE", `release archive cannot be inspected: ${error instanceof Error ? error.message : String(error)}`);
+    return new TextDecoder("utf-8", { fatal: true }).decode(slice);
+  } catch {
+    fail("ARCHIVE_UNSAFE", `release archive ${field} is not valid UTF-8`);
   }
-  const paths = names.split("\n").filter((path) => path.length > 0);
-  const entries = verbose.split("\n").filter((line) => line.length > 0);
-  if (
-    paths.length === 0 ||
-    paths.length > MAX_ARCHIVE_ENTRIES ||
-    paths.length !== entries.length
-  ) {
-    fail("ARCHIVE_LAYOUT_MISMATCH", "release archive entry count is invalid");
+}
+
+function tarOctal(header, offset, length, field) {
+  const value = tarString(header, offset, length, field).trim();
+  if (!/^[0-7]+$/u.test(value)) {
+    fail("ARCHIVE_UNSAFE", `release archive ${field} is not canonical octal`);
   }
-  for (const path of paths) {
-    assertArchivePath(path, lock.release.bundle.root);
+  const parsed = Number.parseInt(value, 8);
+  if (!Number.isSafeInteger(parsed) || parsed < 0) {
+    fail("ARCHIVE_UNSAFE", `release archive ${field} is outside the safe range`);
   }
-  for (const entry of entries) {
-    if (entry[0] !== "-" && entry[0] !== "d") {
-      fail("ARCHIVE_UNSAFE", "release archive contains a non-file entry");
+  return parsed;
+}
+
+function tarHeaderChecksum(header) {
+  let checksum = 0;
+  for (let index = 0; index < header.length; index += 1) {
+    checksum += index >= 148 && index < 156 ? 0x20 : header[index];
+  }
+  return checksum;
+}
+
+function normalizedArchiveLimits(bundle) {
+  const limits = bundle.limits;
+  return {
+    maximumPathBytes:
+      limits.maximumPathBytes ?? limits.maximum_path_bytes,
+    maximumFileBytes:
+      limits.maximumFileBytes ?? limits.maximum_file_bytes,
+    maximumTotalFileBytes:
+      limits.maximumTotalFileBytes ?? limits.maximum_total_file_bytes,
+    maximumEntries:
+      limits.maximumEntries ?? limits.maximum_entries,
+  };
+}
+
+function decodeTarArchive(tarBytes, root, limits) {
+  const entries = [];
+  const paths = new Set();
+  let entryCount = 0;
+  let offset = 0;
+  let totalFileBytes = 0;
+  let sawGlobalHeader = false;
+  let sawTerminator = false;
+
+  while (offset + 512 <= tarBytes.byteLength) {
+    const header = tarBytes.subarray(offset, offset + 512);
+    offset += 512;
+    if (header.every((byte) => byte === 0)) {
+      if (offset + 512 > tarBytes.byteLength) {
+        fail("ARCHIVE_LAYOUT_MISMATCH", "release archive has an incomplete terminator");
+      }
+      const second = tarBytes.subarray(offset, offset + 512);
+      if (!second.every((byte) => byte === 0)) {
+        fail("ARCHIVE_LAYOUT_MISMATCH", "release archive has only one zero terminator block");
+      }
+      if (!tarBytes.subarray(offset + 512).every((byte) => byte === 0)) {
+        fail("ARCHIVE_LAYOUT_MISMATCH", "release archive has data after its terminator");
+      }
+      sawTerminator = true;
+      break;
     }
+
+    const expectedChecksum = tarOctal(header, 148, 8, "header checksum");
+    if (tarHeaderChecksum(header) !== expectedChecksum) {
+      fail("ARCHIVE_UNSAFE", "release archive header checksum is invalid");
+    }
+    const name = tarString(header, 0, 100, "entry name");
+    const prefix = tarString(header, 345, 155, "entry prefix");
+    const path = prefix.length === 0 ? name : `${prefix}/${name}`;
+    const size = tarOctal(header, 124, 12, "entry size");
+    const typeByte = header[156];
+    const type = typeByte === 0 ? "0" : String.fromCharCode(typeByte);
+    const paddedSize = Math.ceil(size / 512) * 512;
+    if (offset + paddedSize > tarBytes.byteLength) {
+      fail("ARCHIVE_LAYOUT_MISMATCH", `release archive entry is truncated: ${path}`, path);
+    }
+    const body = tarBytes.subarray(offset, offset + size);
+    offset += paddedSize;
+
+    entryCount += 1;
+    if (entryCount > limits.maximumEntries) {
+      fail("ARCHIVE_LAYOUT_MISMATCH", "release archive exceeds its entry-count limit");
+    }
+
+    if (type === "g") {
+      if (sawGlobalHeader || path !== "pax_global_header" || size > 4096) {
+        fail("ARCHIVE_UNSAFE", "release archive contains an unsupported global PAX header");
+      }
+      const attributes = new TextDecoder("utf-8", { fatal: true }).decode(body);
+      if (!/^\d+ comment=[^\n]+\n$/u.test(attributes)) {
+        fail("ARCHIVE_UNSAFE", "release archive global PAX header is not the Git commit comment");
+      }
+      sawGlobalHeader = true;
+      continue;
+    }
+
+    if (type !== "0" && type !== "5") {
+      fail("ARCHIVE_UNSAFE", `release archive contains unsupported entry type ${type}`, path);
+    }
+    const normalized = assertArchivePath(path, root, limits.maximumPathBytes);
+    if (paths.has(normalized)) {
+      fail("ARCHIVE_UNSAFE", `release archive repeats path: ${normalized}`, normalized);
+    }
+    paths.add(normalized);
+
+    if (type === "5") {
+      if (size !== 0) {
+        fail("ARCHIVE_UNSAFE", `release archive directory has a body: ${path}`, path);
+      }
+      entries.push({ path: normalized, type: "directory" });
+      continue;
+    }
+    if (size > limits.maximumFileBytes) {
+      fail("ARCHIVE_LAYOUT_MISMATCH", `release archive file exceeds its size limit: ${path}`, path);
+    }
+    totalFileBytes += size;
+    if (totalFileBytes > limits.maximumTotalFileBytes) {
+      fail("ARCHIVE_LAYOUT_MISMATCH", "release archive exceeds its total file-size limit");
+    }
+    entries.push({ body: Buffer.from(body), path: normalized, type: "file" });
   }
-  try {
-    await execFile("tar", ["-xzf", archivePath, "-C", extractionRoot], {
-      maxBuffer: 4 * 1024 * 1024,
-    });
-  } catch (error) {
-    fail("ARCHIVE_UNSAFE", `release archive cannot be extracted: ${error instanceof Error ? error.message : String(error)}`);
+
+  if (!sawTerminator || entries.length === 0 || !paths.has(root)) {
+    fail("ARCHIVE_LAYOUT_MISMATCH", "release archive does not contain one terminated locked root");
   }
-  return join(extractionRoot, lock.release.bundle.root);
+  return entries;
 }
 
-async function verifyOnline({ consumerRoot, lockPath }) {
-  const lock = await loadConsumerLock(lockPath);
+export async function extractVerifiedBundle(bundleBytes, lock, temporaryRoot) {
+  const bundle = lock.release.bundle;
+  const limits = normalizedArchiveLimits(bundle);
+  const maximumExpandedBytes =
+    limits.maximumTotalFileBytes + (limits.maximumEntries * 1024) + 1024;
+  let tarBytes;
+  try {
+    tarBytes = gunzipSync(bundleBytes, { maxOutputLength: maximumExpandedBytes });
+  } catch (error) {
+    fail(
+      "ARCHIVE_LAYOUT_MISMATCH",
+      `release archive cannot be decompressed within its bounds: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+  const entries = decodeTarArchive(tarBytes, bundle.root, limits);
+  const extractionRoot = join(temporaryRoot, "extracted");
+  await mkdir(extractionRoot, { mode: 0o700 });
+  try {
+    for (const entry of entries.filter((candidate) => candidate.type === "directory")) {
+      await mkdir(join(extractionRoot, entry.path), { mode: 0o700, recursive: true });
+    }
+    for (const entry of entries.filter((candidate) => candidate.type === "file")) {
+      const destination = join(extractionRoot, entry.path);
+      await mkdir(dirname(destination), { mode: 0o700, recursive: true });
+      await writeFile(destination, entry.body, { flag: "wx", mode: 0o600 });
+    }
+  } catch (error) {
+    if (error instanceof ConsumerLockFailure) {
+      throw error;
+    }
+    fail("ARCHIVE_UNSAFE", `release archive cannot be extracted safely: ${error instanceof Error ? error.message : String(error)}`);
+  }
+  return join(extractionRoot, bundle.root);
+}
+
+async function verifyOnline({ actionCommit, consumerRoot, lockPath }) {
+  const lock = await loadConsumerLock(consumerRoot, lockPath);
+  if (actionCommit !== undefined) {
+    verifyActionCommit(actionCommit, lock.release.commit);
+  }
   let response;
   try {
     response = await fetch(lock.release.bundle.url, {
@@ -635,7 +916,7 @@ async function verifyOnline({ consumerRoot, lockPath }) {
   const temporaryRoot = await mkdtemp(join(tmpdir(), "aether-contract-release-"));
   try {
     const releaseRoot = await extractVerifiedBundle(bundleBytes, lock, temporaryRoot);
-    return await verifyConsumerLock({ consumerRoot, lockPath, releaseRoot });
+    return await verifyConsumerLock({ actionCommit, consumerRoot, lockPath, releaseRoot });
   } finally {
     await rm(temporaryRoot, { force: true, recursive: true });
   }
@@ -644,15 +925,21 @@ async function verifyOnline({ consumerRoot, lockPath }) {
 function parseArguments(argv) {
   const options = {
     consumerRoot: process.cwd(),
-    lockPath: undefined,
+    lockRelativePath: "aether-contracts.lock.json",
     releaseRoot: undefined,
+    actionCommit: undefined,
     online: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
     if (argument === "--online") {
       options.online = true;
-    } else if (argument === "--consumer-root" || argument === "--lock" || argument === "--release-root") {
+    } else if (
+      argument === "--consumer-root" ||
+      argument === "--lock-path" ||
+      argument === "--release-root" ||
+      argument === "--action-commit"
+    ) {
       const value = argv[index + 1];
       if (value === undefined) {
         fail("ARGUMENT_INVALID", `${argument} requires a value`);
@@ -660,17 +947,23 @@ function parseArguments(argv) {
       index += 1;
       if (argument === "--consumer-root") {
         options.consumerRoot = resolve(value);
-      } else if (argument === "--lock") {
-        options.lockPath = resolve(value);
-      } else {
+      } else if (argument === "--lock-path") {
+        options.lockRelativePath = value;
+      } else if (argument === "--release-root") {
         options.releaseRoot = resolve(value);
+      } else {
+        options.actionCommit = value;
       }
     } else {
       fail("ARGUMENT_INVALID", `unknown argument: ${argument}`);
     }
   }
   options.consumerRoot = resolve(options.consumerRoot);
-  options.lockPath ??= join(options.consumerRoot, "aether-contracts.lock.json");
+  options.lockPath = resolveConsumerLockPath(
+    options.consumerRoot,
+    options.lockRelativePath,
+  );
+  delete options.lockRelativePath;
   if (options.online && options.releaseRoot !== undefined) {
     fail("ARGUMENT_INVALID", "--online and --release-root are mutually exclusive");
   }

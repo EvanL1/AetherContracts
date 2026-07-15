@@ -6,7 +6,7 @@ semantics, JSON Schema Draft 2020-12 defines structure, fixtures pin examples,
 and the TCK supplies executable evidence. A language binding never becomes a
 second source of truth.
 
-The current release is `0.1.0-alpha.2`. It is experimental and is not a
+The current release is `0.1.0-alpha.3`. It is experimental and is not a
 production CloudLink cutover release.
 
 ## Current status
@@ -15,24 +15,24 @@ production CloudLink cutover release.
 | --- | --- | --- |
 | Thing Model v1 alpha structure | Implemented, experimental | Schema, Voltage migration golden fixture, TCK |
 | P/M/A migration vocabulary | Implemented, experimental | `P -> properties`, `M -> points`, `A -> capabilities` |
-| CloudLink joint core schemas and fixtures | Imported, experimental | Byte-identical files from both product worktrees; provenance records that the source changes were uncommitted |
+| CloudLink alpha.3 wire/profile/TCK | Frozen, experimental | AetherContracts is the sole authority; product files are non-authoritative overlays |
 | Fixture and release hash checks | Implemented | `pnpm test:tck` |
 | Digest-pinned consumer distribution | Implemented, experimental | Closed lock Schema, offline verifier, exact-release CI Action |
-| Wire structural rejection | Implemented | JSON Schema TCK; exact failure-code/path mapping is planned |
+| Wire structural rejection | Implemented | JSON Schema TCK and stable public fixture results in all four bindings |
 | Minimal context reducer | Implemented, experimental | Replay/session/digest/data-loss/cursor scenarios; not a production state machine |
-| TypeScript, Rust, C, C++ bindings | Experimental | Binding packages; conformance is not yet claimed |
-| Shared-Broker authentication transcript | Proposal | No frozen signing bytes or production profile |
-| Signed crash-durable ACK | Planned | Requires production transaction/outbox evidence |
-| Real-Broker dual harness and fault injection | Planned | Legacy transport remains the default |
+| TypeScript, Rust, C, C++ fixture bindings | Implemented, experimental | Every binding executes the same public fixture manifest; production codec conformance is not claimed |
+| Shared-Broker authentication transcript | Proposal | Two origin models and exact signing objects; production key lifecycle and verifier ownership remain planned |
+| Unsigned application durable ACK | Frozen experimental contract | No production crash-durability claim; signed ACK remains planned |
+| Consumer Real-Broker harness and fault matrix | Consumer evidence | Not release or production durability evidence; legacy remains the default |
 
 Binding foundations are intentionally narrow:
 
 | Binding | Implemented now | Still planned |
 | --- | --- | --- |
-| TypeScript | canonical `uint64`, RFC 8785-compatible JSON canonicalization | full Schema/CloudLink runner |
-| Rust | canonical full-range `u64`, typed failure | JSON/model/CloudLink codec |
-| C99 | bounded canonical `uint64`, allocation-free static P/M/A lookup | JSON/model compiler/CloudLink codec |
-| C++17 | thin views/results over the C99 core | independent functionality is deliberately forbidden |
+| TypeScript | canonical `uint64`, RFC 8785-compatible JSON canonicalization, public CloudLink fixture manifest | complete production Schema/transport codec |
+| Rust | canonical full-range `u64`, typed failure, public CloudLink fixture manifest | complete production JSON/model/transport codec |
+| C99 | bounded canonical `uint64`, allocation-free static P/M/A lookup, bounded public fixture profile | complete production JSON/model/transport codec |
+| C++17 | thin views/results and the C99 fixture profile | independent wire semantics are deliberately forbidden |
 
 ## Safety boundary
 
@@ -67,7 +67,9 @@ Run all current bindings and packaging checks with `pnpm check`. C/C++
 consumers may install the CMake project and link `AetherContracts::c` or
 `AetherContracts::cpp`.
 
-No default test requires a Broker, database, cloud account, or device.
+No default release test requires a Broker, database, cloud account, or device.
+Real-Broker and restart evidence belongs to consumers and cannot upgrade this
+release's production status.
 
 GitHub tags, release bundles, and published SHA-256 checksums are the source
 distribution path.
@@ -78,10 +80,10 @@ default path verifies imported bytes offline. Git submodules are optional for
 firmware vendors that require a complete source checkout, not the default
 integration model.
 
-The initial joint-core import came from modified, uncommitted AetherCloud and
+The historical alpha.2 joint-core import came from modified, uncommitted AetherCloud and
 AetherIot worktrees. The importer rejected every non-identical source pair, and
 the resulting bytes are pinned here, but those product-repository HEADs alone
 cannot reproduce the import. This limitation is explicit in
-`compatibility/cloudlink-joint-core-provenance.json`; after this first release,
-both products must consume the tagged AetherContracts bytes rather than act as
-co-authorities.
+`compatibility/cloudlink-joint-core-provenance.json`. AetherContracts is now the
+only wire authority; both products consume the tagged bytes and keep only
+implementation/readiness/evidence overlays.

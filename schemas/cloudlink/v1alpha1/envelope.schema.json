@@ -31,6 +31,7 @@
     "sent_at_ms": { "$ref": "#/$defs/uint64" },
     "expires_at_ms": { "$ref": "#/$defs/uint64" },
     "delivery": { "$ref": "#/$defs/delivery" },
+    "message_authentication": { "$ref": "#/$defs/messageAuthentication" },
     "traceparent": { "$ref": "#/$defs/traceparent" },
     "payload": {
       "oneOf": [
@@ -72,6 +73,27 @@
     "digest": {
       "type": "string",
       "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "nonce": {
+      "type": "string",
+      "minLength": 43,
+      "maxLength": 43,
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "messageAuthentication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key_id", "algorithm", "signature"],
+      "properties": {
+        "key_id": { "$ref": "#/$defs/identifier" },
+        "algorithm": { "const": "Ed25519" },
+        "signature": {
+          "type": "string",
+          "minLength": 86,
+          "maxLength": 86,
+          "pattern": "^[A-Za-z0-9_-]{86}$"
+        }
+      }
     },
     "traceparent": {
       "type": "string",

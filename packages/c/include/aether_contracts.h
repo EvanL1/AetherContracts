@@ -19,7 +19,20 @@ typedef enum aether_status {
     AETHER_STATUS_INTEGER_OUT_OF_RANGE = 3,
     AETHER_STATUS_POINT_NOT_FOUND = 4,
     AETHER_STATUS_PROPERTY_NOT_FOUND = 5,
-    AETHER_STATUS_CAPABILITY_NOT_FOUND = 6
+    AETHER_STATUS_CAPABILITY_NOT_FOUND = 6,
+    AETHER_STATUS_UNKNOWN_FIELD = 7,
+    AETHER_STATUS_FIELD_BOUND = 8,
+    AETHER_STATUS_UNSUPPORTED_VERSION = 9,
+    AETHER_STATUS_INVALID_DIGEST = 10,
+    AETHER_STATUS_DIGEST_MISMATCH = 11,
+    AETHER_STATUS_DIGEST_CONFLICT = 12,
+    AETHER_STATUS_STALE_SESSION = 13,
+    AETHER_STATUS_CURSOR_CONFLICT = 14,
+    AETHER_STATUS_JSON_SYNTAX_ERROR = 15,
+    AETHER_STATUS_AUTHENTICATION_REQUIRED = 16,
+    AETHER_STATUS_AUTHENTICATION_INVALID = 17,
+    AETHER_STATUS_SEMVER_INVALID = 18,
+    AETHER_STATUS_DATA_LOSS_RANGE_INVALID = 19
 } aether_status_t;
 
 #define AETHER_FAILURE_NO_OFFSET ((size_t)-1)
@@ -34,6 +47,19 @@ typedef struct aether_string_view {
     const char *data;
     size_t size;
 } aether_string_view_t;
+
+/*
+ * Context needed to execute the public CloudLink fixture contract. All views
+ * remain caller-owned and are read only for the duration of the call.
+ */
+typedef struct aether_cloudlink_fixture_context {
+    uint8_t has_current_session;
+    aether_string_view_t gateway_id;
+    aether_string_view_t session_id;
+    aether_string_view_t session_epoch;
+    aether_string_view_t credential_generation;
+    aether_string_view_t prior_accepted_delivery;
+} aether_cloudlink_fixture_context_t;
 
 /* These macros accept a string literal, not a char pointer. */
 #ifdef __cplusplus
@@ -180,6 +206,15 @@ aether_status_t aether_thing_model_find_capability(
     const aether_thing_model_t *model,
     aether_string_view_t key,
     const aether_capability_definition_t **output,
+    aether_failure_t *failure);
+
+/*
+ * Executes the bounded, experimental public CloudLink fixture profile. This
+ * is a conformance surface, not a complete production JSON or transport codec.
+ */
+aether_status_t aether_cloudlink_validate_fixture_json(
+    aether_string_view_t input,
+    const aether_cloudlink_fixture_context_t *context,
     aether_failure_t *failure);
 
 #ifdef __cplusplus

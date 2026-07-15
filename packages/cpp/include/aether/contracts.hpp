@@ -19,6 +19,19 @@ enum class Status : int {
     point_not_found = AETHER_STATUS_POINT_NOT_FOUND,
     property_not_found = AETHER_STATUS_PROPERTY_NOT_FOUND,
     capability_not_found = AETHER_STATUS_CAPABILITY_NOT_FOUND,
+    unknown_field = AETHER_STATUS_UNKNOWN_FIELD,
+    field_bound = AETHER_STATUS_FIELD_BOUND,
+    unsupported_version = AETHER_STATUS_UNSUPPORTED_VERSION,
+    invalid_digest = AETHER_STATUS_INVALID_DIGEST,
+    digest_mismatch = AETHER_STATUS_DIGEST_MISMATCH,
+    digest_conflict = AETHER_STATUS_DIGEST_CONFLICT,
+    stale_session = AETHER_STATUS_STALE_SESSION,
+    cursor_conflict = AETHER_STATUS_CURSOR_CONFLICT,
+    json_syntax_error = AETHER_STATUS_JSON_SYNTAX_ERROR,
+    authentication_required = AETHER_STATUS_AUTHENTICATION_REQUIRED,
+    authentication_invalid = AETHER_STATUS_AUTHENTICATION_INVALID,
+    semver_invalid = AETHER_STATUS_SEMVER_INVALID,
+    data_loss_range_invalid = AETHER_STATUS_DATA_LOSS_RANGE_INVALID,
 };
 
 enum class PointKind : int {
@@ -143,6 +156,25 @@ class Result final {
     }
 
     return Result<std::uint64_t>::success(value);
+}
+
+/*
+ * Executes the bounded experimental fixture profile through the C core. The
+ * context and input remain caller-owned; this does not expose transport or
+ * physical-control operations.
+ */
+[[nodiscard]] inline Result<bool> validate_cloudlink_fixture_json(
+    std::string_view input,
+    const aether_cloudlink_fixture_context_t &context) {
+    aether_failure_t failure{AETHER_STATUS_OK, AETHER_FAILURE_NO_OFFSET};
+    const aether_string_view_t view{input.data(), input.size()};
+    const auto status =
+        aether_cloudlink_validate_fixture_json(view, &context, &failure);
+
+    if (status != AETHER_STATUS_OK) {
+        return Result<bool>::failed(Failure{failure});
+    }
+    return Result<bool>::success(true);
 }
 
 class PropertyDefinitionView final {

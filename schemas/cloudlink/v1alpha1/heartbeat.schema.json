@@ -28,6 +28,9 @@
       "$ref": "envelope.schema.json#/$defs/positiveUint64"
     },
     "observed_at_ms": { "$ref": "envelope.schema.json#/$defs/uint64" },
+    "message_authentication": {
+      "$ref": "envelope.schema.json#/$defs/messageAuthentication"
+    },
     "cursors": {
       "type": "array",
       "maxItems": 32,

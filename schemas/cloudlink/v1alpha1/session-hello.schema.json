@@ -10,6 +10,7 @@
     "message_kind",
     "gateway_id",
     "credential_binding",
+    "challenge_id",
     "offered_protocol_versions",
     "client_nonce",
     "resume"
@@ -22,12 +23,22 @@
     "credential_binding": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["credential_id", "generation", "proof"],
+      "required": ["credential_id", "generation", "origin_model"],
       "properties": {
         "credential_id": { "$ref": "envelope.schema.json#/$defs/credentialId" },
         "generation": { "$ref": "envelope.schema.json#/$defs/positiveUint64" },
-        "proof": { "type": "string", "minLength": 16, "maxLength": 4096 }
+        "origin_model": {
+          "enum": [
+            "gateway-signed",
+            "trusted-connector-broker-attestation"
+          ]
+        }
       }
+    },
+    "challenge_id": { "$ref": "envelope.schema.json#/$defs/uuid" },
+    "gateway_key_id": { "$ref": "envelope.schema.json#/$defs/identifier" },
+    "gateway_signature": {
+      "$ref": "envelope.schema.json#/$defs/messageAuthentication"
     },
     "offered_protocol_versions": {
       "type": "array",
@@ -36,11 +47,34 @@
       "uniqueItems": true,
       "items": { "const": "1.0" }
     },
-    "client_nonce": { "$ref": "envelope.schema.json#/$defs/identifier" },
+    "client_nonce": { "$ref": "envelope.schema.json#/$defs/nonce" },
     "resume": {
       "type": "array",
       "maxItems": 32,
       "items": { "$ref": "envelope.schema.json#/$defs/resumeCursor" }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "credential_binding": {
+            "properties": { "origin_model": { "const": "gateway-signed" } },
+            "required": ["origin_model"]
+          }
+        }
+      },
+      "then": {
+        "required": ["gateway_key_id", "gateway_signature"]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            { "required": ["gateway_key_id"] },
+            { "required": ["gateway_signature"] }
+          ]
+        }
+      }
+    }
+  ]
 }

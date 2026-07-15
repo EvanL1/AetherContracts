@@ -1,6 +1,6 @@
 {
   "schema": "aether.cloudlink.core-profile.v1alpha1",
-  "status": "experimental-auth-unresolved",
+  "status": "experimental-auth-proposal",
   "entry_schemas": {
     "runtime-manifest-report": "runtime-manifest-report.schema.json",
     "telemetry-batch": "telemetry-batch.schema.json",
@@ -87,8 +87,29 @@
     "topology_point_resolution": "planned"
   },
   "authentication": {
-    "shared_broker_profile": "unresolved",
+    "shared_broker_profile": "experimental",
+    "profile": "authentication.json",
+    "production_key_lifecycle": "planned",
     "topic_or_payload_identity_is_authentication": false
+  },
+  "acknowledgement": {
+    "schema": "durable-ack.schema.json",
+    "persistence": "success means the application fact and receipt are durable before publication",
+    "production_crash_durability": "unproven-until-a-production-store-and-outbox-pass-restart-evidence",
+    "signature": "absent-in-alpha.3",
+    "accepted_delivery_binding": [
+      "gateway_id",
+      "session_id",
+      "session_epoch",
+      "credential_generation",
+      "stream_id",
+      "stream_epoch",
+      "acknowledged_position",
+      "batch_id",
+      "digest",
+      "receipt_id"
+    ],
+    "mqtt_puback_is_application_ack": false
   },
   "physical_control": "forbidden"
 }

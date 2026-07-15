@@ -1,6 +1,6 @@
 {
   "schema": "aether.tck.scenarios.v1alpha1",
-  "contract_version": "0.1.0-alpha.2",
+  "contract_version": "0.1.0-alpha.3",
   "scenarios": [
     {
       "id": "uint64-leading-zero",

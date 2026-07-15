@@ -1,32 +1,49 @@
 ---
 id: cloudlink-v1alpha1
-status: experimental-auth-unresolved
-version: 0.1.0-alpha.2
+status: experimental-auth-proposal
+version: 0.1.0-alpha.3
 normative: true
 ---
 
 # CloudLink v1 alpha 1
 
-This release imports only schemas and fixtures that were byte-identical in the
-AetherCloud and AetherIot joint core. The imported core covers session hello and
-acceptance shapes, heartbeat, Runtime Manifest report, telemetry batch,
-data-loss evidence, replay request, and the existing unsigned durable-ACK
-candidate.
+AetherContracts is the sole interoperability authority for this protocol
+slice. Product-repository wire profiles, manifests, gates, and evidence files
+are non-authoritative implementation overlays and may not add or redefine wire
+fields. The historical joint-core provenance records only where alpha.2 input
+bytes came from; it grants no continuing joint ownership.
 
-The import does not resolve the repositories' conflicting authentication
-schemas or wire-profile assertions. The opaque `credential_binding.proof` in
-the imported session hello is structural legacy candidate data, not a frozen
-production transcript.
+Alpha.3 freezes the closed envelope and time/identity fields, session
+challenge/hello/acceptance, heartbeat, Runtime Manifest report, telemetry
+batch, data-loss evidence, replay request, and an unsigned durable application
+ACK. TypeScript, Rust, C99, and C++17 execute the same public fixture manifest
+and stable failure strings. Those fixture surfaces are experimental and are not
+complete production transport codecs.
 
-Generic shared-Broker operation is fail-closed until one replay-bounded
-publisher proof or trusted Broker attestation profile is specified byte for
-byte and passes common valid and invalid fixtures. Topic names, MQTT
-credentials, and payload identity are never Gateway authentication.
+The authentication profile distinguishes two origin models. In
+`gateway-signed`, Cloud issues a one-time signed challenge, the Gateway signs
+the exact session-establishment object, and every uplink signs the exact
+per-uplink object. In `trusted-connector-broker-attestation`, a configured
+trusted ingress adapter supplies origin evidence outside the payload and binds
+the exact received MQTT payload bytes. A payload cannot attest to itself.
+Topic names, payload identity, and MQTT credentials alone are never Gateway
+authentication.
 
-The current durable-ACK JSON shape is experimental and unsigned. A production
-success receipt additionally requires a frozen Cloud signing transcript and
-proof that the fact, cursor, receipt, audit evidence, and ACK outbox record share
-one committed production transaction. MQTT PUBACK is never that proof.
+The proposal specifies the Ed25519 algorithm, unpadded-base64url encoding, RFC
+8785 JCS signing objects, absent-value rules, and replay bounds exactly in
+`profiles/cloudlink/v1alpha1/authentication.json`. Production key provisioning,
+rotation, revocation, verifier ownership, and production signature verification
+remain planned, so the authentication gate remains a proposal and cutover is
+blocked.
+Ordinary logs and public evidence must exclude signatures, nonces, credential
+identifiers, and raw authentication transcripts.
+
+The alpha.3 durable-ACK JSON shape is explicitly unsigned. Success means the
+application fact and receipt were durably committed before ACK publication,
+but alpha.3 contains no production store/outbox implementation and makes no
+crash-durability claim. A future signed ACK is a separate command/profile and
+requires a Cloud key lifecycle plus production restart evidence. MQTT PUBACK is
+never an application durable receipt.
 
 Repeated delivery with the same replay identity and digest is idempotent. Reuse
 of an identity with a different digest is wire-valid but context-invalid; it is
@@ -39,7 +56,7 @@ Heartbeat and resume cursor arrays contain at most one entry for each
 `(stream_id, stream_epoch)`. Violations are context-invalid, do not change a
 business fact, and do not permit a successful application receipt.
 
-The durable position identity is
+The only durable position identity is
 `(gateway_id, stream_id, stream_epoch, position)`. `batch_id` and `digest` are
 stable bindings of that position, not fields that create a second identity;
 changing either cannot bypass conflict detection. A business digest is the
@@ -63,12 +80,12 @@ of the complete manifest object with its top-level `checksum` member omitted.
 Its digest omits the `sha256:` prefix because the enclosing checksum object
 already declares the algorithm.
 
-`envelope.schema.json` is the imported reusable structural base. Consumers
+`envelope.schema.json` is the reusable structural base. Consumers
 must validate an uplink with its message-kind entry Schema
 (`runtime-manifest-report`, `telemetry-batch`, or `data-loss`); using the base
 alone does not validate the discriminator-to-payload relationship.
 
-The imported telemetry slice currently carries only finite JSON-number values
+The alpha telemetry slice currently carries only finite JSON-number values
 for telemetry/status points. Non-numeric Thing Model value types, events, and
 the topology-to-model point-resolution contract are planned, not silently
 inferred. An optional sample `model` value is only a commissioning hint and is

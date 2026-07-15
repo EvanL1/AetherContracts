@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(AetherContracts LANGUAGES C CXX)
 
-set(AETHER_CONTRACTS_CONTRACT_VERSION "0.1.0-alpha.2")
+set(AETHER_CONTRACTS_CONTRACT_VERSION "0.1.0-alpha.3")
 set(AETHER_CONTRACTS_CMAKE_COMPAT_VERSION "0.1.0")
 
 include(GNUInstallDirs)

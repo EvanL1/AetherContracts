@@ -1,7 +1,7 @@
 {
   "schema": "aether.cloudlink.interoperability-gates.v1alpha1",
-  "contract_version": "0.1.0-alpha.2",
-  "status": "experimental-auth-unresolved",
+  "contract_version": "0.1.0-alpha.3",
+  "status": "experimental-auth-proposal",
   "default_mode": "legacy",
   "physical_control": "forbidden",
   "gates": [
@@ -9,8 +9,9 @@
       "id": "shared-broker-authentication",
       "status": "proposal",
       "exit_criteria": [
-        "one replay-bounded transcript and signing object are specified byte for byte",
-        "generic shared-Broker deliveries prove publisher identity per accepted publish",
+        "the alpha.3 replay-bounded transcript and signing objects remain byte stable",
+        "production key provisioning, rotation, revocation, and verifier ownership are implemented",
+        "generic shared-Broker deliveries prove publisher identity per accepted publish through one declared origin model",
         "topic, payload identity, and MQTT credentials are never sufficient authentication",
         "valid and invalid fixtures pass every conformant binding"
       ]
@@ -26,7 +27,7 @@
     },
     {
       "id": "cross-language-fixtures",
-      "status": "experimental",
+      "status": "passed-experimental",
       "depends_on": "single-wire-contract",
       "exit_criteria": [
         "TypeScript, Rust, C, and C++ execute the same fixture manifest",
@@ -35,7 +36,7 @@
     },
     {
       "id": "real-broker-dual-harness",
-      "status": "planned",
+      "status": "consumer-evidence-required",
       "depends_on": "cross-language-fixtures",
       "exit_criteria": [
         "one real Broker runs an edge harness and Cloud ingress concurrently",
@@ -44,7 +45,7 @@
     },
     {
       "id": "fault-injection",
-      "status": "planned",
+      "status": "consumer-evidence-required",
       "depends_on": "real-broker-dual-harness",
       "exit_criteria": [
         "disconnect, ACK loss, process restart, duplicate delivery, digest conflict, and data-loss pass",

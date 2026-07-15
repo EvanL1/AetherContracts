@@ -1,7 +1,7 @@
 ---
 id: distribution-v1alpha1
 status: experimental
-version: 0.1.0-alpha.2
+version: 0.1.0-alpha.3
 normative: true
 ---
 
@@ -41,9 +41,11 @@ fixed for this experimental line:
 An `import` binds one release artifact path, one consumer destination path, and
 one SHA-256. A `pending_import` records a release artifact that the consumer has
 not adopted and a non-empty reason. Imported and pending source sets are
-disjoint. A `partial-consumer` has at least one pending import; a
-`complete-consumer` has none. Complete distribution adoption still says
-nothing about behavioral conformance.
+disjoint. The lock's `adoption` section declares the scope, required modules,
+and exact required release-source closure. The union of imported and pending
+sources must equal that closure. A `partial-consumer` has at least one pending
+source; a `complete-consumer` has none and imports the entire closure. Complete
+distribution adoption still says nothing about behavioral conformance.
 
 The consumer commits the exact release `contract-manifest.json` bytes at the
 lock's `manifest.local_path`. Offline verification checks its digest, release
@@ -53,11 +55,20 @@ consumer byte. It performs no download, repair, fallback, or write.
 ## Online verification
 
 The optional online verifier downloads only the URL named by the lock. It
-enforces the response size and SHA-256 before inspecting or extracting the
-archive, rejects unsafe archive paths and non-file entries, and verifies the
-manifest plus imported and pending release-source bytes. Failure is terminal;
-there is no fallback to a sibling checkout or consumer-local candidate.
+enforces the exact response size and SHA-256 before inspection. It parses gzip
+and tar in-process under the lock's maximum compressed bytes, expanded bytes,
+entry count, path bytes, per-file bytes, and total regular-file bytes. It
+rejects absolute or escaping paths, links, devices, unsupported entry types,
+duplicate normalized paths, invalid checksums, malformed terminators, and any
+archive layout other than the one locked release root. Extraction uses private
+directories and files and occurs only after validation. It then verifies the
+manifest plus every imported and pending release-source byte. Failure is
+terminal; there is no fallback to a sibling checkout or consumer-local
+candidate.
 
 Consumers must pin `.github/actions/verify-consumer` to the full 40-character
-commit of the locked release. This check complements, but never replaces, the
+peeled commit of the locked release. The composite Action passes its actual
+action commit to the verifier, which rejects a different revision with
+`ACTION_COMMIT_MISMATCH`. The lock path is consumer-relative and must remain
+inside the consumer repository. This check complements, but never replaces, the
 consumer's native codec and state-machine conformance tests.

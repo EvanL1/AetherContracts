@@ -3,7 +3,7 @@ project(AetherContractsConsumer LANGUAGES CXX)
 
 enable_testing()
 find_package(AetherContracts 0.1.0 CONFIG REQUIRED)
-if(NOT AetherContracts_VERSION STREQUAL "0.1.0-alpha.2")
+if(NOT AetherContracts_VERSION STREQUAL "0.1.0-alpha.3")
   message(FATAL_ERROR "unexpected AetherContracts contract version: ${AetherContracts_VERSION}")
 endif()
 

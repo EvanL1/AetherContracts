@@ -1,4 +1,4 @@
-# AetherContracts 0.1.0-alpha.2
+# AetherContracts 0.1.0-alpha.3
 
 Public language-neutral contracts for AetherCloud, AetherIot, and independent implementations.
 
@@ -6,13 +6,14 @@ Public language-neutral contracts for AetherCloud, AetherIot, and independent im
 - spec/foundation.md: normative JSON, integer, canonicalization, and failure rules.
 - spec/thing-model-v1alpha1.md: normative Thing Model, P/M/A migration, authority, and WoT alignment.
 - profiles/thing-model/v1alpha1/publication.json: immutable revision identity and whole-model JCS digest.
-- spec/cloudlink-v1alpha1.md: experimental joint core; authentication and signed durable ACK unresolved.
+- spec/cloudlink-v1alpha1.md: sole CloudLink authority; alpha.3 freezes the wire while authentication remains a proposal and the application ACK remains unsigned.
 - profiles/cloudlink/v1alpha1/core.json: exact digest projection, durable position identity, entry Schemas, and current telemetry limits.
-- spec/tck-v1alpha1.md: executable conformance model and planned black-box runner.
-- spec/distribution-v1alpha1.md: digest-pinned offline and online consumer verification; not codec conformance.
+- profiles/cloudlink/v1alpha1/authentication.json: exact challenge/session/uplink signing objects and trusted-adapter external attestation contract; production key lifecycle remains planned.
+- spec/tck-v1alpha1.md: executable conformance model and portable public fixture manifest.
+- spec/distribution-v1alpha1.md: exact adoption closure plus bounded, digest-pinned offline/online consumer verification; not codec conformance.
 - schemas/distribution/v1alpha1/consumer-lock.schema.json: closed consumer release lock and safety policy.
 - scripts/verify-consumer-lock.mjs: dependency-free reference verifier with stable failure codes.
 - ai/invariants.md: rules that must survive refactors.
 - contract-manifest.json: release identity, module/binding status, and artifact hashes.
 
-Never describe planned authentication, signed ACK, real-Broker testing, or a language binding as conformant.
+Never describe proposal authentication as production key management, the unsigned ACK as signed or production crash-durable, consumer Broker evidence as release conformance, or a fixture binding as a complete production codec.

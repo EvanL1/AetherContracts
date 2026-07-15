@@ -139,6 +139,61 @@ test("Runtime Manifest accepts only SemVer 2.0.0 versions", async () => {
   }
 });
 
+test("session establishment distinguishes gateway signatures from external attestation", async () => {
+  const ajv = new Ajv2020({ allErrors: true, strict: false });
+  const schemas = await loadSchemas("schemas/cloudlink/v1alpha1/");
+  for (const schema of schemas) {
+    ajv.addSchema(schema);
+  }
+
+  const [challenge, hello] = await Promise.all([
+    readJson("fixtures/cloudlink/v1alpha1/session-challenge.valid.json"),
+    readJson("fixtures/cloudlink/v1alpha1/session-hello.valid.json"),
+  ]);
+  const validateChallenge = ajv.getSchema("session-challenge.schema.json");
+  const validateHello = ajv.getSchema("session-hello.schema.json");
+  assert.ok(validateChallenge);
+  assert.ok(validateHello);
+  assert.equal(validateChallenge(challenge), true, JSON.stringify(validateChallenge.errors));
+  assert.equal(validateHello(hello), true, JSON.stringify(validateHello.errors));
+
+  const missingSignature = structuredClone(hello);
+  delete missingSignature.gateway_signature;
+  assert.equal(validateHello(missingSignature), false);
+
+  const trustedAttestation = structuredClone(hello);
+  trustedAttestation.credential_binding.origin_model =
+    "trusted-connector-broker-attestation";
+  delete trustedAttestation.gateway_key_id;
+  delete trustedAttestation.gateway_signature;
+  assert.equal(
+    validateHello(trustedAttestation),
+    true,
+    JSON.stringify(validateHello.errors),
+  );
+});
+
+test("payload-supplied Broker attestation is rejected by the closed uplink envelope", async () => {
+  const ajv = new Ajv2020({ allErrors: true, strict: false });
+  const schemas = await loadSchemas("schemas/cloudlink/v1alpha1/");
+  for (const schema of schemas) {
+    ajv.addSchema(schema);
+  }
+  const fixture = await readJson(
+    "fixtures/cloudlink/v1alpha1/payload-broker-attestation.json",
+  );
+  const validate = ajv.getSchema("telemetry-batch.schema.json");
+  assert.ok(validate);
+  assert.equal(validate(fixture), false);
+  assert.ok(
+    validate.errors?.some(
+      (error) =>
+        error.keyword === "additionalProperties" &&
+        error.params.additionalProperty === "broker_attestation",
+    ),
+  );
+});
+
 test("deployment observations require positive revisions and state-consistent applied evidence", async () => {
   const ajv = new Ajv2020({ allErrors: true, strict: false });
   const schema = await readJson(

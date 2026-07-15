@@ -19,10 +19,12 @@ runs:
       env:
         AETHER_CONSUMER_ROOT: ${{ github.workspace }}
         AETHER_CONSUMER_LOCK: ${{ inputs.lock-path }}
+        AETHER_ACTION_COMMIT: ${{ github.action_ref }}
         AETHER_CONTRACT_VERIFIER: ${{ github.action_path }}/../../../scripts/verify-consumer-lock.mjs
       run: |
         set -euo pipefail
         node "${AETHER_CONTRACT_VERIFIER}" \
           --consumer-root "${AETHER_CONSUMER_ROOT}" \
-          --lock "${AETHER_CONSUMER_ROOT}/${AETHER_CONSUMER_LOCK}" \
+          --lock-path "${AETHER_CONSUMER_LOCK}" \
+          --action-commit "${AETHER_ACTION_COMMIT}" \
           --online
