@@ -1,19 +1,75 @@
-# AetherContracts 0.1.0-alpha.3
+# AetherContracts
 
-Public language-neutral contracts for AetherCloud, AetherIot, and independent implementations.
+> Public, language-neutral interoperability authority for AetherCloud, AetherEdge, and independent implementations. Normative English specifications, closed JSON Schemas, fixtures, and the black-box TCK are authoritative together; language bindings never redefine the contract.
 
-- README.md: scope, safety boundary, and honest implementation status.
-- spec/foundation.md: normative JSON, integer, canonicalization, and failure rules.
-- spec/thing-model-v1alpha1.md: normative Thing Model, P/M/A migration, authority, and WoT alignment.
-- profiles/thing-model/v1alpha1/publication.json: immutable revision identity and whole-model JCS digest.
-- spec/cloudlink-v1alpha1.md: sole CloudLink authority; alpha.3 freezes the wire while authentication remains a proposal and the application ACK remains unsigned.
-- profiles/cloudlink/v1alpha1/core.json: exact digest projection, durable position identity, entry Schemas, and current telemetry limits.
-- profiles/cloudlink/v1alpha1/authentication.json: exact challenge/session/uplink signing objects and trusted-adapter external attestation contract; production key lifecycle remains planned.
-- spec/tck-v1alpha1.md: executable conformance model and portable public fixture manifest.
-- spec/distribution-v1alpha1.md: exact adoption closure plus bounded, digest-pinned offline/online consumer verification; not codec conformance.
-- schemas/distribution/v1alpha1/consumer-lock.schema.json: closed consumer release lock and safety policy.
-- scripts/verify-consumer-lock.mjs: dependency-free reference verifier with stable failure codes.
-- ai/invariants.md: rules that must survive refactors.
-- contract-manifest.json: release identity, module/binding status, and artifact hashes.
+Latest published release: `v0.1.0-alpha.3`. Development target: `0.1.0-alpha.4` (unpublished). Production readiness: false. Legacy transport remains the default.
 
-Never describe proposal authentication as production key management, the unsigned ACK as signed or production crash-durable, consumer Broker evidence as release conformance, or a fixture binding as a complete production codec.
+Read the agent instructions before making any change. Treat `contract-manifest.json` as the exact release-closure and artifact-hash authority; this document index only routes tasks.
+
+Never describe proposal authentication as production-ready, an unsigned response or ACK as signed, provider acceptance as physical completion, distribution evidence as product conformance, or an experimental fixture binding as a complete production codec.
+
+## Agent Task Manual
+
+- [Agent instructions](https://github.com/EvanL1/AetherContracts/blob/main/AGENTS.md): Read before changing any contract, binding, fixture, compatibility claim, or release evidence.
+- [Project overview and development status](https://github.com/EvanL1/AetherContracts/blob/main/README.md): Understand scope, authority, safety boundaries, implemented surfaces, and unresolved production gates.
+- [Exact-release adoption task](https://docs.aetheriot.workers.dev/en/aethercontracts/getting-started.md): Adopt the latest published release, select a contract surface, and run offline checks without treating the development target as published.
+- [Delegated provider integration task](https://docs.aetheriot.workers.dev/en/aethercontracts/integration.md): Map provider topology and observations without moving provider credentials or arbitrary control into the public contract.
+- [Conformance and evidence task](https://docs.aetheriot.workers.dev/en/aethercontracts/conformance.md): Distinguish specification, Schema, fixture, TCK, binding, and product evidence before making a conformance claim.
+
+## Deployment and Operations
+
+- [Consumer distribution specification](https://docs.aetheriot.workers.dev/en/aethercontracts/spec/distribution-v1alpha1.md): Verify exact tags, manifests, artifact closures, digests, and offline or online consumer adoption.
+- [Consumer lock Schema](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/schemas/distribution/v1alpha1/consumer-lock.schema.json): Validate the closed, digest-pinned release lock used by AetherEdge, AetherCloud, and independent consumers.
+- [Consumer lock verifier](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/scripts/verify-consumer-lock.mjs): Run the dependency-free reference verifier for release identity, artifact integrity, and adoption closure.
+- [Release closure manifest](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/contract-manifest.json): Use as the sole release identity, module and binding status, unresolved-gate, and artifact-hash authority; the document catalog never duplicates it.
+- [MQTT transport profile](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/mqtt/v1alpha1/profile.json): Inspect bounded topics, payload limits, and transport rules without confusing Broker acknowledgement with durable application evidence.
+
+## Safety and Governance
+
+- [Agent safety invariants](https://github.com/EvanL1/AetherContracts/blob/main/ai/invariants.md): Preserve authority, authentication, replay, durable ACK, secret, physical-control, and distribution boundaries across every refactor.
+- [Security policy](https://docs.aetheriot.workers.dev/en/aethercontracts/security.md): Apply fail-closed parsing, secret handling, namespace isolation, authentication, replay, and governed-control requirements.
+- [Contract governance](https://docs.aetheriot.workers.dev/en/aethercontracts/governance.md): Classify interoperability changes, status, breaking changes, evidence, and immutable distribution decisions.
+
+## Recovery
+
+- [Failure taxonomy and retry policy](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/failure-codes.json): Route failures by stable contractual string code and retryability without depending on binding-specific text or numeric ABI.
+
+## Platform Reference
+
+- [Contract foundation](https://docs.aetheriot.workers.dev/en/aethercontracts/spec/foundation.md): Apply normative JSON, Unicode, integer, canonicalization, bounds, and common failure semantics.
+- [Thing Model v1 alpha 1](https://docs.aetheriot.workers.dev/en/aethercontracts/spec/thing-model-v1alpha1.md): Implement model identity, immutable revisions, P/M/A migration, authority, capabilities, and WoT alignment.
+- [Thing Model publication profile](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/thing-model/v1alpha1/publication.json): Bind immutable revision identity to the whole-model RFC 8785 digest.
+- [Web of Things alignment profile](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/wot/v1alpha1/profile.json): Inspect the declared Thing Model alignment boundary without importing external authority into the Aether contract.
+- [Integration v1 alpha 1](https://docs.aetheriot.workers.dev/en/aethercontracts/spec/integration-v1alpha1.md): Implement provider-neutral topology, multi-point entities, typed observations, identity, references, and the secret boundary.
+- [Home Assistant read-only mapping profile](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/integration/v1alpha1/home-assistant.json): Map registry identity, rename, quality, and edge-local credential rules without exposing control.
+- [CloudLink Integration profile](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/cloudlink/v1alpha1/integration.json): Activate Integration explicitly over existing session, position, digest, replay, data-loss, and durable-ACK semantics.
+- [Integration Control v1 alpha 1](https://docs.aetheriot.workers.dev/en/aethercontracts/spec/integration-control-v1alpha1.md): Implement only the closed, default-off governed power intent with explicit confirmation and edge-final authority.
+- [CloudLink Integration Control profile](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/cloudlink/v1alpha1/integration-control.json): Apply exact extension activation, offer signing, replay binding, receipt stages, and the closed public-message boundary.
+- [Home Assistant governed control profile](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/integration-control/v1alpha1/home-assistant.json): Use the fixed Boolean power mapping for fan, light, and switch without caller-selected provider operations.
+- [CloudLink v1 alpha 1](https://docs.aetheriot.workers.dev/en/aethercontracts/spec/cloudlink-v1alpha1.md): Use the sole normative authority for envelope, session, delivery, heartbeat, replay, expiry, data-loss, and ACK semantics.
+- [CloudLink core profile](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/cloudlink/v1alpha1/core.json): Inspect exact projections, durable position identity, cumulative ACK prefix, closed entry Schemas, and extension activation.
+- [CloudLink authentication proposal](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/cloudlink/v1alpha1/authentication.json): Inspect the default-off challenge and signing transcript while preserving unresolved key lifecycle and unsigned-response blockers.
+- [Language-neutral TCK v1 alpha 1](https://docs.aetheriot.workers.dev/en/aethercontracts/spec/tck-v1alpha1.md): Run and implement observable conformance scenarios, stable failure outcomes, and the portable public fixture manifest.
+- [Machine-readable agent document catalog](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/ai/docs-manifest.json): Route agents by task, role, status, readiness, sensitivity, locale, and priority without copying the release artifact closure.
+- [Agent document catalog Schema](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/ai/docs-manifest.schema.json): Validate the version 3 document metadata model and its closed status, readiness, sensitivity, role, and agent-profile enums.
+
+## Compatibility and Status
+
+- [Compatibility and gate status](https://docs.aetheriot.workers.dev/en/aethercontracts/compatibility.md): Separate the latest published alpha.3 baseline from the unpublished alpha.4 target and from product-owned evidence.
+- [Product compatibility evidence matrix](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/product-matrix.json): Resolve product commits, verified contract releases, development targets, passed gates, open gates, and evidence without inventing unknown facts.
+- [CloudLink interoperability gates](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/cloudlink-v1alpha1-gates.json): Inspect machine-readable authentication, correlation, broker, fault, signed-ACK, and legacy-cutover gates.
+- [Integration compatibility rules](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/integration-v1alpha1.json): Inspect implemented contracts, contextual invariants, breaking changes, and claims that remain outside the read-only module.
+- [Integration Control compatibility rules](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/integration-control-v1alpha1.json): Inspect the default-off action boundary, implemented evidence, breaking changes, and missing product or key-lifecycle evidence.
+- [Thing Model compatibility rules](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/thing-model-v1alpha1.json): Classify compatible, breaking, and semantic-only changes between immutable revisions.
+- [Product naming migration](https://docs.aetheriot.workers.dev/en/aethercontracts/migration.md): Preserve immutable alpha.3 bytes while changing the edge repository display name from AetherIot to AetherEdge.
+- [Alpha.3 to alpha.4 migration plan](https://docs.aetheriot.workers.dev/en/aethercontracts/migrations/alpha3-to-alpha4.md): Plan Cloud-first decoding, disabled-by-default Edge rollout, evidence gates, rollback, and exact-release adoption for the unpublished target.
+
+## Optional
+
+- [Project overview and development status in Chinese](https://github.com/EvanL1/AetherContracts/blob/main/README-CN.md): Chinese translation of the repository overview for human review; normative specifications remain English.
+- [Contribution process](https://github.com/EvanL1/AetherContracts/blob/main/CONTRIBUTING.md): Follow repository contribution and verification expectations after the agent instructions and governance rules.
+- [Historical CloudLink joint-core provenance](https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/cloudlink-joint-core-provenance.json): Historical import evidence only; dirty source worktrees are not current contract authority.
+- [TypeScript binding reference](https://docs.aetheriot.workers.dev/en/aethercontracts/packages/typescript.md): Use the experimental fixture binding without treating it as a complete production codec.
+- [Rust binding reference](https://docs.aetheriot.workers.dev/en/aethercontracts/packages/rust.md): Use the experimental fixture binding without treating it as a complete production codec.
+- [C99 binding reference](https://docs.aetheriot.workers.dev/en/aethercontracts/packages/c.md): Use the bounded caller-owned C foundation without adding runtime, transport, allocation, or global-state authority.
+- [C++17 binding reference](https://docs.aetheriot.workers.dev/en/aethercontracts/packages/cpp.md): Use the thin C++ wrapper over the C core without defining independent wire semantics.

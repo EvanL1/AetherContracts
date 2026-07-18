@@ -15,8 +15,10 @@ const topLevelArtifacts = [
   "SECURITY.md",
   ".github/actions/verify-consumer/action.yml",
   "ai/docs-manifest.json",
+  "ai/docs-manifest.schema.json",
   "ai/invariants.md",
   "llms.txt",
+  "scripts/update-agent-docs.mjs",
   "scripts/verify-consumer-lock.mjs",
 ];
 
@@ -114,6 +116,9 @@ async function updateContractManifest() {
 
 for (const manifest of [
   "fixtures/cloudlink/v1alpha1/fixture-manifest.json",
+  "fixtures/cloudlink-integration/v1alpha1/fixture-manifest.json",
+  "fixtures/integration-control/v1alpha1/fixture-manifest.json",
+  "fixtures/integration/v1alpha1/fixture-manifest.json",
   "fixtures/thing-model/v1alpha1/fixture-manifest.json",
 ]) {
   await updateFixtureManifest(manifest);

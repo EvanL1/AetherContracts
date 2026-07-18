@@ -291,6 +291,44 @@ fn session_hello_failure(value: &Map<String, Value>) -> Option<&'static str> {
     cursor_failure(value.get("resume"))
 }
 
+fn session_challenge_request_failure(value: &Map<String, Value>) -> Option<&'static str> {
+    if unknown_field(
+        value,
+        &[
+            "schema",
+            "protocol",
+            "message_kind",
+            "gateway_id",
+            "credential_binding",
+            "offered_protocol_versions",
+            "client_nonce",
+            "resume",
+        ],
+    ) {
+        return Some("UNKNOWN_FIELD");
+    }
+    if !value
+        .get("client_nonce")
+        .and_then(Value::as_str)
+        .is_some_and(|nonce| {
+            nonce.len() == 43
+                && nonce
+                    .bytes()
+                    .all(|byte| byte.is_ascii_alphanumeric() || byte == b'_' || byte == b'-')
+        })
+    {
+        return Some("FIELD_BOUND");
+    }
+    let binding = object(value.get("credential_binding")?)?;
+    if unknown_field(binding, &["credential_id", "generation"]) {
+        return Some("UNKNOWN_FIELD");
+    }
+    if let Some(failure) = canonical_u64_failure(binding.get("generation")) {
+        return Some(failure);
+    }
+    cursor_failure(value.get("resume"))
+}
+
 /// Returns whether a string follows `SemVer` 2.0.0 without accepting leading-zero
 /// numeric identifiers or empty pre-release/build components.
 #[must_use]
@@ -414,6 +452,9 @@ fn non_envelope_failure(
     context: &CloudLinkFixtureContext<'_>,
 ) -> Option<&'static str> {
     match value.get("message_kind").and_then(Value::as_str) {
+        Some("session-challenge-request") => {
+            return session_challenge_request_failure(value);
+        }
         Some("session-hello") => return session_hello_failure(value),
         Some("session-accepted") => return cursor_failure(value.get("resume")),
         Some("session-challenge") => {

@@ -1,7 +1,7 @@
 # AetherContracts Agent Instructions
 
 This repository is the public, language-neutral authority for Aether
-interoperability contracts shared by AetherCloud, AetherIot, and independent
+interoperability contracts shared by AetherCloud, AetherEdge, and independent
 implementations.
 
 ## Authority
@@ -15,10 +15,18 @@ implementations.
 
 ## Safety boundaries
 
-- AetherIot and other commissioned edge runtimes remain authoritative for live
+- AetherEdge and other commissioned edge runtimes remain authoritative for live
   point state, deterministic rules, safety interlocks, and physical control.
-- CloudLink is not arbitrary RPC and contains no direct SHM, register, or
-  physical-control operation.
+- Core CloudLink and the read-only Integration extension are not arbitrary RPC
+  and contain no direct SHM, register, or physical-control operation. The
+  separately activated Integration Control extension may expose only its
+  closed governed semantic actions, remains disabled by default, and leaves
+  physical execution under edge-local final authority.
+- Home Assistant provider acceptance is not physical completion or successful
+  physical execution.
+- A cumulative durable ACK may advance only across a contiguous prefix of
+  durably persisted positions or positions covered by accepted data-loss
+  evidence.
 - Desired, Reported, and Applied are separate facts.
 - MQTT acknowledgement is transport evidence, never an application durable
   receipt.
@@ -46,6 +54,15 @@ implementations.
 - C++ wraps the C contract core and does not implement a second wire contract.
 - Generated files are changed through their generator, never by hand.
 - Stable failure codes are contractual; language-specific error text is not.
+
+## AI-native documentation
+
+- `ai/docs-manifest.json` keeps repository-local `path` values for validation
+  and absolute `canonical_url` values for retrieval.
+- Published pages use the unified documentation site, internal Markdown uses
+  GitHub, and machine resources use Raw GitHub.
+- Generate `ai/docs-manifest.json` and `llms.txt` together with
+  `pnpm agent-docs:update`; never edit either generated file by hand.
 
 ## Change workflow
 

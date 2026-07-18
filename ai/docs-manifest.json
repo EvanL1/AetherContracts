@@ -1,15 +1,1051 @@
 {
-  "schema_version": 1,
-  "release_version": "0.1.0-alpha.3",
+  "$schema": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/ai/docs-manifest.schema.json",
+  "schema_version": 3,
+  "project": "AetherContracts",
+  "latest_published_release": "v0.1.0-alpha.3",
+  "development_target": "0.1.0-alpha.4",
+  "production_ready": false,
+  "legacy_default": true,
+  "release_closure_authority": "contract-manifest.json",
   "documents": [
-    { "path": "README.md", "status": "implemented", "authority": "overview" },
-    { "path": "spec/foundation.md", "status": "experimental", "authority": "normative" },
-    { "path": "spec/thing-model-v1alpha1.md", "status": "experimental", "authority": "normative" },
-    { "path": "spec/cloudlink-v1alpha1.md", "status": "experimental-auth-proposal", "authority": "normative" },
-    { "path": "spec/tck-v1alpha1.md", "status": "experimental", "authority": "normative" },
-    { "path": "spec/distribution-v1alpha1.md", "status": "experimental", "authority": "normative" },
-    { "path": "ai/invariants.md", "status": "implemented", "authority": "agent-safety" },
-    { "path": "GOVERNANCE.md", "status": "implemented", "authority": "governance" },
-    { "path": "SECURITY.md", "status": "implemented", "authority": "security" }
+    {
+      "id": "agent-instructions",
+      "path": "AGENTS.md",
+      "canonical_url": "https://github.com/EvanL1/AetherContracts/blob/main/AGENTS.md",
+      "title": "Agent instructions",
+      "description": "Read before changing any contract, binding, fixture, compatibility claim, or release evidence.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "agent-task",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "change-contract",
+        "inspect-authority"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "project-overview",
+      "path": "README.md",
+      "canonical_url": "https://github.com/EvanL1/AetherContracts/blob/main/README.md",
+      "title": "Project overview and development status",
+      "description": "Understand scope, authority, safety boundaries, implemented surfaces, and unresolved production gates.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "agent-task",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "orient-repository",
+        "evaluate-status"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "getting-started",
+      "path": "docs/getting-started.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/getting-started.md",
+      "title": "Exact-release adoption task",
+      "description": "Adopt the latest published release, select a contract surface, and run offline checks without treating the development target as published.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "agent-task",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "adopt-release",
+        "run-tck"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "integration-task",
+      "path": "docs/integration.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/integration.md",
+      "title": "Delegated provider integration task",
+      "description": "Map provider topology and observations without moving provider credentials or arbitrary control into the public contract.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "agent-task",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "integrate-provider",
+        "map-home-assistant"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "conformance-task",
+      "path": "docs/conformance.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/conformance.md",
+      "title": "Conformance and evidence task",
+      "description": "Distinguish specification, Schema, fixture, TCK, binding, and product evidence before making a conformance claim.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "agent-task",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "verify-conformance",
+        "classify-evidence"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "distribution-specification",
+      "path": "spec/distribution-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/distribution-v1alpha1.md",
+      "title": "Consumer distribution specification",
+      "description": "Verify exact tags, manifests, artifact closures, digests, and offline or online consumer adoption.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "operations",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "adopt-release",
+        "verify-distribution"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "consumer-lock-schema",
+      "path": "schemas/distribution/v1alpha1/consumer-lock.schema.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/schemas/distribution/v1alpha1/consumer-lock.schema.json",
+      "title": "Consumer lock Schema",
+      "description": "Validate the closed, digest-pinned release lock used by AetherEdge, AetherCloud, and independent consumers.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "operations",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "create-consumer-lock",
+        "verify-distribution"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "consumer-lock-verifier",
+      "path": "scripts/verify-consumer-lock.mjs",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/scripts/verify-consumer-lock.mjs",
+      "title": "Consumer lock verifier",
+      "description": "Run the dependency-free reference verifier for release identity, artifact integrity, and adoption closure.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "operations",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "verify-consumer-lock",
+        "diagnose-distribution"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "release-closure-manifest",
+      "path": "contract-manifest.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/contract-manifest.json",
+      "title": "Release closure manifest",
+      "description": "Use as the sole release identity, module and binding status, unresolved-gate, and artifact-hash authority; the document catalog never duplicates it.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "operations",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "inspect-release-closure",
+        "verify-artifact-hash"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "mqtt-profile",
+      "path": "profiles/mqtt/v1alpha1/profile.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/mqtt/v1alpha1/profile.json",
+      "title": "MQTT transport profile",
+      "description": "Inspect bounded topics, payload limits, and transport rules without confusing Broker acknowledgement with durable application evidence.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "operations",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "configure-mqtt",
+        "inspect-transport"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "agent-invariants",
+      "path": "ai/invariants.md",
+      "canonical_url": "https://github.com/EvanL1/AetherContracts/blob/main/ai/invariants.md",
+      "title": "Agent safety invariants",
+      "description": "Preserve authority, authentication, replay, durable ACK, secret, physical-control, and distribution boundaries across every refactor.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "safety",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "enforce-invariants",
+        "review-safety"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "security-policy",
+      "path": "SECURITY.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/security.md",
+      "title": "Security policy",
+      "description": "Apply fail-closed parsing, secret handling, namespace isolation, authentication, replay, and governed-control requirements.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "safety",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "review-security",
+        "handle-vulnerability"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "governance",
+      "path": "GOVERNANCE.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/governance.md",
+      "title": "Contract governance",
+      "description": "Classify interoperability changes, status, breaking changes, evidence, and immutable distribution decisions.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "decision",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "classify-change",
+        "govern-contract"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "failure-taxonomy",
+      "path": "compatibility/failure-codes.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/failure-codes.json",
+      "title": "Failure taxonomy and retry policy",
+      "description": "Route failures by stable contractual string code and retryability without depending on binding-specific text or numeric ABI.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "recovery",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "classify-failure",
+        "plan-recovery"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "foundation-specification",
+      "path": "spec/foundation.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/foundation.md",
+      "title": "Contract foundation",
+      "description": "Apply normative JSON, Unicode, integer, canonicalization, bounds, and common failure semantics.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "implement-parser",
+        "canonicalize-payload"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "thing-model-specification",
+      "path": "spec/thing-model-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/thing-model-v1alpha1.md",
+      "title": "Thing Model v1 alpha 1",
+      "description": "Implement model identity, immutable revisions, P/M/A migration, authority, capabilities, and WoT alignment.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "implement-thing-model",
+        "migrate-pma"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "thing-model-publication-profile",
+      "path": "profiles/thing-model/v1alpha1/publication.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/thing-model/v1alpha1/publication.json",
+      "title": "Thing Model publication profile",
+      "description": "Bind immutable revision identity to the whole-model RFC 8785 digest.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "publish-thing-model",
+        "verify-model-digest"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "wot-profile",
+      "path": "profiles/wot/v1alpha1/profile.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/wot/v1alpha1/profile.json",
+      "title": "Web of Things alignment profile",
+      "description": "Inspect the declared Thing Model alignment boundary without importing external authority into the Aether contract.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent"
+      ],
+      "intents": [
+        "align-wot",
+        "inspect-thing-model"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "integration-specification",
+      "path": "spec/integration-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/integration-v1alpha1.md",
+      "title": "Integration v1 alpha 1",
+      "description": "Implement provider-neutral topology, multi-point entities, typed observations, identity, references, and the secret boundary.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "implement-integration",
+        "validate-topology"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "home-assistant-integration-profile",
+      "path": "profiles/integration/v1alpha1/home-assistant.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/integration/v1alpha1/home-assistant.json",
+      "title": "Home Assistant read-only mapping profile",
+      "description": "Map registry identity, rename, quality, and edge-local credential rules without exposing control.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "map-home-assistant",
+        "protect-provider-secrets"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "cloudlink-integration-profile",
+      "path": "profiles/cloudlink/v1alpha1/integration.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/cloudlink/v1alpha1/integration.json",
+      "title": "CloudLink Integration profile",
+      "description": "Activate Integration explicitly over existing session, position, digest, replay, data-loss, and durable-ACK semantics.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "transport-integration",
+        "validate-extension"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "integration-control-specification",
+      "path": "spec/integration-control-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/integration-control-v1alpha1.md",
+      "title": "Integration Control v1 alpha 1",
+      "description": "Implement only the closed, default-off governed power intent with explicit confirmation and edge-final authority.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "implement-governed-control",
+        "review-physical-effect"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "cloudlink-integration-control-profile",
+      "path": "profiles/cloudlink/v1alpha1/integration-control.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/cloudlink/v1alpha1/integration-control.json",
+      "title": "CloudLink Integration Control profile",
+      "description": "Apply exact extension activation, offer signing, replay binding, receipt stages, and the closed public-message boundary.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "transport-governed-control",
+        "verify-offer-signature"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "home-assistant-control-profile",
+      "path": "profiles/integration-control/v1alpha1/home-assistant.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/integration-control/v1alpha1/home-assistant.json",
+      "title": "Home Assistant governed control profile",
+      "description": "Use the fixed Boolean power mapping for fan, light, and switch without caller-selected provider operations.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "map-governed-control",
+        "reject-arbitrary-service"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "cloudlink-specification",
+      "path": "spec/cloudlink-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/cloudlink-v1alpha1.md",
+      "title": "CloudLink v1 alpha 1",
+      "description": "Use the sole normative authority for envelope, session, delivery, heartbeat, replay, expiry, data-loss, and ACK semantics.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "implement-cloudlink",
+        "recover-delivery"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "cloudlink-core-profile",
+      "path": "profiles/cloudlink/v1alpha1/core.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/cloudlink/v1alpha1/core.json",
+      "title": "CloudLink core profile",
+      "description": "Inspect exact projections, durable position identity, cumulative ACK prefix, closed entry Schemas, and extension activation.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "validate-cloudlink-core",
+        "compute-digest"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "cloudlink-authentication-profile",
+      "path": "profiles/cloudlink/v1alpha1/authentication.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/profiles/cloudlink/v1alpha1/authentication.json",
+      "title": "CloudLink authentication proposal",
+      "description": "Inspect the default-off challenge and signing transcript while preserving unresolved key lifecycle and unsigned-response blockers.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "evaluate-authentication",
+        "validate-replay"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "tck-specification",
+      "path": "spec/tck-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/tck-v1alpha1.md",
+      "title": "Language-neutral TCK v1 alpha 1",
+      "description": "Run and implement observable conformance scenarios, stable failure outcomes, and the portable public fixture manifest.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "run-tck",
+        "add-conformance-scenario"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "agent-document-manifest",
+      "path": "ai/docs-manifest.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/ai/docs-manifest.json",
+      "title": "Machine-readable agent document catalog",
+      "description": "Route agents by task, role, status, readiness, sensitivity, locale, and priority without copying the release artifact closure.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "route-agent-task",
+        "inspect-document-status"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "agent-document-manifest-schema",
+      "path": "ai/docs-manifest.schema.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/ai/docs-manifest.schema.json",
+      "title": "Agent document catalog Schema",
+      "description": "Validate the version 3 document metadata model and its closed status, readiness, sensitivity, role, and agent-profile enums.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent"
+      ],
+      "intents": [
+        "validate-document-catalog",
+        "change-document-metadata"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "compatibility-status",
+      "path": "docs/compatibility.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/compatibility.md",
+      "title": "Compatibility and gate status",
+      "description": "Separate the latest published alpha.3 baseline from the unpublished alpha.4 target and from product-owned evidence.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "status",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "evaluate-compatibility",
+        "plan-rollout"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "product-compatibility-matrix",
+      "path": "compatibility/product-matrix.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/product-matrix.json",
+      "title": "Product compatibility evidence matrix",
+      "description": "Resolve product commits, verified contract releases, development targets, passed gates, open gates, and evidence without inventing unknown facts.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "status",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "select-product-version",
+        "audit-product-evidence"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "cloudlink-gates",
+      "path": "compatibility/cloudlink-v1alpha1-gates.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/cloudlink-v1alpha1-gates.json",
+      "title": "CloudLink interoperability gates",
+      "description": "Inspect machine-readable authentication, correlation, broker, fault, signed-ACK, and legacy-cutover gates.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "status",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "evaluate-cloudlink-gates",
+        "block-unsafe-cutover"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "integration-compatibility",
+      "path": "compatibility/integration-v1alpha1.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/integration-v1alpha1.json",
+      "title": "Integration compatibility rules",
+      "description": "Inspect implemented contracts, contextual invariants, breaking changes, and claims that remain outside the read-only module.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "status",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "evaluate-integration-compatibility",
+        "classify-breaking-change"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "integration-control-compatibility",
+      "path": "compatibility/integration-control-v1alpha1.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/integration-control-v1alpha1.json",
+      "title": "Integration Control compatibility rules",
+      "description": "Inspect the default-off action boundary, implemented evidence, breaking changes, and missing product or key-lifecycle evidence.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "status",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "evaluate-control-compatibility",
+        "block-unsafe-control"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "thing-model-compatibility",
+      "path": "compatibility/thing-model-v1alpha1.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/thing-model-v1alpha1.json",
+      "title": "Thing Model compatibility rules",
+      "description": "Classify compatible, breaking, and semantic-only changes between immutable revisions.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "status",
+      "agent_profiles": [
+        "coding-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "compare-thing-models",
+        "classify-breaking-change"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "naming-migration",
+      "path": "MIGRATION.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/migration.md",
+      "title": "Product naming migration",
+      "description": "Preserve immutable alpha.3 bytes while changing the edge repository display name from AetherIot to AetherEdge.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "status",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "migrate-product-name",
+        "preserve-contract-identifiers"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "alpha3-alpha4-migration",
+      "path": "docs/migrations/alpha3-to-alpha4.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/migrations/alpha3-to-alpha4.md",
+      "title": "Alpha.3 to alpha.4 migration plan",
+      "description": "Plan Cloud-first decoding, disabled-by-default Edge rollout, evidence gates, rollback, and exact-release adoption for the unpublished target.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "status",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent",
+        "runtime-agent"
+      ],
+      "intents": [
+        "migrate-alpha3-alpha4",
+        "plan-rollback"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "not-production-ready",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "core"
+    },
+    {
+      "id": "project-overview-zh-cn",
+      "path": "README-CN.md",
+      "canonical_url": "https://github.com/EvanL1/AetherContracts/blob/main/README-CN.md",
+      "title": "Project overview and development status in Chinese",
+      "description": "Chinese translation of the repository overview for human review; normative specifications remain English.",
+      "locale": "zh-CN",
+      "translation_of": "project-overview",
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent",
+        "operator-agent"
+      ],
+      "intents": [
+        "review-chinese-overview"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "optional"
+    },
+    {
+      "id": "contributing",
+      "path": "CONTRIBUTING.md",
+      "canonical_url": "https://github.com/EvanL1/AetherContracts/blob/main/CONTRIBUTING.md",
+      "title": "Contribution process",
+      "description": "Follow repository contribution and verification expectations after the agent instructions and governance rules.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "agent-task",
+      "agent_profiles": [
+        "coding-agent"
+      ],
+      "intents": [
+        "prepare-contribution"
+      ],
+      "implementation_status": "implemented",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "optional"
+    },
+    {
+      "id": "cloudlink-historical-provenance",
+      "path": "compatibility/cloudlink-joint-core-provenance.json",
+      "canonical_url": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/compatibility/cloudlink-joint-core-provenance.json",
+      "title": "Historical CloudLink joint-core provenance",
+      "description": "Historical import evidence only; dirty source worktrees are not current contract authority.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "decision",
+      "agent_profiles": [
+        "coding-agent"
+      ],
+      "intents": [
+        "audit-historical-provenance"
+      ],
+      "implementation_status": "deprecated",
+      "production_readiness": "not-applicable",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "optional"
+    },
+    {
+      "id": "typescript-binding-reference",
+      "path": "packages/typescript/README.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/packages/typescript.md",
+      "title": "TypeScript binding reference",
+      "description": "Use the experimental fixture binding without treating it as a complete production codec.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent"
+      ],
+      "intents": [
+        "use-typescript-binding"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "optional"
+    },
+    {
+      "id": "rust-binding-reference",
+      "path": "packages/rust/README.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/packages/rust.md",
+      "title": "Rust binding reference",
+      "description": "Use the experimental fixture binding without treating it as a complete production codec.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent"
+      ],
+      "intents": [
+        "use-rust-binding"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "optional"
+    },
+    {
+      "id": "c-binding-reference",
+      "path": "packages/c/README.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/packages/c.md",
+      "title": "C99 binding reference",
+      "description": "Use the bounded caller-owned C foundation without adding runtime, transport, allocation, or global-state authority.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent"
+      ],
+      "intents": [
+        "use-c-binding"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "optional"
+    },
+    {
+      "id": "cpp-binding-reference",
+      "path": "packages/cpp/README.md",
+      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/packages/cpp.md",
+      "title": "C++17 binding reference",
+      "description": "Use the thin C++ wrapper over the C core without defining independent wire semantics.",
+      "locale": "en",
+      "translation_of": null,
+      "document_role": "reference",
+      "agent_profiles": [
+        "coding-agent"
+      ],
+      "intents": [
+        "use-cpp-binding"
+      ],
+      "implementation_status": "partial",
+      "production_readiness": "experimental",
+      "context_sensitivity": "public",
+      "updated": "2026-07-18",
+      "priority": "optional"
+    }
   ]
 }

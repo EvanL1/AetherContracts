@@ -1,6 +1,6 @@
 {
   "name": "@aether-contracts/typescript",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "TypeScript reference binding for Aether interoperability contracts",
   "engines": {
     "node": ">=24 <25"

@@ -7,7 +7,15 @@
   "required": ["schema", "contract", "status", "hash_algorithm", "fixtures"],
   "properties": {
     "schema": { "const": "aether.fixture-manifest.v1alpha1" },
-    "contract": { "enum": ["aether.cloudlink", "aether.thing-model"] },
+    "contract": {
+      "enum": [
+        "aether.cloudlink",
+        "aether.cloudlink.integration",
+        "aether.cloudlink.integration-control",
+        "aether.integration",
+        "aether.thing-model"
+      ]
+    },
     "status": { "type": "string", "minLength": 1, "maxLength": 128 },
     "source": { "type": "string", "minLength": 1, "maxLength": 1024 },
     "joint_core_import": { "$ref": "#/$defs/relativeJsonOrScriptPath" },
@@ -48,7 +56,12 @@
             "provenance"
           ]
         },
-        "failure_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+        "failure_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
         "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
       }
     }

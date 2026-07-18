@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/ai/docs-manifest.schema.json",
+  "title": "AetherContracts agent document manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "project",
+    "latest_published_release",
+    "development_target",
+    "production_ready",
+    "legacy_default",
+    "release_closure_authority",
+    "documents"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/ai/docs-manifest.schema.json"
+    },
+    "schema_version": {
+      "const": 3
+    },
+    "project": {
+      "const": "AetherContracts"
+    },
+    "latest_published_release": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "development_target": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "production_ready": {
+      "const": false
+    },
+    "legacy_default": {
+      "const": true
+    },
+    "release_closure_authority": {
+      "const": "contract-manifest.json"
+    },
+    "documents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/document"
+      }
+    }
+  },
+  "$defs": {
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "canonical_url",
+        "title",
+        "description",
+        "locale",
+        "translation_of",
+        "document_role",
+        "agent_profiles",
+        "intents",
+        "implementation_status",
+        "production_readiness",
+        "context_sensitivity",
+        "updated",
+        "priority"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locale": {
+          "enum": [
+            "en",
+            "zh-CN"
+          ]
+        },
+        "translation_of": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "document_role": {
+          "enum": [
+            "agent-task",
+            "operations",
+            "safety",
+            "recovery",
+            "reference",
+            "decision",
+            "status"
+          ]
+        },
+        "agent_profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "coding-agent",
+              "operator-agent",
+              "runtime-agent"
+            ]
+          }
+        },
+        "intents": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          }
+        },
+        "implementation_status": {
+          "enum": [
+            "implemented",
+            "partial",
+            "planned",
+            "deprecated"
+          ]
+        },
+        "production_readiness": {
+          "enum": [
+            "production-ready",
+            "experimental",
+            "not-production-ready",
+            "not-applicable"
+          ]
+        },
+        "context_sensitivity": {
+          "enum": [
+            "public",
+            "internal",
+            "redacted-only",
+            "sensitive-never-load"
+          ]
+        },
+        "updated": {
+          "type": "string",
+          "format": "date"
+        },
+        "priority": {
+          "enum": [
+            "core",
+            "optional"
+          ]
+        }
+      }
+    }
+  }
+}

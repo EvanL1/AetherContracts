@@ -264,6 +264,46 @@ function validateSessionHello(message: JsonRecord): CloudLinkFixtureResult {
     : { accepted: true };
 }
 
+function validateSessionChallengeRequest(message: JsonRecord): CloudLinkFixtureResult {
+  const unknown = unknownField(
+    message,
+    new Set([
+      "client_nonce",
+      "credential_binding",
+      "gateway_id",
+      "message_kind",
+      "offered_protocol_versions",
+      "protocol",
+      "resume",
+      "schema",
+    ]),
+  );
+  if (unknown !== undefined) {
+    return unknown;
+  }
+  if (!/^[A-Za-z0-9_-]{43}$/u.test(String(message.client_nonce))) {
+    return rejected(CONTRACT_FAILURE_CODES.FIELD_BOUND);
+  }
+  const binding = message.credential_binding;
+  if (!isRecord(binding)) {
+    return rejected(CONTRACT_FAILURE_CODES.UNKNOWN_FIELD);
+  }
+  const bindingUnknown = unknownField(
+    binding,
+    new Set(["credential_id", "generation"]),
+  );
+  if (bindingUnknown !== undefined) {
+    return bindingUnknown;
+  }
+  const generationFailure = uint64Failure(binding["generation"]);
+  if (generationFailure !== undefined) {
+    return rejected(generationFailure);
+  }
+  return cursorsConflict(message.resume)
+    ? rejected(CONTRACT_FAILURE_CODES.CURSOR_CONFLICT)
+    : { accepted: true };
+}
+
 function validateSessionChallenge(message: JsonRecord): CloudLinkFixtureResult {
   const unknown = unknownField(
     message,
@@ -468,6 +508,8 @@ export function validateCloudLinkFixture(
   }
   const kind = stringField(parsed, "message_kind");
   switch (kind) {
+    case "session-challenge-request":
+      return validateSessionChallengeRequest(parsed);
     case "session-hello":
       return validateSessionHello(parsed);
     case "session-challenge":

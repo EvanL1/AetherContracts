@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "aether-contracts"
-version = "0.1.0-alpha.3"
+version = "0.1.0-alpha.4"
 dependencies = [
  "serde_json",
  "sha2",

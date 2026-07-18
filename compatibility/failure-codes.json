@@ -114,6 +114,12 @@
       "description": "The explicit evaluation_time_ms is equal to or later than expires_at_ms."
     },
     {
+      "code": "ACK_PREFIX_GAP",
+      "scope": "cloudlink-context",
+      "retryable": true,
+      "description": "A cumulative durable ACK attempts to advance past a position that has neither a durably persisted application fact and receipt nor valid declared data-loss coverage for the exact same Gateway, stream, and stream epoch."
+    },
+    {
       "code": "DATA_LOSS_RANGE_INVALID",
       "scope": "cloudlink-context",
       "retryable": false,
@@ -124,6 +130,36 @@
       "scope": "cloudlink-context",
       "retryable": false,
       "description": "One message repeats the same stream_id and stream_epoch cursor identity."
+    },
+    {
+      "code": "STREAM_BINDING_CONFLICT",
+      "scope": "cloudlink-integration-context",
+      "retryable": false,
+      "description": "An Integration stream epoch is reused for a different Gateway, message kind, or integration identity."
+    },
+    {
+      "code": "BATCH_ID_MISMATCH",
+      "scope": "cloudlink-integration-context",
+      "retryable": false,
+      "description": "An Integration envelope batch_id does not equal the batch identity derived from its topology generation or observation payload."
+    },
+    {
+      "code": "BATCH_ID_CONFLICT",
+      "scope": "cloudlink-integration-context",
+      "retryable": false,
+      "description": "An Integration observation batch identity is reused at a different CloudLink position or with a different digest."
+    },
+    {
+      "code": "TOPOLOGY_GENERATION_STALE",
+      "scope": "cloudlink-integration-context",
+      "retryable": false,
+      "description": "A topology or observation delivery names a generation older than the accepted Integration topology."
+    },
+    {
+      "code": "TOPOLOGY_GENERATION_CONFLICT",
+      "scope": "cloudlink-integration-context",
+      "retryable": false,
+      "description": "An accepted Integration topology generation is reused at a new CloudLink position instead of replaying its exact delivery identity."
     },
     {
       "code": "UNSUPPORTED_VERSION",
@@ -162,6 +198,18 @@
       "description": "A capability declaration does not grant execution; the governed job or edge policy denied it."
     },
     {
+      "code": "CONFIRMATION_REQUIRED",
+      "scope": "integration-control-wire-and-context",
+      "retryable": false,
+      "description": "A governed physical-effect offer lacks its required explicit confirmation evidence."
+    },
+    {
+      "code": "PHYSICAL_OUTCOME_UNPROVEN",
+      "scope": "integration-control-wire-and-context",
+      "retryable": false,
+      "description": "Provider request acceptance was represented as physical completion or successful physical execution without independent proof."
+    },
+    {
       "code": "CAPABILITY_EXECUTION_FORBIDDEN",
       "scope": "wire-and-artifact",
       "retryable": false,
@@ -172,6 +220,42 @@
       "scope": "artifact-context",
       "retryable": false,
       "description": "A key is reused within or across the property, point, or capability namespaces of one Thing Model, or a parameter key is repeated within one capability."
+    },
+    {
+      "code": "IDENTITY_CONFLICT",
+      "scope": "integration-context",
+      "retryable": false,
+      "description": "An integration topology snapshot repeats an area, device, entity, source address, or entity-local point identity."
+    },
+    {
+      "code": "REFERENCE_NOT_FOUND",
+      "scope": "integration-context",
+      "retryable": false,
+      "description": "An integration topology or observation references an area, device, entity, point, integration, or snapshot generation that is absent from its explicit context."
+    },
+    {
+      "code": "VALUE_TYPE_MISMATCH",
+      "scope": "integration-context",
+      "retryable": false,
+      "description": "An observation value discriminant differs from the value_type declared by the referenced entity point descriptor."
+    },
+    {
+      "code": "OBSERVATION_VALUE_INVALID",
+      "scope": "integration-context",
+      "retryable": false,
+      "description": "A good or uncertain observation has no value, or a bad or unavailable observation improperly carries a value."
+    },
+    {
+      "code": "VALUE_ENCODING_INVALID",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "A typed decimal or byte value is not in its canonical bounded string encoding."
+    },
+    {
+      "code": "TEXT_INVALID",
+      "scope": "wire-and-artifact",
+      "retryable": false,
+      "description": "A contract display or evidence text field is blank or contains a forbidden C0 or DEL control character."
     },
     {
       "code": "PROPERTY_NOT_FOUND",

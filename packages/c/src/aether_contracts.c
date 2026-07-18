@@ -535,34 +535,41 @@ static aether_status_t aether_cloudlink_fixture_status(
         AETHER_FIND_LITERAL(input, "\"broker_attestation\"") != NULL) {
         return AETHER_STATUS_UNKNOWN_FIELD;
     }
-    if (AETHER_VIEW_EQUALS(message_kind, "session-hello")) {
+    if (AETHER_VIEW_EQUALS(message_kind, "session-hello") ||
+        AETHER_VIEW_EQUALS(message_kind, "session-challenge-request")) {
         aether_string_view_t nonce = AETHER_JSON_STRING(input, "client_nonce");
-        aether_string_view_t origin = AETHER_JSON_STRING(input, "origin_model");
         if (nonce.size != 43U) {
             return AETHER_STATUS_FIELD_BOUND;
         }
-        if (AETHER_VIEW_EQUALS(origin, "gateway-signed")) {
-            aether_string_view_t signature = AETHER_JSON_STRING(input, "signature");
-            size_t signature_index = 0U;
-            if (AETHER_FIND_LITERAL(input, "\"gateway_signature\"") == NULL) {
-                return AETHER_STATUS_AUTHENTICATION_REQUIRED;
-            }
-            if (signature.size != 86U) {
-                return AETHER_STATUS_AUTHENTICATION_INVALID;
-            }
-            while (signature_index < signature.size) {
-                const unsigned char value =
-                    (unsigned char)signature.data[signature_index];
-                if (!((value >= (unsigned char)'0' &&
-                       value <= (unsigned char)'9') ||
-                      (value >= (unsigned char)'A' &&
-                       value <= (unsigned char)'Z') ||
-                      (value >= (unsigned char)'a' &&
-                       value <= (unsigned char)'z') ||
-                      value == (unsigned char)'_' || value == (unsigned char)'-')) {
+        if (AETHER_VIEW_EQUALS(message_kind, "session-hello")) {
+            aether_string_view_t origin =
+                AETHER_JSON_STRING(input, "origin_model");
+            if (AETHER_VIEW_EQUALS(origin, "gateway-signed")) {
+                aether_string_view_t signature =
+                    AETHER_JSON_STRING(input, "signature");
+                size_t signature_index = 0U;
+                if (AETHER_FIND_LITERAL(input, "\"gateway_signature\"") ==
+                    NULL) {
+                    return AETHER_STATUS_AUTHENTICATION_REQUIRED;
+                }
+                if (signature.size != 86U) {
                     return AETHER_STATUS_AUTHENTICATION_INVALID;
                 }
-                signature_index += 1U;
+                while (signature_index < signature.size) {
+                    const unsigned char value =
+                        (unsigned char)signature.data[signature_index];
+                    if (!((value >= (unsigned char)'0' &&
+                           value <= (unsigned char)'9') ||
+                          (value >= (unsigned char)'A' &&
+                           value <= (unsigned char)'Z') ||
+                          (value >= (unsigned char)'a' &&
+                           value <= (unsigned char)'z') ||
+                          value == (unsigned char)'_' ||
+                          value == (unsigned char)'-')) {
+                        return AETHER_STATUS_AUTHENTICATION_INVALID;
+                    }
+                    signature_index += 1U;
+                }
             }
         }
     }
@@ -609,7 +616,8 @@ static aether_status_t aether_cloudlink_fixture_status(
             return AETHER_STATUS_DIGEST_CONFLICT;
         }
     }
-    if (AETHER_VIEW_EQUALS(message_kind, "session-accepted") &&
+    if ((AETHER_VIEW_EQUALS(message_kind, "session-accepted") ||
+         AETHER_VIEW_EQUALS(message_kind, "session-challenge-request")) &&
         aether_count_literal(input, "\"stream_id\": \"telemetry\"",
                              sizeof("\"stream_id\": \"telemetry\"") - 1U) >
             1U) {

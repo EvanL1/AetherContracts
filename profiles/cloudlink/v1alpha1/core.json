@@ -6,6 +6,19 @@
     "telemetry-batch": "telemetry-batch.schema.json",
     "data-loss": "data-loss.schema.json"
   },
+  "extensions": {
+    "aether.cloudlink.integration.v1alpha1": {
+      "profile": "integration.json",
+      "activation": "explicit",
+      "base_protocol_negotiation_alone_is_sufficient": false
+    },
+    "aether.cloudlink.integration-control.v1alpha1": {
+      "profile": "integration-control.json",
+      "activation": "explicit-default-off",
+      "base_protocol_negotiation_alone_is_sufficient": false,
+      "rollout": "edge-first"
+    }
+  },
   "replay": {
     "position_identity": [
       "gateway_id",
@@ -70,6 +83,7 @@
     "data_loss_range": "first_lost_position <= last_lost_position < earliest_retained_position",
     "cursor_identity": ["stream_id", "stream_epoch"],
     "cursor_arrays": [
+      "session-challenge-request.resume",
       "heartbeat.cursors",
       "heartbeat-ack.cursors",
       "session-accepted.resume"
@@ -96,7 +110,7 @@
     "schema": "durable-ack.schema.json",
     "persistence": "success means the application fact and receipt are durable before publication",
     "production_crash_durability": "unproven-until-a-production-store-and-outbox-pass-restart-evidence",
-    "signature": "absent-in-alpha.3",
+    "signature": "absent-in-alpha.4",
     "accepted_delivery_binding": [
       "gateway_id",
       "session_id",
@@ -109,6 +123,14 @@
       "digest",
       "receipt_id"
     ],
+    "cumulative_prefix": {
+      "meaning": "acknowledged_position is the highest contiguous resolved position in one stream_epoch",
+      "resolved_position": "the position's application fact and receipt are durable, or one valid data-loss declaration for the exact gateway_id, stream_id, and stream_epoch covers it",
+      "gap_behavior": "ACK_PREFIX_GAP and no cursor advancement",
+      "out_of_order_persistence": "permitted-without-advancing-across-a-gap",
+      "late_gap_fill": "recompute-and-advance-the-contiguous-prefix",
+      "gateway_deletion_rule": "delete-only-positions-less-than-or-equal-to-a-validated-contiguous-prefix"
+    },
     "mqtt_puback_is_application_ack": false
   },
   "physical_control": "forbidden"

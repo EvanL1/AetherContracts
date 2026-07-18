@@ -4,6 +4,10 @@ import { isDeepStrictEqual } from "node:util";
 
 import Ajv2020 from "ajv/dist/2020.js";
 
+import {
+  evaluateIntegrationObservationContext,
+  evaluateIntegrationTopologyContext,
+} from "./integration-context.mjs";
 import { decodeJson } from "./strict-json.mjs";
 
 const repositoryRoot = new URL("../../", import.meta.url);
@@ -295,6 +299,94 @@ async function executeThingModelScenario(scenario) {
   return { wire_accepted: true, context_accepted: true, state_changed: false };
 }
 
+let integrationValidatorsPromise;
+let integrationFixtureManifestPromise;
+
+async function integrationValidators() {
+  integrationValidatorsPromise ??= (async () => {
+    const directory = "schemas/integration/v1alpha1/";
+    const names = (await readdir(repositoryUrl(directory)))
+      .filter((name) => name.endsWith(".schema.json"))
+      .sort();
+    const schemas = await Promise.all(
+      names.map((name) => readRepositoryJson(`${directory}${name}`)),
+    );
+    const ajv = new Ajv2020({ allErrors: true, strict: false });
+    for (const schema of schemas) {
+      ajv.addSchema(schema);
+    }
+    return ajv;
+  })();
+  return integrationValidatorsPromise;
+}
+
+async function validateIntegrationFixture(relativePath) {
+  const prefix = "fixtures/integration/v1alpha1/";
+  if (!relativePath.startsWith(prefix) || relativePath.includes("..")) {
+    throw new Error(`Integration fixture path is outside the fixture set: ${relativePath}`);
+  }
+  integrationFixtureManifestPromise ??= readRepositoryJson(
+    "fixtures/integration/v1alpha1/fixture-manifest.json",
+  );
+  const manifest = await integrationFixtureManifestPromise;
+  const fixtureName = relativePath.slice(prefix.length);
+  const entry = manifest.fixtures.find((candidate) => candidate.file === fixtureName);
+  if (entry === undefined || typeof entry.schema_id !== "string") {
+    throw new Error(`Integration fixture has no declared entry schema: ${relativePath}`);
+  }
+  const fixture = await readRepositoryJson(relativePath);
+  const ajv = await integrationValidators();
+  const validate = ajv.getSchema(entry.schema_id);
+  if (validate === undefined) {
+    throw new Error(`Integration fixture schema is unavailable: ${entry.schema_id}`);
+  }
+  return {
+    fixture,
+    accepted: validate(fixture),
+    schema_id: entry.schema_id,
+  };
+}
+
+async function executeIntegrationScenario(scenario) {
+  const evidence = await validateIntegrationFixture(scenario.input.fixture);
+  const actual = { wire_accepted: evidence.accepted };
+  if (!evidence.accepted) {
+    return actual;
+  }
+
+  let contextual;
+  if (
+    evidence.fixture.schema ===
+    "aether.integration.topology-snapshot.v1alpha1"
+  ) {
+    contextual = evaluateIntegrationTopologyContext(evidence.fixture);
+  } else {
+    if (typeof scenario.input.topology_fixture !== "string") {
+      throw new Error(
+        `${scenario.id} requires an explicit topology_fixture binding`,
+      );
+    }
+    const topologyEvidence = await validateIntegrationFixture(
+      scenario.input.topology_fixture,
+    );
+    if (!topologyEvidence.accepted) {
+      throw new Error(`${scenario.id} topology fixture is not wire-valid`);
+    }
+    contextual = evaluateIntegrationObservationContext(
+      topologyEvidence.fixture,
+      evidence.fixture,
+    );
+  }
+
+  actual.context_accepted = contextual.accepted;
+  actual.state_changed = contextual.accepted;
+  actual.successful_receipt_permitted = contextual.accepted;
+  if (contextual.failure_code !== undefined) {
+    actual.failure_code = contextual.failure_code;
+  }
+  return actual;
+}
+
 function replayIdentity(message) {
   const delivery = message.delivery;
   if (delivery === null || typeof delivery !== "object") {
@@ -463,6 +555,92 @@ export function durableAckMatchesAcceptedDelivery(ack, acceptedDelivery) {
   );
 }
 
+export function durableAckCoversContiguousPrefix({
+  priorAcknowledgedPosition,
+  acknowledgedPosition,
+  streamId,
+  streamEpoch,
+  persistedPositions,
+  declaredLossRanges = [],
+}) {
+  const prior = explicitContextUint64(
+    priorAcknowledgedPosition,
+    "prior_acknowledged_position",
+  );
+  const acknowledged = explicitContextUint64(
+    acknowledgedPosition,
+    "acknowledged_position",
+  );
+  if (!Array.isArray(persistedPositions) || !Array.isArray(declaredLossRanges)) {
+    throw new Error(
+      "durable ACK prefix evidence requires persisted positions and declared loss ranges",
+    );
+  }
+  if (typeof streamId !== "string" || streamId.length === 0) {
+    throw new Error("durable ACK prefix evidence requires an explicit stream_id");
+  }
+  explicitContextUint64(streamEpoch, "stream_epoch");
+  if (acknowledged <= prior) {
+    return { accepted: true };
+  }
+
+  const intervals = persistedPositions.map((position) => {
+    const value = explicitContextUint64(position, "persisted_position");
+    return { first: value, last: value };
+  });
+  for (const range of declaredLossRanges) {
+    if (range === null || typeof range !== "object") {
+      throw new Error("declared loss range must be an object");
+    }
+    if (
+      range.stream_id !== streamId ||
+      range.stream_epoch !== streamEpoch
+    ) {
+      continue;
+    }
+    const first = explicitContextUint64(
+      range.first,
+      "declared_loss_range.first",
+    );
+    const last = explicitContextUint64(
+      range.last,
+      "declared_loss_range.last",
+    );
+    if (first > last) {
+      throw new Error("declared loss range must satisfy first <= last");
+    }
+    intervals.push({ first, last });
+  }
+  intervals.sort((left, right) =>
+    left.first < right.first ? -1 : left.first > right.first ? 1 : 0,
+  );
+
+  let next = prior + 1n;
+  for (const interval of intervals) {
+    if (interval.last < next || interval.first > acknowledged) {
+      continue;
+    }
+    if (interval.first > next) {
+      return {
+        accepted: false,
+        failure_code: "ACK_PREFIX_GAP",
+        missing_position: next.toString(),
+      };
+    }
+    if (interval.last >= next) {
+      next = interval.last + 1n;
+    }
+    if (next > acknowledged) {
+      return { accepted: true };
+    }
+  }
+  return {
+    accepted: false,
+    failure_code: "ACK_PREFIX_GAP",
+    missing_position: next.toString(),
+  };
+}
+
 export function dataLossRangeIsValid(payload) {
   try {
     const first = BigInt(payload.first_lost_position);
@@ -489,7 +667,16 @@ export function hasCursorConflict(cursors) {
   return false;
 }
 
-function evaluateDurableAckContext(ack, { currentSession, priorAcceptedDelivery }) {
+function evaluateDurableAckContext(
+  ack,
+  {
+    currentSession,
+    priorAcceptedDelivery,
+    priorAcknowledgedPosition,
+    persistedPositions,
+    declaredLossRanges,
+  },
+) {
   const stale = staleSessionResult(ack, currentSession);
   if (stale !== undefined) {
     return stale;
@@ -502,6 +689,22 @@ function evaluateDurableAckContext(ack, { currentSession, priorAcceptedDelivery 
     throw new Error(
       "durable ACK binding mismatch has no frozen failure code in the alpha profile",
     );
+  }
+  const prefix = durableAckCoversContiguousPrefix({
+    priorAcknowledgedPosition,
+    acknowledgedPosition: ack.acknowledged_position,
+    streamId: ack.stream_id,
+    streamEpoch: ack.stream_epoch,
+    persistedPositions,
+    declaredLossRanges,
+  });
+  if (!prefix.accepted) {
+    return {
+      accepted: false,
+      failure_code: prefix.failure_code,
+      state_changed: false,
+      successful_receipt_permitted: false,
+    };
   }
   return {
     accepted: true,
@@ -610,6 +813,10 @@ async function executeCloudLinkScenario(scenario) {
     contextual = evaluateDurableAckContext(candidateEvidence.fixture, {
       currentSession: scenario.input.current_session,
       priorAcceptedDelivery,
+      priorAcknowledgedPosition:
+        scenario.input.prior_acknowledged_position,
+      persistedPositions: scenario.input.persisted_positions,
+      declaredLossRanges: scenario.input.declared_loss_ranges,
     });
   } else if (candidateEvidence.fixture.delivery !== undefined) {
     contextual = evaluateCloudLinkDeliveryContext(candidateEvidence.fixture, {
@@ -724,6 +931,9 @@ async function executeScenario(scenario) {
   if (typeof scenario.input.fixture === "string") {
     if (scenario.input.fixture.startsWith("fixtures/thing-model/v1alpha1/")) {
       return executeThingModelScenario(scenario);
+    }
+    if (scenario.input.fixture.startsWith("fixtures/integration/v1alpha1/")) {
+      return executeIntegrationScenario(scenario);
     }
     return executeCloudLinkScenario(scenario);
   }
