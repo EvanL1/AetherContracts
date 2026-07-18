@@ -1,7 +1,7 @@
 ---
 id: thing-model-v1alpha1
 status: experimental
-version: 0.1.0-alpha.3
+version: 0.1.0-alpha.4
 normative: true
 ---
 

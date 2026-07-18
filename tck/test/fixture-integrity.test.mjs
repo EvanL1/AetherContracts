@@ -13,6 +13,9 @@ async function readJson(relativePath) {
 
 for (const manifestPath of [
   "fixtures/cloudlink/v1alpha1/fixture-manifest.json",
+  "fixtures/cloudlink-integration/v1alpha1/fixture-manifest.json",
+  "fixtures/integration-control/v1alpha1/fixture-manifest.json",
+  "fixtures/integration/v1alpha1/fixture-manifest.json",
   "fixtures/thing-model/v1alpha1/fixture-manifest.json",
 ]) {
   test(`${manifestPath} pins every fixture byte sequence`, async () => {

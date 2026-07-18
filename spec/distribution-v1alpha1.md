@@ -1,13 +1,13 @@
 ---
 id: distribution-v1alpha1
 status: experimental
-version: 0.1.0-alpha.3
+version: 0.1.0-alpha.4
 normative: true
 ---
 
 # Consumer distribution v1 alpha 1
 
-This profile lets AetherCloud, AetherIot, and independent implementations pin
+This profile lets AetherCloud, AetherEdge, and independent implementations pin
 one exact AetherContracts release while keeping their default verification path
 offline. Distribution conformance proves release identity and byte integrity;
 it does not prove that a consumer codec, state machine, authentication profile,

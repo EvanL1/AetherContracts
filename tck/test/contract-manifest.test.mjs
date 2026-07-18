@@ -51,8 +51,10 @@ async function expectedArtifactPaths() {
     "SECURITY.md",
     ".github/actions/verify-consumer/action.yml",
     "ai/docs-manifest.json",
+    "ai/docs-manifest.schema.json",
     "ai/invariants.md",
     "llms.txt",
+    "scripts/update-agent-docs.mjs",
     "scripts/verify-consumer-lock.mjs",
     ...compatibility.filter((path) => path.endsWith(".json")),
     ...fixtures.filter((path) => path.endsWith(".json")),
@@ -69,15 +71,34 @@ test("contract manifest declares language-neutral authority", async () => {
   const manifest = await readManifest();
 
   assert.equal(manifest.contract, "aether.contracts");
-  assert.equal(manifest.release_version, "0.1.0-alpha.3");
+  assert.equal(manifest.release_version, "0.1.0-alpha.4");
   assert.equal(manifest.source_authority, "spec-schema-fixtures-tck");
   assert.equal(manifest.bindings.c.status, "experimental-fixture-manifest");
   assert.equal(manifest.bindings.cpp.status, "experimental-fixture-manifest");
   assert.equal(manifest.production_release, false);
   assert.equal(manifest.modules.cloudlink.status, "experimental-auth-proposal");
+  assert.deepEqual(manifest.modules.cloudlink.authentication, {
+    default_enabled: false,
+    challenge_request_schema: "session-challenge-request.schema.json",
+    challenge_request_mqtt_route: "up_session",
+  });
+  assert.equal(manifest.modules.integration.status, "experimental-contract");
+  assert.equal(
+    manifest.modules.integration_control.status,
+    "experimental-default-off",
+  );
   assert.equal(manifest.modules.thing_model.status, "experimental");
   assert.equal(manifest.legacy_default, true);
   assert.equal(manifest.physical_control, false);
+  assert.deepEqual(
+    manifest.optional_physical_control_extensions.integration_control,
+    {
+      protocol: "aether.cloudlink.integration-control.v1alpha1",
+      default_enabled: false,
+      capabilities: ["device.power.set.v1"],
+      edge_final_decision: true,
+    },
+  );
 });
 
 test("every release artifact has the declared sha256", async () => {

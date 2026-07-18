@@ -1,0 +1,87 @@
+{
+  "schema": "aether.contracts.product-compatibility-matrix.v1",
+  "updated": "2026-07-18",
+  "latest_published_contract_release": "v0.1.0-alpha.3",
+  "development_contract_target": "0.1.0-alpha.4",
+  "production_ready": false,
+  "legacy_default": true,
+  "products": [
+    {
+      "product": "AetherContracts",
+      "repository": "https://github.com/EvanL1/AetherContracts",
+      "product_commit": "c5aad674f0844138e778963118e786e430ffb365",
+      "verified_contract_release": "v0.1.0-alpha.3",
+      "development_contract_target": "0.1.0-alpha.4",
+      "passed_gates": [
+        "cross-language-fixtures"
+      ],
+      "open_gates": [
+        "shared-broker-authentication",
+        "real-broker-dual-harness",
+        "fault-injection",
+        "signed-durable-ack",
+        "legacy-cutover",
+        "alpha4-publication"
+      ],
+      "evidence": [
+        {
+          "git_ref": "v0.1.0-alpha.3",
+          "path": "contract-manifest.json",
+          "claim": "Exact published release closure; production_release is false and legacy_default is true."
+        },
+        {
+          "git_ref": "v0.1.0-alpha.3",
+          "path": "compatibility/cloudlink-v1alpha1-gates.json",
+          "claim": "Cross-language fixtures passed experimentally; authentication, product evidence, durable ACK, and cutover gates remain open."
+        }
+      ],
+      "notes": "The alpha.4 source tree is a development target until an immutable v0.1.0-alpha.4 tag and release bundle exist."
+    },
+    {
+      "product": "AetherEdge",
+      "repository": "https://github.com/EvanL1/AetherEdge",
+      "product_commit": "947f9303810fa116afa9c4c301c5e388a181b332",
+      "verified_contract_release": "v0.1.0-alpha.3",
+      "development_contract_target": "0.1.0-alpha.4",
+      "passed_gates": [],
+      "open_gates": [
+        "alpha4-adoption",
+        "real-broker-dual-harness",
+        "fault-injection",
+        "signed-durable-ack",
+        "legacy-cutover"
+      ],
+      "evidence": [
+        {
+          "git_ref": "947f9303810fa116afa9c4c301c5e388a181b332",
+          "path": "aether-contracts.lock.json",
+          "claim": "The checked-in complete-consumer lock pins v0.1.0-alpha.3 and explicitly claims distribution-only conformance."
+        }
+      ],
+      "notes": "The matrix pins the public AetherEdge commit containing the lock; the lock itself identifies only the contract release and distribution evidence. No published alpha.4 adoption or end-to-end product gate is claimed."
+    },
+    {
+      "product": "AetherCloud",
+      "repository": "https://github.com/EvanL1/AetherCloud",
+      "product_commit": "8a14f7464bf67ce16b4e8cd473e0689cea7f1b13",
+      "verified_contract_release": "v0.1.0-alpha.3",
+      "development_contract_target": "0.1.0-alpha.4",
+      "passed_gates": [],
+      "open_gates": [
+        "alpha4-adoption",
+        "real-broker-dual-harness",
+        "fault-injection",
+        "signed-durable-ack",
+        "legacy-cutover"
+      ],
+      "evidence": [
+        {
+          "git_ref": "8a14f7464bf67ce16b4e8cd473e0689cea7f1b13",
+          "path": "aether-contracts.lock.json",
+          "claim": "The checked-in complete-consumer lock pins v0.1.0-alpha.3 and explicitly claims distribution-only conformance."
+        }
+      ],
+      "notes": "The matrix pins the public AetherCloud commit containing the lock; the lock itself identifies only the contract release and distribution evidence. Candidate alpha.4 files are not a published release or a passed product gate."
+    }
+  ]
+}

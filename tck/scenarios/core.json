@@ -1,6 +1,6 @@
 {
   "schema": "aether.tck.scenarios.v1alpha1",
-  "contract_version": "0.1.0-alpha.3",
+  "contract_version": "0.1.0-alpha.4",
   "scenarios": [
     {
       "id": "uint64-leading-zero",
@@ -324,6 +324,122 @@
       "status": "implemented"
     },
     {
+      "id": "cloudlink-ack-gap-blocks-prefix",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/cloudlink/v1alpha1/durable-ack.valid.json",
+        "accepted_delivery_fixture": "fixtures/cloudlink/v1alpha1/telemetry-batch.valid.json",
+        "prior_acknowledged_position": "16",
+        "persisted_positions": ["19", "17"],
+        "declared_loss_ranges": [],
+        "current_session": {
+          "gateway_id": "33333333-3333-4333-8333-333333333333",
+          "session_id": "44444444-4444-4444-8444-444444444444",
+          "session_epoch": "7",
+          "credential_generation": "3"
+        }
+      },
+      "expected": {
+        "wire_accepted": true,
+        "accepted_delivery_wire_accepted": true,
+        "context_accepted": false,
+        "failure_code": "ACK_PREFIX_GAP",
+        "state_changed": false,
+        "successful_receipt_permitted": false
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "cloudlink-ack-gap-declared-lost",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/cloudlink/v1alpha1/durable-ack.valid.json",
+        "accepted_delivery_fixture": "fixtures/cloudlink/v1alpha1/telemetry-batch.valid.json",
+        "prior_acknowledged_position": "16",
+        "persisted_positions": ["19", "17"],
+        "declared_loss_ranges": [
+          {
+            "stream_id": "telemetry",
+            "stream_epoch": "4",
+            "first": "18",
+            "last": "18"
+          }
+        ],
+        "current_session": {
+          "gateway_id": "33333333-3333-4333-8333-333333333333",
+          "session_id": "44444444-4444-4444-8444-444444444444",
+          "session_epoch": "7",
+          "credential_generation": "3"
+        }
+      },
+      "expected": {
+        "wire_accepted": true,
+        "accepted_delivery_wire_accepted": true,
+        "context_accepted": true,
+        "state_changed": true,
+        "successful_receipt_permitted": true
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "cloudlink-ack-gap-other-epoch-does-not-cover",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/cloudlink/v1alpha1/durable-ack.valid.json",
+        "accepted_delivery_fixture": "fixtures/cloudlink/v1alpha1/telemetry-batch.valid.json",
+        "prior_acknowledged_position": "16",
+        "persisted_positions": ["19", "17"],
+        "declared_loss_ranges": [
+          {
+            "stream_id": "telemetry",
+            "stream_epoch": "5",
+            "first": "18",
+            "last": "18"
+          }
+        ],
+        "current_session": {
+          "gateway_id": "33333333-3333-4333-8333-333333333333",
+          "session_id": "44444444-4444-4444-8444-444444444444",
+          "session_epoch": "7",
+          "credential_generation": "3"
+        }
+      },
+      "expected": {
+        "wire_accepted": true,
+        "accepted_delivery_wire_accepted": true,
+        "context_accepted": false,
+        "failure_code": "ACK_PREFIX_GAP",
+        "state_changed": false,
+        "successful_receipt_permitted": false
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "cloudlink-ack-gap-filled-out-of-order",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/cloudlink/v1alpha1/durable-ack.valid.json",
+        "accepted_delivery_fixture": "fixtures/cloudlink/v1alpha1/telemetry-batch.valid.json",
+        "prior_acknowledged_position": "16",
+        "persisted_positions": ["19", "17", "18"],
+        "declared_loss_ranges": [],
+        "current_session": {
+          "gateway_id": "33333333-3333-4333-8333-333333333333",
+          "session_id": "44444444-4444-4444-8444-444444444444",
+          "session_epoch": "7",
+          "credential_generation": "3"
+        }
+      },
+      "expected": {
+        "wire_accepted": true,
+        "accepted_delivery_wire_accepted": true,
+        "context_accepted": true,
+        "state_changed": true,
+        "successful_receipt_permitted": true
+      },
+      "status": "implemented"
+    },
+    {
       "id": "cloudlink-wrong-session-epoch",
       "operation": "validate",
       "input": {
@@ -434,6 +550,100 @@
         "wire_accepted": true,
         "context_accepted": false,
         "failure_code": "KEY_CONFLICT",
+        "state_changed": false,
+        "successful_receipt_permitted": false
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "integration-topology-duplicate-identity",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/integration/v1alpha1/invalid/topology-duplicate-entity.json"
+      },
+      "expected": {
+        "wire_accepted": true,
+        "context_accepted": false,
+        "failure_code": "IDENTITY_CONFLICT",
+        "state_changed": false,
+        "successful_receipt_permitted": false
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "integration-topology-dangling-reference",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/integration/v1alpha1/invalid/topology-dangling-device-area.json"
+      },
+      "expected": {
+        "wire_accepted": true,
+        "context_accepted": false,
+        "failure_code": "REFERENCE_NOT_FOUND",
+        "state_changed": false,
+        "successful_receipt_permitted": false
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "integration-observation-dangling-point",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/integration/v1alpha1/invalid/observation-dangling-point.json",
+        "topology_fixture": "fixtures/integration/v1alpha1/valid/home-assistant-topology.json"
+      },
+      "expected": {
+        "wire_accepted": true,
+        "context_accepted": false,
+        "failure_code": "REFERENCE_NOT_FOUND",
+        "state_changed": false,
+        "successful_receipt_permitted": false
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "integration-observation-type-mismatch",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/integration/v1alpha1/invalid/observation-type-mismatch.json",
+        "topology_fixture": "fixtures/integration/v1alpha1/valid/home-assistant-topology.json"
+      },
+      "expected": {
+        "wire_accepted": true,
+        "context_accepted": false,
+        "failure_code": "VALUE_TYPE_MISMATCH",
+        "state_changed": false,
+        "successful_receipt_permitted": false
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "integration-observation-good-without-value",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/integration/v1alpha1/invalid/observation-good-without-value.json",
+        "topology_fixture": "fixtures/integration/v1alpha1/valid/home-assistant-topology.json"
+      },
+      "expected": {
+        "wire_accepted": true,
+        "context_accepted": false,
+        "failure_code": "OBSERVATION_VALUE_INVALID",
+        "state_changed": false,
+        "successful_receipt_permitted": false
+      },
+      "status": "implemented"
+    },
+    {
+      "id": "integration-observation-unavailable-with-value",
+      "operation": "validate",
+      "input": {
+        "fixture": "fixtures/integration/v1alpha1/invalid/observation-unavailable-with-value.json",
+        "topology_fixture": "fixtures/integration/v1alpha1/valid/home-assistant-topology.json"
+      },
+      "expected": {
+        "wire_accepted": true,
+        "context_accepted": false,
+        "failure_code": "OBSERVATION_VALUE_INVALID",
         "state_changed": false,
         "successful_receipt_permitted": false
       },

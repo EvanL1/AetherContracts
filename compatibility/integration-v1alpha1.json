@@ -1,0 +1,44 @@
+{
+  "schema": "aether.integration.compatibility.v1alpha1",
+  "status": "experimental-contract",
+  "module": "aether.integration",
+  "version": "v1alpha1",
+  "implemented": [
+    "closed topology snapshot schema",
+    "area, device, stable entity, current source address, and multi-point descriptors",
+    "closed typed observed-value union",
+    "closed observation batch schema",
+    "valid, wire-invalid, and context-invalid fixture manifest",
+    "language-neutral context reducer and TCK scenarios",
+    "experimental Home Assistant mapping profile",
+    "experimental CloudLink topology and observation wrapper profile",
+    "immutable CloudLink stream, generation, batch, digest, replay, and durable-ACK bindings"
+  ],
+  "context_invariants": [
+    "topology identities are unique",
+    "area and device references resolve within one snapshot",
+    "observation integration and generation bind the exact topology",
+    "entity and point references resolve",
+    "observation value discriminants match point value types",
+    "quality and value presence agree",
+    "display and evidence text is nonblank and excludes C0 and DEL",
+    "CloudLink observation batches resolve the exact accepted topology generation",
+    "CloudLink topology and observation streams have immutable per-epoch bindings"
+  ],
+  "breaking_changes": [
+    "change a schema discriminator",
+    "change identity or snapshot replacement semantics",
+    "remove or rename a required field",
+    "change a point value_type or observed-value encoding",
+    "weaken a field bound or closed-object requirement",
+    "change quality/value presence semantics",
+    "reuse a stable identity for a different provider object"
+  ],
+  "not_claimed": [
+    "governed control within this read-only module; the separate Integration Control module owns that contract",
+    "complete AetherEdge or AetherCloud implementation",
+    "language binding conformance for the CloudLink Integration extension",
+    "production Broker, database transaction, restart, or rollout evidence",
+    "physical confirmation from provider state alone"
+  ]
+}

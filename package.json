@@ -1,6 +1,6 @@
 {
   "name": "aether-contracts-workspace",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.11.0",
@@ -17,9 +17,11 @@
     "check:c:sanitize": "cmake -S . -B build/cmake-sanitize -DCMAKE_BUILD_TYPE=Debug -DAETHER_ENABLE_SANITIZERS=ON && cmake --build build/cmake-sanitize && ctest --test-dir build/cmake-sanitize --output-on-failure",
     "check:rust": "cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace",
     "check:pack": "pnpm --filter @aether-contracts/typescript build && node scripts/check-typescript-pack.mjs && cargo package --package aether-contracts --allow-dirty --locked && cargo package --package aether-contracts --allow-dirty --locked --no-verify --list && node scripts/check-cmake-install.mjs",
+    "agent-docs:check": "node scripts/update-agent-docs.mjs --check",
+    "agent-docs:update": "node scripts/update-agent-docs.mjs --write",
     "hashes:check": "node scripts/update-hashes.mjs --check",
     "hashes:update": "node scripts/update-hashes.mjs",
-    "check": "pnpm test && pnpm check:pack && pnpm check:c && pnpm check:rust && pnpm hashes:check",
+    "check": "pnpm test && pnpm agent-docs:check && pnpm check:pack && pnpm check:c && pnpm check:rust && pnpm hashes:check",
     "clean": "rm -rf build packages/typescript/dist target"
   },
   "devDependencies": {

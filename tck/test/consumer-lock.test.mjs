@@ -73,7 +73,7 @@ async function createConsumerFixture() {
   const sourcePath = "schemas/cloudlink/v1alpha1/envelope.schema.json";
   const pendingPath = "schemas/cloudlink/v1alpha1/runtime-manifest.v1.schema.json";
   const destinationPath = "contracts/cloudlink/v1/envelope.schema.json";
-  const manifestPath = "contracts/aether-contracts/v0.1.0-alpha.3/contract-manifest.json";
+  const manifestPath = "contracts/aether-contracts/v0.1.0-alpha.4/contract-manifest.json";
   const releaseRoot = join(root, "release");
   const sourceBytes = Buffer.from('{"schema":"example"}\n');
   const pendingBytes = Buffer.from('{"schema":"pending"}\n');
@@ -83,7 +83,7 @@ async function createConsumerFixture() {
   await mkdir(join(root, "consumer", "contracts", "cloudlink", "v1"), {
     recursive: true,
   });
-  await mkdir(join(root, "consumer", "contracts", "aether-contracts", "v0.1.0-alpha.3"), {
+  await mkdir(join(root, "consumer", "contracts", "aether-contracts", "v0.1.0-alpha.4"), {
     recursive: true,
   });
   await mkdir(join(releaseRoot, "schemas", "cloudlink", "v1alpha1"), {
@@ -95,7 +95,7 @@ async function createConsumerFixture() {
 
   const manifest = {
     contract: "aether.contracts",
-    release_version: "0.1.0-alpha.3",
+    release_version: "0.1.0-alpha.4",
     production_release: false,
     legacy_default: true,
     physical_control: false,
@@ -113,14 +113,14 @@ async function createConsumerFixture() {
     status: "partial-consumer",
     repository: "https://github.com/EvanL1/AetherContracts",
     release: {
-      version: "0.1.0-alpha.3",
-      tag: "v0.1.0-alpha.3",
+      version: "0.1.0-alpha.4",
+      tag: "v0.1.0-alpha.4",
       tag_object: "a".repeat(40),
       commit: "b".repeat(40),
       bundle: {
-        name: "AetherContracts-0.1.0-alpha.3.tar.gz",
-        url: "https://github.com/EvanL1/AetherContracts/releases/download/v0.1.0-alpha.3/AetherContracts-0.1.0-alpha.3.tar.gz",
-        root: "AetherContracts-0.1.0-alpha.3",
+        name: "AetherContracts-0.1.0-alpha.4.tar.gz",
+        url: "https://github.com/EvanL1/AetherContracts/releases/download/v0.1.0-alpha.4/AetherContracts-0.1.0-alpha.4.tar.gz",
+        root: "AetherContracts-0.1.0-alpha.4",
         size: 1234,
         sha256: "c".repeat(64),
         limits: {
@@ -214,7 +214,7 @@ test("offline verification binds the vendored manifest and imported consumer byt
       imported: 1,
       pending: 1,
       releaseCommit: "b".repeat(40),
-      releaseVersion: "0.1.0-alpha.3",
+      releaseVersion: "0.1.0-alpha.4",
       scope: "cloudlink-alpha-interoperability",
       status: "partial-consumer",
     });
@@ -351,7 +351,7 @@ test("the action commit must exactly match the release commit in the lock", asyn
         error instanceof ConsumerLockFailure && error.code === "ACTION_COMMIT_MISMATCH",
     );
     assert.throws(
-      () => verifyActionCommit("v0.1.0-alpha.3", fixture.lock.release.commit),
+      () => verifyActionCommit("v0.1.0-alpha.4", fixture.lock.release.commit),
       (error) =>
         error instanceof ConsumerLockFailure && error.code === "ACTION_COMMIT_MISMATCH",
     );

@@ -6,6 +6,7 @@ import {
   CLOUDLINK_REPLAY_IDENTITY_FIELDS,
   businessDigestForEnvelope,
   dataLossRangeIsValid,
+  durableAckCoversContiguousPrefix,
   durableAckMatchesAcceptedDelivery,
   evaluateCloudLinkDeliveryContext,
   hasCursorConflict,
@@ -30,7 +31,7 @@ test("core scenario document is loaded through its declared JSON Schema", async 
   const scenarioSet = await loadCoreScenarioSet();
 
   assert.equal(scenarioSet.schema, "aether.tck.scenarios.v1alpha1");
-  assert.equal(scenarioSet.contract_version, "0.1.0-alpha.3");
+  assert.equal(scenarioSet.contract_version, "0.1.0-alpha.4");
   assert.ok(scenarioSet.scenarios.length > 0);
 
   await assert.rejects(
@@ -47,6 +48,15 @@ test("every context-invalid manifest fixture has exactly one direct implemented 
   const scenarioSet = await loadCoreScenarioSet();
   const manifests = [
     ["cloudlink", "fixtures/cloudlink/v1alpha1/fixture-manifest.json"],
+    [
+      "cloudlink-integration",
+      "fixtures/cloudlink-integration/v1alpha1/fixture-manifest.json",
+    ],
+    [
+      "integration-control",
+      "fixtures/integration-control/v1alpha1/fixture-manifest.json",
+    ],
+    ["integration", "fixtures/integration/v1alpha1/fixture-manifest.json"],
     ["thing-model", "fixtures/thing-model/v1alpha1/fixture-manifest.json"],
   ];
 
@@ -85,8 +95,18 @@ test("core scenarios cover canonical integer precedence and CloudLink context fa
       "cloudlink-conflicting-digest",
       "cloudlink-digest-mismatch",
       "cloudlink-stale-ack",
+      "cloudlink-ack-gap-blocks-prefix",
+      "cloudlink-ack-gap-declared-lost",
+      "cloudlink-ack-gap-other-epoch-does-not-cover",
+      "cloudlink-ack-gap-filled-out-of-order",
       "cloudlink-wrong-session-epoch",
       "thing-model-cross-namespace-key-conflict",
+      "integration-topology-duplicate-identity",
+      "integration-topology-dangling-reference",
+      "integration-observation-dangling-point",
+      "integration-observation-type-mismatch",
+      "integration-observation-good-without-value",
+      "integration-observation-unavailable-with-value",
       "runtime-manifest-checksum",
       "thing-model-publication-digest",
       "cloudlink-new-delivery",
@@ -430,6 +450,70 @@ test("durable ACK binding helper matches the accepted delivery tuple and digest"
       field,
     );
   }
+});
+
+test("durable ACK advances only across a contiguous persisted or declared-lost prefix", () => {
+  const prefix = {
+    priorAcknowledgedPosition: "16",
+    acknowledgedPosition: "19",
+    streamId: "telemetry",
+    streamEpoch: "4",
+  };
+
+  assert.deepEqual(
+    durableAckCoversContiguousPrefix({
+      ...prefix,
+      persistedPositions: ["19", "17"],
+      declaredLossRanges: [],
+    }),
+    {
+      accepted: false,
+      failure_code: "ACK_PREFIX_GAP",
+      missing_position: "18",
+    },
+  );
+  assert.deepEqual(
+    durableAckCoversContiguousPrefix({
+      ...prefix,
+      persistedPositions: ["19", "17"],
+      declaredLossRanges: [
+        {
+          stream_id: "telemetry",
+          stream_epoch: "4",
+          first: "18",
+          last: "18",
+        },
+      ],
+    }),
+    { accepted: true },
+  );
+  assert.deepEqual(
+    durableAckCoversContiguousPrefix({
+      ...prefix,
+      persistedPositions: ["19", "17"],
+      declaredLossRanges: [
+        {
+          stream_id: "telemetry",
+          stream_epoch: "5",
+          first: "18",
+          last: "18",
+        },
+      ],
+    }),
+    {
+      accepted: false,
+      failure_code: "ACK_PREFIX_GAP",
+      missing_position: "18",
+    },
+  );
+  assert.deepEqual(
+    durableAckCoversContiguousPrefix({
+      ...prefix,
+      persistedPositions: ["19", "17", "18"],
+      declaredLossRanges: [],
+    }),
+    { accepted: true },
+  );
 });
 
 test("conflicting replay is wire-valid together with its explicit prior accepted delivery", async () => {

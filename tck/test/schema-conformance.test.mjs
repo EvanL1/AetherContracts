@@ -26,6 +26,8 @@ test("all normative JSON Schemas compile under Draft 2020-12", async () => {
   const schemas = [
     ...(await loadSchemas("schemas/thing-model/v1alpha1/")),
     ...(await loadSchemas("schemas/cloudlink/v1alpha1/")),
+    ...(await loadSchemas("schemas/integration/v1alpha1/")),
+    ...(await loadSchemas("schemas/integration-control/v1alpha1/")),
     ...(await loadSchemas("schemas/distribution/v1alpha1/")),
     ...(await loadSchemas("schemas/tck/v1alpha1/")),
   ];
@@ -139,21 +141,27 @@ test("Runtime Manifest accepts only SemVer 2.0.0 versions", async () => {
   }
 });
 
-test("session establishment distinguishes gateway signatures from external attestation", async () => {
+test("session establishment starts with a closed challenge request and distinguishes gateway signatures from external attestation", async () => {
   const ajv = new Ajv2020({ allErrors: true, strict: false });
   const schemas = await loadSchemas("schemas/cloudlink/v1alpha1/");
   for (const schema of schemas) {
     ajv.addSchema(schema);
   }
 
-  const [challenge, hello] = await Promise.all([
+  const [request, invalidRequest, challenge, hello] = await Promise.all([
+    readJson("fixtures/cloudlink/v1alpha1/session-challenge-request.valid.json"),
+    readJson("fixtures/cloudlink/v1alpha1/session-challenge-request-unknown-field.json"),
     readJson("fixtures/cloudlink/v1alpha1/session-challenge.valid.json"),
     readJson("fixtures/cloudlink/v1alpha1/session-hello.valid.json"),
   ]);
+  const validateRequest = ajv.getSchema("session-challenge-request.schema.json");
   const validateChallenge = ajv.getSchema("session-challenge.schema.json");
   const validateHello = ajv.getSchema("session-hello.schema.json");
+  assert.ok(validateRequest);
   assert.ok(validateChallenge);
   assert.ok(validateHello);
+  assert.equal(validateRequest(request), true, JSON.stringify(validateRequest.errors));
+  assert.equal(validateRequest(invalidRequest), false);
   assert.equal(validateChallenge(challenge), true, JSON.stringify(validateChallenge.errors));
   assert.equal(validateHello(hello), true, JSON.stringify(validateHello.errors));
 

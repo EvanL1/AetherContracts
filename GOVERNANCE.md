@@ -5,13 +5,23 @@ SDK conveniences. Normative behavior requires an English specification,
 structural Schema where applicable, valid and invalid fixtures, TCK evidence,
 and an explicit compatibility classification.
 
-Statuses have precise meanings:
+Protocol gates and release artifacts retain their domain-specific status
+vocabulary. The agent document catalog does not compress multiple facts into a
+status such as `mixed`, `experimental-default-off`, or
+`experimental-auth-proposal`. It records orthogonal closed fields:
 
-- `implemented`: repository behavior is present and tested.
-- `experimental`: present but not a stable production contract.
-- `planned`: designed or named, but not implemented.
-- `blocked`: cannot advance until a declared gate passes.
-- `deprecated`: supported only for a documented compatibility window.
+- `implementation_status`: `implemented`, `partial`, `planned`, or
+  `deprecated`;
+- `production_readiness`: `production-ready`, `experimental`,
+  `not-production-ready`, or `not-applicable`;
+- `context_sensitivity`: `public`, `internal`, `redacted-only`, or
+  `sensitive-never-load`;
+- `priority`: `core` or `optional`;
+- `document_role`: `agent-task`, `operations`, `safety`, `recovery`,
+  `reference`, `decision`, or `status`.
+
+An open or blocked protocol gate remains explicit compatibility evidence; it is
+not hidden inside the status of a document that describes that gate.
 
 No binding is called conformant until it passes the complete applicable TCK.
 Breaking changes require a new contract version. Alpha artifacts may change,

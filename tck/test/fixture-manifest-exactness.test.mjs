@@ -9,6 +9,9 @@ import { decodeJson } from "../lib/strict-json.mjs";
 const repositoryRoot = new URL("../../", import.meta.url);
 const manifests = [
   "fixtures/cloudlink/v1alpha1/fixture-manifest.json",
+  "fixtures/cloudlink-integration/v1alpha1/fixture-manifest.json",
+  "fixtures/integration-control/v1alpha1/fixture-manifest.json",
+  "fixtures/integration/v1alpha1/fixture-manifest.json",
   "fixtures/thing-model/v1alpha1/fixture-manifest.json",
 ];
 
