@@ -2,7 +2,8 @@
 
 This repository is the public, language-neutral authority for Aether
 interoperability contracts shared by AetherCloud, AetherEdge, and independent
-implementations.
+implementations. `CLAUDE.md` and `GEMINI.md` are symlinks to this file, so
+every agent reads and edits the same instructions.
 
 ## Authority
 
