@@ -10,6 +10,10 @@ semantics, JSON Schema Draft 2020-12 defines structure, fixtures pin examples,
 and the TCK supplies executable evidence. A language binding never becomes a
 second source of truth.
 
+> **New to AetherIoT?** Start with the
+> [AetherEdge quickstart](https://github.com/EvanL1/AetherEdge#try-it-in-five-minutes) — the
+> runnable edge runtime these contracts govern.
+
 The latest published release is `v0.1.0-alpha.3`. The current source tree
 targets the unpublished `0.1.0-alpha.4` development version. Both are
 experimental; neither is a production CloudLink cutover release.
