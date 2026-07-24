@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-**文档网站：** [docs.aetheriot.workers.dev/aethercontracts](https://docs.aetheriot.workers.dev/aethercontracts/)
+**文档网站：** [docs.aetheriot.dev/aethercontracts](https://docs.aetheriot.dev/aethercontracts/)
 
 **智能原生物理世界的类型化信任边界。**
 
