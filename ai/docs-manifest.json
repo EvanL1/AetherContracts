@@ -59,7 +59,7 @@
     {
       "id": "getting-started",
       "path": "docs/getting-started.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/getting-started.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/getting-started.md",
       "title": "Exact-release adoption task",
       "description": "Adopt the latest published release, select a contract surface, and run offline checks without treating the development target as published.",
       "locale": "en",
@@ -82,7 +82,7 @@
     {
       "id": "integration-task",
       "path": "docs/integration.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/integration.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/integration.md",
       "title": "Delegated provider integration task",
       "description": "Map provider topology and observations without moving provider credentials or arbitrary control into the public contract.",
       "locale": "en",
@@ -106,7 +106,7 @@
     {
       "id": "conformance-task",
       "path": "docs/conformance.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/conformance.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/conformance.md",
       "title": "Conformance and evidence task",
       "description": "Distinguish specification, Schema, fixture, TCK, binding, and product evidence before making a conformance claim.",
       "locale": "en",
@@ -129,7 +129,7 @@
     {
       "id": "distribution-specification",
       "path": "spec/distribution-v1alpha1.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/distribution-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/spec/distribution-v1alpha1.md",
       "title": "Consumer distribution specification",
       "description": "Verify exact tags, manifests, artifact closures, digests, and offline or online consumer adoption.",
       "locale": "en",
@@ -269,7 +269,7 @@
     {
       "id": "security-policy",
       "path": "SECURITY.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/security.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/security.md",
       "title": "Security policy",
       "description": "Apply fail-closed parsing, secret handling, namespace isolation, authentication, replay, and governed-control requirements.",
       "locale": "en",
@@ -293,7 +293,7 @@
     {
       "id": "governance",
       "path": "GOVERNANCE.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/governance.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/governance.md",
       "title": "Contract governance",
       "description": "Classify interoperability changes, status, breaking changes, evidence, and immutable distribution decisions.",
       "locale": "en",
@@ -340,7 +340,7 @@
     {
       "id": "foundation-specification",
       "path": "spec/foundation.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/foundation.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/spec/foundation.md",
       "title": "Contract foundation",
       "description": "Apply normative JSON, Unicode, integer, canonicalization, bounds, and common failure semantics.",
       "locale": "en",
@@ -363,7 +363,7 @@
     {
       "id": "thing-model-specification",
       "path": "spec/thing-model-v1alpha1.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/thing-model-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/spec/thing-model-v1alpha1.md",
       "title": "Thing Model v1 alpha 1",
       "description": "Implement model identity, immutable revisions, P/M/A migration, authority, capabilities, and WoT alignment.",
       "locale": "en",
@@ -431,7 +431,7 @@
     {
       "id": "integration-specification",
       "path": "spec/integration-v1alpha1.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/integration-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/spec/integration-v1alpha1.md",
       "title": "Integration v1 alpha 1",
       "description": "Implement provider-neutral topology, multi-point entities, typed observations, identity, references, and the secret boundary.",
       "locale": "en",
@@ -501,7 +501,7 @@
     {
       "id": "integration-control-specification",
       "path": "spec/integration-control-v1alpha1.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/integration-control-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/spec/integration-control-v1alpha1.md",
       "title": "Integration Control v1 alpha 1",
       "description": "Implement only the closed, default-off governed power intent with explicit confirmation and edge-final authority.",
       "locale": "en",
@@ -572,7 +572,7 @@
     {
       "id": "cloudlink-specification",
       "path": "spec/cloudlink-v1alpha1.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/cloudlink-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/spec/cloudlink-v1alpha1.md",
       "title": "CloudLink v1 alpha 1",
       "description": "Use the sole normative authority for envelope, session, delivery, heartbeat, replay, expiry, data-loss, and ACK semantics.",
       "locale": "en",
@@ -643,7 +643,7 @@
     {
       "id": "tck-specification",
       "path": "spec/tck-v1alpha1.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/spec/tck-v1alpha1.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/spec/tck-v1alpha1.md",
       "title": "Language-neutral TCK v1 alpha 1",
       "description": "Run and implement observable conformance scenarios, stable failure outcomes, and the portable public fixture manifest.",
       "locale": "en",
@@ -712,7 +712,7 @@
     {
       "id": "compatibility-status",
       "path": "docs/compatibility.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/compatibility.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/compatibility.md",
       "title": "Compatibility and gate status",
       "description": "Separate the latest published alpha.3 baseline from the unpublished alpha.4 target and from product-owned evidence.",
       "locale": "en",
@@ -855,7 +855,7 @@
     {
       "id": "naming-migration",
       "path": "MIGRATION.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/migration.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/migration.md",
       "title": "Product naming migration",
       "description": "Preserve immutable alpha.3 bytes while changing the edge repository display name from AetherIot to AetherEdge.",
       "locale": "en",
@@ -878,7 +878,7 @@
     {
       "id": "alpha3-alpha4-migration",
       "path": "docs/migrations/alpha3-to-alpha4.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/migrations/alpha3-to-alpha4.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/migrations/alpha3-to-alpha4.md",
       "title": "Alpha.3 to alpha.4 migration plan",
       "description": "Plan Cloud-first decoding, disabled-by-default Edge rollout, evidence gates, rollback, and exact-release adoption for the unpublished target.",
       "locale": "en",
@@ -966,7 +966,7 @@
     {
       "id": "typescript-binding-reference",
       "path": "packages/typescript/README.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/packages/typescript.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/packages/typescript.md",
       "title": "TypeScript binding reference",
       "description": "Use the experimental fixture binding without treating it as a complete production codec.",
       "locale": "en",
@@ -987,7 +987,7 @@
     {
       "id": "rust-binding-reference",
       "path": "packages/rust/README.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/packages/rust.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/packages/rust.md",
       "title": "Rust binding reference",
       "description": "Use the experimental fixture binding without treating it as a complete production codec.",
       "locale": "en",
@@ -1008,7 +1008,7 @@
     {
       "id": "c-binding-reference",
       "path": "packages/c/README.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/packages/c.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/packages/c.md",
       "title": "C99 binding reference",
       "description": "Use the bounded caller-owned C foundation without adding runtime, transport, allocation, or global-state authority.",
       "locale": "en",
@@ -1029,7 +1029,7 @@
     {
       "id": "cpp-binding-reference",
       "path": "packages/cpp/README.md",
-      "canonical_url": "https://docs.aetheriot.workers.dev/en/aethercontracts/packages/cpp.md",
+      "canonical_url": "https://docs.aetheriot.dev/en/aethercontracts/packages/cpp.md",
       "title": "C++17 binding reference",
       "description": "Use the thin C++ wrapper over the C core without defining independent wire semantics.",
       "locale": "en",
