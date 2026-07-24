@@ -128,7 +128,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "2fd3d53e8a7886fd76aecd55514dccf5eaaf999b5bf4b28257ba472b15e4d94f"
+      "sha256": "26dbb5ced5d6d28dc302e47f83f3fe0b74c48ce8cfae2c385c02fbb0b0adcb9d"
     },
     {
       "path": "SECURITY.md",
@@ -136,7 +136,7 @@
     },
     {
       "path": "ai/docs-manifest.json",
-      "sha256": "43f14c15fd7ed9d22e20898d759b24877de8f79d2095aa5cb0dc6db5dc3aaf43"
+      "sha256": "9817334d594ba3437c27fd9f3d18902b98f69ce8e8f41bb3827176a1e7008b91"
     },
     {
       "path": "ai/docs-manifest.schema.json",
@@ -444,7 +444,7 @@
     },
     {
       "path": "llms.txt",
-      "sha256": "7f95172a6d04f25579ede44c389cb26251a7f114e1d9e880a9ef01e6d60ade16"
+      "sha256": "359e24d989d9db017299ecb5cd6cd82356790f9be13dff0d529049c34154d5d4"
     },
     {
       "path": "profiles/cloudlink/v1alpha1/authentication.json",
@@ -588,7 +588,7 @@
     },
     {
       "path": "scripts/update-agent-docs.mjs",
-      "sha256": "b0d01ce0ecd829a68525c9f7b4ff86493b775f0c9159ccddf21b3e8abd775bb9"
+      "sha256": "7a6e821f8b85a548ce9f6f59dbb8956acef037664c8bdace73a8ad5280ecdc64"
     },
     {
       "path": "scripts/verify-consumer-lock.mjs",
@@ -652,7 +652,7 @@
     },
     {
       "path": "tck/test/agent-docs-manifest.test.mjs",
-      "sha256": "d47a78cbfd5917437685d9d4dc45e5f19bc2ed1263cd7a787b50f61c285e5b9b"
+      "sha256": "11b1cf90785144a20d7be5cc7a8d7f089d102c83912b017a7d267db51b7c3feb"
     },
     {
       "path": "tck/test/cloudlink-authentication-contract.test.mjs",

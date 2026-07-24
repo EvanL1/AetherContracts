@@ -2,7 +2,7 @@
 
 [中文说明](README-CN.md)
 
-**Documentation website:** [docs.aetheriot.dev/en/aethercontracts](https://docs.aetheriot.dev/en/aethercontracts/)
+**Documentation website:** [docs.aetheriot.dev/aethercontracts](https://docs.aetheriot.dev/aethercontracts/)
 
 AetherContracts is the public, language-neutral interoperability authority for
 AetherCloud, AetherEdge, and independent implementations. Specifications define

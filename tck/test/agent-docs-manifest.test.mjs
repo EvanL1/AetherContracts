@@ -13,7 +13,7 @@ const repositoryRoot = new URL("../../", import.meta.url);
 const canonicalSchemaUrl =
   "https://raw.githubusercontent.com/EvanL1/AetherContracts/main/ai/docs-manifest.schema.json";
 const documentationBaseUrl =
-  "https://docs.aetheriot.dev/en/aethercontracts";
+  "https://docs.aetheriot.dev/aethercontracts";
 const githubBlobBaseUrl =
   "https://github.com/EvanL1/AetherContracts/blob/main";
 const githubRawBaseUrl =
