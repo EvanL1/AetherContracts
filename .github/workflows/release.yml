@@ -16,14 +16,19 @@ jobs:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
           fetch-depth: 0
-          # A tag-triggered run checks out the triggering ref, which arrives
-          # without its annotation object. `validateReleaseFacts` requires the
-          # published release to be an annotated tag, and its two other guards
-          # -- newest tag equals `latest_published_release`, and no tag exists
-          # for `development_target` -- are only meaningful against the full
-          # tag set. Without this the first fails and the other two degrade to
-          # passing for the wrong reason.
-          fetch-tags: true
+      # A tag-triggered run creates the triggering tag locally as a lightweight
+      # ref pointing at the resolved commit, so its annotation object is absent.
+      # `validateReleaseFacts` requires the published release to be an annotated
+      # tag, and its two other guards -- newest tag equals
+      # `latest_published_release`, and no tag exists for `development_target`
+      # -- are only meaningful against the full tag set.
+      #
+      # `fetch-tags: true` is NOT sufficient: plain `git fetch --tags` refuses
+      # to clobber a tag ref that already exists, so the lightweight ref
+      # survives. Measured: lightweight -> `git fetch --tags` -> still
+      # lightweight -> `git fetch --tags --force` -> annotated. Only --force
+      # replaces it.
+      - run: git fetch --tags --force origin
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
           version: 11.11.0
