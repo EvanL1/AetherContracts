@@ -5,11 +5,10 @@ advisory workflow. Do not open a public issue containing credentials, private
 keys, replayable proofs, customer artifacts, or exploit transcripts against a
 deployed system.
 
-The latest published release is `v0.1.0-alpha.3`; `0.1.0-alpha.4` is an
-unpublished development target. Both are experimental. The development target
-deliberately does not define a production shared-Broker authentication
-transcript or signed durable ACK. Do not deploy those incomplete profiles as a
-trust boundary.
+The latest published release is `v0.1.0-alpha.4`; `0.1.0-alpha.5` is an
+unpublished development target. Both are experimental. Neither deliberately
+defines a production shared-Broker authentication transcript or signed durable
+ACK. Do not deploy those incomplete profiles as a trust boundary.
 
 Contract parsers must bound input size, nesting, strings, arrays, and allocation;
 reject duplicate keys and invalid Unicode before semantic validation; and never

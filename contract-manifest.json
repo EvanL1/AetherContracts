@@ -128,15 +128,15 @@
     },
     {
       "path": "README.md",
-      "sha256": "7a5f9530e453caa8767c037f0613fcb8e476248f7eee0af073410768fa461488"
+      "sha256": "19bc2e853489f2ac93abe417e45bdc3d78313772a0ed13fb79e2299c6ca23751"
     },
     {
       "path": "SECURITY.md",
-      "sha256": "6d36315193d2d2ed3256589eb79cce52e1ad6e0d0410586ac73ff93aa1e1c78d"
+      "sha256": "6c8eb0ed83f5807c601f6a98b71c01c88f8c77c878ddd8259d1fcaff1c842d7d"
     },
     {
       "path": "ai/docs-manifest.json",
-      "sha256": "9817334d594ba3437c27fd9f3d18902b98f69ce8e8f41bb3827176a1e7008b91"
+      "sha256": "c884de26378e69d84051743935a30fc5f7a66738bdc6974577ae2114e198a836"
     },
     {
       "path": "ai/docs-manifest.schema.json",
@@ -168,7 +168,7 @@
     },
     {
       "path": "compatibility/product-matrix.json",
-      "sha256": "7810a5e3e2d8aed4898bea7f436e6d1a71758607073ab82b49baaf6396433faf"
+      "sha256": "647da8440db57a632339607deb16c831572e57d46f3d9c4327ee183b44e1d93a"
     },
     {
       "path": "compatibility/thing-model-v1alpha1.json",
@@ -444,7 +444,7 @@
     },
     {
       "path": "llms.txt",
-      "sha256": "359e24d989d9db017299ecb5cd6cd82356790f9be13dff0d529049c34154d5d4"
+      "sha256": "2eef802b165e40121b10ad41d169172db4d9cadfc576918b2ae5e45acbfee1a7"
     },
     {
       "path": "profiles/cloudlink/v1alpha1/authentication.json",
@@ -588,7 +588,7 @@
     },
     {
       "path": "scripts/update-agent-docs.mjs",
-      "sha256": "7a6e821f8b85a548ce9f6f59dbb8956acef037664c8bdace73a8ad5280ecdc64"
+      "sha256": "671b87f741ef07291e4249d4d2146333ccb7d46c62bcfa5dafd3d81bc139fb4e"
     },
     {
       "path": "scripts/verify-consumer-lock.mjs",
@@ -652,7 +652,7 @@
     },
     {
       "path": "tck/test/agent-docs-manifest.test.mjs",
-      "sha256": "11b1cf90785144a20d7be5cc7a8d7f089d102c83912b017a7d267db51b7c3feb"
+      "sha256": "4f0560242bd1f8c816611134bf876fe6bbb7cc6c000e1a4e0f3e9a1f1f907685"
     },
     {
       "path": "tck/test/cloudlink-authentication-contract.test.mjs",

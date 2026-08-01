@@ -7,7 +7,11 @@ import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 
 import { decodeJson } from "../lib/strict-json.mjs";
-import { canonicalDocumentUrl } from "../../scripts/update-agent-docs.mjs";
+import {
+  canonicalDocumentUrl,
+  publishedReleaseVersion,
+  releaseClosureVersionIsLegal,
+} from "../../scripts/update-agent-docs.mjs";
 
 const repositoryRoot = new URL("../../", import.meta.url);
 const canonicalSchemaUrl =
@@ -89,8 +93,8 @@ test("the agent document catalog is a schema-valid v3 task index", async () => {
   assert.equal(schema.$id, canonicalSchemaUrl);
   assert.equal(manifest.$schema, canonicalSchemaUrl);
   assert.equal(manifest.schema_version, 3);
-  assert.equal(manifest.latest_published_release, "v0.1.0-alpha.3");
-  assert.equal(manifest.development_target, "0.1.0-alpha.4");
+  assert.equal(manifest.latest_published_release, "v0.1.0-alpha.4");
+  assert.equal(manifest.development_target, "0.1.0-alpha.5");
   assert.equal(manifest.production_ready, false);
   assert.equal(manifest.legacy_default, true);
   assert.equal(manifest.release_closure_authority, "contract-manifest.json");
@@ -167,8 +171,8 @@ test("llms.txt is generated as an English Markdown task router", async () => {
   ];
 
   assert.match(llms, /^# AetherContracts\n\n> [^\n]+/);
-  assert.match(llms, /Latest published release: `v0\.1\.0-alpha\.3`\./);
-  assert.match(llms, /Development target: `0\.1\.0-alpha\.4` \(unpublished\)\./);
+  assert.match(llms, /Latest published release: `v0\.1\.0-alpha\.4`\./);
+  assert.match(llms, /Development target: `0\.1\.0-alpha\.5` \(unpublished\)\./);
   assert.doesNotMatch(llms, /^- [^[]/m, "file-list items must be Markdown links");
 
   const headings = [...llms.matchAll(/^## (.+)$/gm)].map((match) => match[1]);
@@ -195,6 +199,31 @@ test("llms.txt is generated as an English Markdown task router", async () => {
     encoding: "utf8",
   });
   assert.equal(check.status, 0, `${check.stdout}\n${check.stderr}`);
+});
+
+test("the release closure may declare the development target or the published release", () => {
+  const manifest = {
+    latest_published_release: "v0.1.0-alpha.4",
+    development_target: "0.1.0-alpha.5",
+  };
+
+  assert.equal(publishedReleaseVersion(manifest), "0.1.0-alpha.4");
+  assert.equal(
+    releaseClosureVersionIsLegal("0.1.0-alpha.5", manifest),
+    true,
+    "between releases contract-manifest.json tracks the development target",
+  );
+  assert.equal(
+    releaseClosureVersionIsLegal("0.1.0-alpha.4", manifest),
+    true,
+    "at a release commit contract-manifest.json declares the release being published; v0.1.0-alpha.3 shipped that way, and verify-consumer-lock.mjs fails MANIFEST_IDENTITY_MISMATCH otherwise",
+  );
+  assert.equal(
+    releaseClosureVersionIsLegal("0.1.0-alpha.3", manifest),
+    false,
+    "a superseded release is not a legal closure declaration",
+  );
+  assert.equal(releaseClosureVersionIsLegal("0.2.0", manifest), false);
 });
 
 test("published and development versions are verified against real Git tags", async () => {
@@ -227,7 +256,7 @@ test("published and development versions are verified against real Git tags", as
   );
 });
 
-test("alpha.4 is described as a development target, never as a published release", async () => {
+test("alpha.5 is described as a development target, never as a published release", async () => {
   const publicStatusDocuments = [
     "README.md",
     "README-CN.md",
@@ -241,11 +270,11 @@ test("alpha.4 is described as a development target, never as a published release
     const content = await readText(path);
     assert.doesNotMatch(
       content,
-      /(?:current release is|current `?v?0\.1\.0-alpha\.4`? release|this `?0\.1\.0-alpha\.4`? release)/i,
+      /(?:current release is|current `?v?0\.1\.0-alpha\.5`? release|this `?0\.1\.0-alpha\.5`? release)/i,
       path,
     );
-    assert.doesNotMatch(content, /git checkout v0\.1\.0-alpha\.4/, path);
-    assert.doesNotMatch(content, /当前版本是 \*\*0\.1\.0-alpha\.4\*\*/, path);
+    assert.doesNotMatch(content, /git checkout v0\.1\.0-alpha\.5/, path);
+    assert.doesNotMatch(content, /当前版本是 \*\*0\.1\.0-alpha\.5\*\*/, path);
   }
 });
 
@@ -277,8 +306,8 @@ test("the product matrix reports only evidenced compatibility facts", async () =
 test("the alpha.3 to alpha.4 migration has rollout and rollback routes", async () => {
   const migration = await readText("docs/migrations/alpha3-to-alpha4.md");
 
-  assert.match(migration, /Latest published release.*`v0\.1\.0-alpha\.3`/);
-  assert.match(migration, /Development target.*`0\.1\.0-alpha\.4`/);
+  assert.match(migration, /Latest published release.*`v0\.1\.0-alpha\.4`/);
+  assert.match(migration, /Development target.*`0\.1\.0-alpha\.5`/);
   assert.match(migration, /^## Cloud-first rollout$/m);
   assert.match(migration, /^## Rollback$/m);
   assert.match(migration, /must not pin|do not pin/i);

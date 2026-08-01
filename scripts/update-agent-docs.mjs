@@ -210,11 +210,32 @@ async function validateReleaseFacts(manifest) {
   }
 
   const contractManifest = await readJson(new URL(manifest.release_closure_authority, repositoryRoot));
-  if (contractManifest.release_version !== manifest.development_target) {
+  if (!releaseClosureVersionIsLegal(contractManifest.release_version, manifest)) {
     throw new Error(
-      `contract-manifest.json targets ${contractManifest.release_version}, expected ${manifest.development_target}`,
+      `contract-manifest.json targets ${contractManifest.release_version}, expected ${manifest.development_target} (between releases) or ${publishedReleaseVersion(manifest)} (at a release commit)`,
     );
   }
+}
+
+export function publishedReleaseVersion(manifest) {
+  return manifest.latest_published_release.replace(/^v/, "");
+}
+
+/**
+ * `contract-manifest.json` declares the release closure this commit cuts.
+ * Between releases that is `development_target`. At a release commit it is the
+ * release being published: `git show v0.1.0-alpha.3:contract-manifest.json`
+ * declares `0.1.0-alpha.3`, and `scripts/verify-consumer-lock.mjs` rejects a
+ * bundle whose `release_version` differs from the tag a consumer lock pins
+ * (MANIFEST_IDENTITY_MISMATCH). Both values are legal; accepting only
+ * `development_target` makes every release commit unsatisfiable, because
+ * promoting the tag forces `development_target` to the next version.
+ */
+export function releaseClosureVersionIsLegal(releaseVersion, manifest) {
+  return (
+    releaseVersion === manifest.development_target ||
+    releaseVersion === publishedReleaseVersion(manifest)
+  );
 }
 
 async function validateProductMatrix(manifest) {

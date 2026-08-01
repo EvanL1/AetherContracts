@@ -1,27 +1,27 @@
 ---
-title: Migrate from alpha.3 to the alpha.4 development target
-description: Preserve the published alpha.3 baseline while preparing Cloud-first decoding, explicitly activated Integration, governed control, evidence gates, and rollback for alpha.4
-updated: 2026-07-18
+title: Migrate from alpha.3 to the published alpha.4 release
+description: Adopt the published alpha.4 release from the alpha.3 baseline through Cloud-first decoding, explicitly activated Integration, governed control, evidence gates, and rollback
+updated: 2026-08-01
 status: planned
 ---
 
-# Migrate from alpha.3 to the alpha.4 development target
+# Migrate from alpha.3 to the published alpha.4 release
 
-- Latest published release: `v0.1.0-alpha.3`.
-- Development target: `0.1.0-alpha.4`.
+- Latest published release: `v0.1.0-alpha.4`.
+- Development target: `0.1.0-alpha.5`.
 - Production readiness: false.
 - Default transport mode: legacy.
 
-There is no immutable `v0.1.0-alpha.4` release tag yet. Consumers must not pin,
-download, or claim conformance to alpha.4 as a published release. Development
-work may verify a candidate snapshot, but that evidence must identify the exact
-source commit or candidate digest and must not be described as release
-conformance.
+The immutable `v0.1.0-alpha.4` tag, release bundle, and release manifest now
+exist. Consumers must not pin `main`, a version range, or a candidate snapshot;
+pin the exact tag through a closed consumer lock and verify the imported
+closure offline. Adoption remains distribution evidence only. It does not prove
+behavioral conformance, and the product gates below remain open.
 
-## Contract changes under development
+## Contract changes in alpha.4
 
-The alpha.4 target keeps the alpha.3 core identity and adds explicitly
-negotiated surfaces:
+Alpha.4 keeps the alpha.3 core identity and adds explicitly negotiated
+surfaces:
 
 - provider-neutral Integration topology snapshots and typed observations;
 - an Integration CloudLink extension that reuses the existing session,
@@ -40,19 +40,19 @@ completion, and Integration Control remains disabled by default.
 
 1. Keep every commissioned product on its exact `v0.1.0-alpha.3` consumer lock
    and keep legacy transport enabled.
-2. Add alpha.4 candidate decoding and rejection tests to AetherCloud without
+2. Add alpha.4 decoding and rejection tests to AetherCloud without
    enabling new message publication from AetherEdge.
 3. Run the language-neutral TCK and product-owned persistence, restart,
    duplicate, stale-generation, rename, deletion, timeout, and fault evidence.
-4. Add the same exact candidate closure to AetherEdge, still with Integration
+4. Add the same exact release closure to AetherEdge, still with Integration
    and Integration Control disabled by default.
 5. Enable read-only Integration only after Cloud accepts the exact extension
    profile and reconnect or replay evidence passes.
 6. Keep Integration Control disabled until Cloud offer-key provisioning,
    rotation, revocation, Edge verifier ownership, persistent replay binding,
    policy, confirmation, audit, and end-to-end provider error evidence exist.
-7. Replace candidate pins with the immutable `v0.1.0-alpha.4` tag, release
-   manifest, and bundle digest only after that release is actually published.
+7. Move each product lock to the immutable `v0.1.0-alpha.4` tag, release
+   manifest, and bundle digest, and verify the imported closure offline.
 
 Passing repository fixtures does not satisfy product-owned Broker, database,
 restart, or physical-device evidence. Record those results against exact
@@ -66,19 +66,20 @@ quarantine extension-specific pending work without advancing a durable ACK
 across an undeclared gap.
 
 Do not reinterpret alpha.4 extension payloads as alpha.3 core messages. Do not
-rewrite immutable alpha.3 release bytes. If a product must return to the
-published baseline, restore its exact `v0.1.0-alpha.3` consumer lock and verify
-the complete imported closure offline.
+rewrite immutable alpha.3 or alpha.4 release bytes. If a product must return to
+the previous baseline, restore its exact `v0.1.0-alpha.3` consumer lock and
+verify the complete imported closure offline.
 
 Rollback does not authorize deleting unresolved spool positions, accepting a
 changed replay digest, bypassing expiry, or representing provider acceptance as
 physical completion.
 
-## Evidence required before publication
+## Evidence still required for a production claim
 
-- a real `v0.1.0-alpha.4` annotated tag and immutable release bundle;
-- matching specification, Schema, fixture, TCK, binding, manifest, and hash
-  evidence;
+Publishing `v0.1.0-alpha.4` supplied the annotated tag, immutable release
+bundle, and matching specification, Schema, fixture, TCK, binding, manifest,
+and hash evidence. These remain open:
+
 - exact AetherEdge and AetherCloud consumer locks tied to product commits;
 - Cloud-first decode and reject evidence;
 - reconnect, restart, duplicate, conflict, data-loss, rename, deletion, stale

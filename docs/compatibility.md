@@ -1,6 +1,6 @@
 ---
 title: AetherContracts compatibility and release gates
-description: Distinguish the published alpha.3 baseline from the unpublished alpha.4 target and from authentication, durability, and legacy-cutover gates that remain open
+description: Distinguish the published alpha.4 release from the unpublished alpha.5 target and from authentication, durability, and legacy-cutover gates that remain open
 updated: 2026-07-17
 status: mixed
 ---
@@ -9,8 +9,8 @@ status: mixed
 
 Compatibility is evidence-based. Sharing a version string or successfully
 decoding one fixture does not prove complete interoperability. The latest
-published release is `v0.1.0-alpha.3`. The repository's `0.1.0-alpha.4`
-development target is unpublished, remains experimental, and keeps legacy
+published release is `v0.1.0-alpha.4`. The repository's `0.1.0-alpha.5`
+development target is unpublished. Both remain experimental and keep legacy
 transport as the default.
 
 ## Current product baseline
