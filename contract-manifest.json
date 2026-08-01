@@ -592,7 +592,7 @@
     },
     {
       "path": "scripts/verify-consumer-lock.mjs",
-      "sha256": "1b818dd7befd86d68a1ad96c2e07f4cc912efbe8a7d738ba2c98a960142a8669"
+      "sha256": "614e4919dc91816c4d4c27bd7d34fc281356775b9d77cf7cf6c3a660649931be"
     },
     {
       "path": "spec/cloudlink-v1alpha1.md",
@@ -664,7 +664,7 @@
     },
     {
       "path": "tck/test/consumer-lock.test.mjs",
-      "sha256": "f2b999a959212ec24499836f30de1d4cec93546fd2382652665142d53889dfbe"
+      "sha256": "ea18be75854361c0a1e33054094e037ed75743d94ce9dd392a609ef2b4124c1b"
     },
     {
       "path": "tck/test/contract-manifest.test.mjs",

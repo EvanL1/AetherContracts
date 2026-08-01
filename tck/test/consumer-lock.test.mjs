@@ -548,3 +548,45 @@ test("consumer verifier failure codes are published in the common taxonomy", asy
     [],
   );
 });
+
+test("the released contract manifest passes the verifier's own key allowlist", async () => {
+  // alpha.4 added `optional_physical_control_extensions` to
+  // contract-manifest.json without adding it to validateManifest's closed
+  // allowlist, so every consumer of the published release failed
+  // MANIFEST_INVALID before verifying a single artifact. The surrounding tests
+  // only exercise deliberately malformed manifests, so nothing caught it.
+  // Assert the real manifest's key set against the real verifier.
+  const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
+  const released = JSON.parse(
+    (await readFile(join(repositoryRoot, "contract-manifest.json"))).toString(
+      "utf8",
+    ),
+  );
+
+  const fixture = await createConsumerFixture();
+  try {
+    const manifestPath = join(
+      fixture.consumerRoot,
+      fixture.lock.manifest.local_path,
+    );
+    const manifest = JSON.parse((await readFile(manifestPath)).toString("utf8"));
+    for (const key of Object.keys(released)) {
+      if (!(key in manifest)) {
+        manifest[key] = released[key];
+      }
+    }
+    const bytes = Buffer.from(JSON.stringify(manifest, null, 2));
+    await writeFile(manifestPath, bytes);
+
+    const lock = JSON.parse((await readFile(fixture.lockPath)).toString("utf8"));
+    lock.manifest.sha256 = createHash("sha256").update(bytes).digest("hex");
+    await writeFile(fixture.lockPath, JSON.stringify(lock, null, 2));
+
+    await verifyConsumerLock({
+      consumerRoot: fixture.consumerRoot,
+      lockPath: fixture.lockPath,
+    });
+  } finally {
+    await fixture.cleanup();
+  }
+});

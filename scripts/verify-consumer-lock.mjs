@@ -423,6 +423,12 @@ function validateManifest(value, lock) {
     "bindings",
     "unresolved",
     "artifacts",
+    // alpha.4 declares the deny-by-default integration-control capability set
+    // here. The key was added to contract-manifest.json without being added to
+    // this allowlist, so every alpha.4 consumer failed MANIFEST_INVALID before
+    // verifying a single artifact. Adding a manifest field requires adding it
+    // to this allowlist in the same change.
+    "optional_physical_control_extensions",
   ]);
   const manifest = assertRecord(value, "manifest");
   for (const key of Object.keys(manifest)) {
